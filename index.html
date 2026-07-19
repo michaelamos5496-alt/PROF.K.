@@ -455,8 +455,16 @@
       inset: 0;
       align-items: center;
       justify-content: center;
+      background: none;
+      border: none;
+      padding: 0;
       color: var(--ink);
+      cursor: pointer;
       pointer-events: none;
+    }
+
+    .projects .panel-icon .icon-close {
+      display: none;
     }
 
     /* On pointer devices the panel rests as a small glass disc and
@@ -990,19 +998,76 @@
         top: clamp(2rem, 6vh, 3.5rem);
       }
 
+      /* the list rests as a floating disc; a tap expands it into a bottom
+         sheet, tapping the ✕ (or picking a project) collapses it again */
       .projects {
         top: auto;
-        bottom: 0;
-        right: 0;
-        left: 0;
+        bottom: 1.1rem;
+        right: 1rem;
         transform: none;
+        width: 64px;
+        height: 64px;
+        max-height: 64px;
+        padding: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        transition:
+          width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+          height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+          max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+          right 0.45s ease,
+          bottom 0.45s ease,
+          border-radius 0.45s ease,
+          padding 0.45s ease;
+      }
+
+      .projects.open {
+        right: 0;
+        bottom: 0;
         width: 100%;
+        height: 42vh;
         max-height: 42vh;
         padding: 1.2rem 0 0.6rem;
         border-radius: 22px 22px 0 0;
         border-left: none;
         border-right: none;
         border-bottom: none;
+        cursor: default;
+      }
+
+      .projects .panel-icon {
+        display: flex;
+      }
+
+      .projects.open .panel-icon {
+        pointer-events: auto;
+        inset: 0.4rem 0.6rem auto auto;
+        width: 44px;
+        height: 44px;
+      }
+
+      .projects.open .panel-icon .icon-list {
+        display: none;
+      }
+
+      .projects.open .panel-icon .icon-close {
+        display: block;
+      }
+
+      .projects h4,
+      .projects ul,
+      .projects .show-more {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+
+      .projects.open h4,
+      .projects.open ul,
+      .projects.open .show-more {
+        opacity: 1;
+        pointer-events: auto;
+        transition: opacity 0.3s ease 0.2s;
       }
 
       .service {
@@ -1071,7 +1136,8 @@
         gap: 0.6rem;
       }
 
-      .projects {
+      .projects.open {
+        height: 45vh;
         max-height: 45vh;
       }
 
@@ -1157,13 +1223,17 @@
     </div>
 
     <aside class="projects" aria-label="Projects list">
-      <div class="panel-icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <button class="panel-icon" type="button" aria-label="Toggle projects list">
+        <svg class="icon-list" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <line x1="4" y1="6" x2="20" y2="6" />
           <line x1="4" y1="12" x2="20" y2="12" />
           <line x1="4" y1="18" x2="14" y2="18" />
         </svg>
-      </div>
+        <svg class="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="6" y1="6" x2="18" y2="18" />
+          <line x1="18" y1="6" x2="6" y2="18" />
+        </svg>
+      </button>
       <h4>Selected Work</h4>
       <ul id="project-list"></ul>
       <a class="show-more" href="https://vimeo.com/oneshotstudios" target="_blank" rel="noopener">
@@ -1418,6 +1488,16 @@
     const pad = (n) => String(n).padStart(2, "0");
     let activeIndex = 0;
 
+    // On tablet/phone layouts the panel rests as a floating disc:
+    // tapping it opens the sheet, tapping the ✕ closes it again.
+    const panel = document.querySelector(".projects");
+    const touchLayout = window.matchMedia("(max-width: 1024px)");
+    panel.addEventListener("click", (e) => {
+      if (!touchLayout.matches) return;
+      if (!panel.classList.contains("open")) panel.classList.add("open");
+      else if (e.target.closest(".panel-icon")) panel.classList.remove("open");
+    });
+
     // Build the list first so it renders even if the Vimeo SDK fails to load.
     projects.forEach((p, i) => {
       const li = document.createElement("li");
@@ -1429,7 +1509,11 @@
         '<span class="name">' + p.title + "</span>" +
         '<span class="cat">' + p.category + "</span>";
       btn.addEventListener("click", (e) => {
+        // don't let the tap bubble to the panel toggle and re-open it
+        e.stopPropagation();
         select(i, btn);
+        // picking a project closes the sheet so the video is visible
+        if (touchLayout.matches) panel.classList.remove("open");
         // a mouse click leaves focus on the button, which would pin the
         // panel open via :focus-within — release it (keyboard keeps focus)
         if (e.detail > 0) btn.blur();
