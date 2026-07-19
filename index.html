@@ -844,7 +844,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: clamp(4rem, 10vh, 7rem) clamp(1.5rem, 6vw, 6rem) 0;
+      padding: clamp(4rem, 10vh, 7rem) clamp(1.5rem, 6vw, 6rem);
     }
 
     .contact .inner {
@@ -973,15 +973,82 @@
       margin-top: 0.4rem;
     }
 
-    /* footer */
-    .footer {
+    /* ---- Footer ---- */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: clamp(3.5rem, 8vh, 6rem) clamp(1.5rem, 6vw, 6rem) 0;
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+      gap: clamp(2rem, 5vw, 5rem);
+      padding-bottom: clamp(2.5rem, 6vh, 4rem);
+    }
+
+    .footer-brand .wordmark {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.4rem, 2.2vw, 2rem);
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .footer-brand .wordmark em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .footer-brand .tagline {
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 34ch;
+      font-size: 0.9rem;
+    }
+
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.7rem;
+    }
+
+    .footer-col h5 {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-col a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 300;
+      transition: color 0.25s ease;
+    }
+
+    .footer-col a:hover {
+      color: var(--accent);
+    }
+
+    .footer-col .note {
+      font-size: 0.8rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .footer-bottom {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
       flex-wrap: wrap;
       border-top: 1px solid var(--line);
-      margin-top: clamp(3rem, 8vh, 5rem);
       padding: 1.6rem 0;
       font-size: 0.65rem;
       letter-spacing: 0.3em;
@@ -989,13 +1056,13 @@
       color: var(--muted);
     }
 
-    .footer a {
+    .footer-bottom a {
       color: var(--muted);
       text-decoration: none;
       transition: color 0.25s ease;
     }
 
-    .footer a:hover {
+    .footer-bottom a:hover {
       color: var(--ink);
     }
 
@@ -1095,6 +1162,18 @@
       .contact .inner {
         grid-template-columns: 1fr;
       }
+
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+
+      .footer-col:last-child {
+        grid-column: 1 / -1;
+      }
     }
 
     /* ---- Mobile ---- */
@@ -1170,7 +1249,7 @@
         padding: 1.6rem 0.8rem;
       }
 
-      .footer {
+      .footer-bottom {
         justify-content: center;
         text-align: center;
       }
@@ -1490,11 +1569,47 @@
       </form>
     </div>
 
-    <footer class="footer">
-      <span>&copy; 2026 Kwesi Apenteng-Mensah</span>
-      <a href="#home">Back to Top ↑</a>
-    </footer>
   </section>
+
+  <footer class="site-footer">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <p class="wordmark">Kwesi <em>Apenteng-Mensah</em></p>
+        <p class="tagline">
+          Creative direction for brands that refuse to be ignored —
+          concept, craft, and execution under one vision.
+        </p>
+      </div>
+
+      <nav class="footer-col" aria-label="Footer navigation">
+        <h5>Menu</h5>
+        <a href="#home">Home</a>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#clients">Clients</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="footer-col">
+        <h5>Elsewhere</h5>
+        <a href="#" rel="noopener">Instagram</a>
+        <a href="#" rel="noopener">LinkedIn</a>
+        <a href="https://vimeo.com/oneshotstudios" target="_blank" rel="noopener">Vimeo</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <a href="mailto:hello@kwesiapentengmensah.com">hello@kwesiapentengmensah.com</a>
+        <p class="note">Available for select projects worldwide.</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 Kwesi Apenteng-Mensah. All rights reserved.</span>
+      <a href="#home">Back to Top ↑</a>
+    </div>
+  </footer>
 
   <script src="https://player.vimeo.com/api/player.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
@@ -1735,7 +1850,7 @@
       reveal(".testimonial", { trigger: ".testimonials", stagger: 0.15 });
       reveal(".contact .pitch > *", { trigger: ".contact", stagger: 0.12 });
       reveal(".contact form", { trigger: ".contact", x: 60, y: 0 });
-      reveal(".footer", { trigger: ".footer", y: 20 });
+      reveal(".site-footer > *", { trigger: ".site-footer", stagger: 0.15, y: 30 });
 
       // gentle parallax drift on the about photo row
       gsap.to(".about .photos", {
