@@ -918,9 +918,9 @@
     .contact form {
       display: flex;
       flex-direction: column;
-      gap: 1.6rem;
+      gap: 1.1rem;
       background: rgba(244, 239, 230, 0.03);
-      padding: clamp(1.8rem, 3vw, 2.8rem);
+      padding: clamp(1.4rem, 2.2vw, 2rem);
     }
 
     .contact .field {
@@ -961,7 +961,7 @@
 
     .contact textarea {
       resize: vertical;
-      min-height: 90px;
+      min-height: 70px;
     }
 
     .contact input:focus,
@@ -1164,10 +1164,6 @@
         text-align: left;
       }
 
-      .contact .inner {
-        grid-template-columns: 1fr;
-      }
-
       .footer-main {
         grid-template-columns: 1fr 1fr;
       }
@@ -1244,6 +1240,10 @@
 
       .about .photos img:nth-child(even) {
         margin-top: 2rem;
+      }
+
+      .contact .inner {
+        grid-template-columns: 1fr;
       }
 
       .logo-wall {
