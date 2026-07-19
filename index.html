@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kwesi Apenteng-Mensah — Creative Director</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,700&family=Space+Grotesk:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0e0d0b;
+      --bg-soft: #161411;
+      --ink: #f4efe6;
+      --muted: #8f887c;
+      --accent: #ff4d1c;
+      --line: rgba(244, 239, 230, 0.18);
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Space Grotesk", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* faint grid texture across the page */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 120px 120px;
+      opacity: 0.15;
+    }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 120px;
+      grid-template-rows: auto 1fr;
+      /* hero photo, kept readable by a left-heavy scrim + bottom vignette */
+      background:
+        linear-gradient(to top, rgba(14, 13, 11, 0.85) 0%, rgba(14, 13, 11, 0) 30%),
+        linear-gradient(100deg, rgba(14, 13, 11, 0.95) 0%, rgba(14, 13, 11, 0.72) 45%, rgba(14, 13, 11, 0.35) 100%),
+        url("images/hero.jpg") center 20% / cover no-repeat;
+    }
+
+    /* ---- Name block, top right ---- */
+    .site-title {
+      grid-column: 2;
+      grid-row: 1;
+      position: relative;
+      z-index: 2;
+      justify-self: end;
+      min-width: min(520px, 60vw);
+      margin-left: -400px; /* extends left past the nav column, per the layout */
+      padding: 2.2rem 3rem 2rem;
+      text-align: center;
+    }
+
+    .site-title h1 {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.3rem, 2.3vw, 1.9rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+
+    .site-title h1 em {
+      font-style: italic;
+    }
+
+    .site-title .role {
+      margin-top: 0.4rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* ---- Vertical nav, right edge ---- */
+    .navbar {
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.4rem;
+      padding: 3rem 0;
+    }
+
+    .navbar a {
+      writing-mode: vertical-rl;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      transition: color 0.25s ease;
+    }
+
+    .navbar a:hover,
+    .navbar a.active {
+      color: var(--ink);
+    }
+
+    .navbar a.active {
+      color: var(--accent);
+    }
+
+    /* ---- Hero, left space ---- */
+    .hero {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem clamp(1.5rem, 7vw, 7rem) 4rem;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 3rem;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero h2 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(2.8rem, 7.5vw, 6.5rem);
+      line-height: 1.02;
+      letter-spacing: -0.01em;
+      max-width: 15ch;
+      margin-bottom: 2.2rem;
+    }
+
+    .hero h2 .accent-word {
+      font-style: italic;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .hero .lede {
+      font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 46ch;
+      margin-bottom: 3rem;
+    }
+
+    .hero .actions {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.6rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+    }
+
+    .btn.primary:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    .btn.ghost:hover {
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    /* ---- Footer strip inside hero ---- */
+    .hero .meta {
+      position: absolute;
+      bottom: 2rem;
+      left: clamp(1.5rem, 7vw, 7rem);
+      right: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meta .dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      margin-right: 0.6rem;
+      vertical-align: middle;
+    }
+
+    /* ---- Work section (scrolls in below the hero) ---- */
+    .work {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* iframes can't object-fit, so oversize the Vimeo player to cover the section */
+    .work iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100vw, 177.78vh);
+      height: max(56.25vw, 100vh);
+      transform: translate(-50%, -50%);
+      border: 0;
+      pointer-events: none;
+    }
+
+    .work .bg-media {
+      opacity: 1;
+      transition: opacity 0.9s ease;
+      will-change: opacity;
+    }
+
+    .work .bg-media.off {
+      opacity: 0;
+    }
+
+    /* dark scrim so text stays readable over any footage */
+    .work .scrim {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to right, rgba(14, 13, 11, 0.55) 0%, rgba(14, 13, 11, 0.15) 45%, rgba(14, 13, 11, 0.6) 100%),
+        linear-gradient(to top, rgba(14, 13, 11, 0.75) 0%, rgba(14, 13, 11, 0) 40%),
+        linear-gradient(to bottom, rgba(14, 13, 11, 0.6) 0%, rgba(14, 13, 11, 0) 25%);
+    }
+
+    /* current project caption, bottom left */
+    .work .caption {
+      position: absolute;
+      left: clamp(1.5rem, 4vw, 3.5rem);
+      bottom: clamp(1.5rem, 5vh, 3.5rem);
+      z-index: 2;
+      max-width: min(560px, 55vw);
+    }
+
+    .work .caption .index {
+      font-size: 0.75rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    .work .caption h3 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(2rem, 4.5vw, 3.8rem);
+      line-height: 1.05;
+      margin-bottom: 0.9rem;
+    }
+
+    .work .caption .cat {
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* projects list panel, right side */
+    .projects {
+      position: absolute;
+      top: 50%;
+      right: clamp(1rem, 3vw, 3rem);
+      transform: translateY(-50%);
+      z-index: 2;
+      width: min(340px, 84vw);
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.14) 0%,
+        rgba(255, 255, 255, 0.06) 50%,
+        rgba(255, 255, 255, 0.1) 100%
+      );
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 22px;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        0 18px 50px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      padding: 2rem 0 1rem;
+      max-height: 78vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .projects h4 {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 1.8rem 1.2rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .projects ul {
+      list-style: none;
+      overflow-y: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .projects button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      padding: 1.1rem 1.8rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.25s ease;
+    }
+
+    .projects li:last-child button {
+      border-bottom: none;
+    }
+
+    .projects button:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .projects .num {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .projects .name {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 0.2rem;
+      transition: color 0.25s ease;
+    }
+
+    .projects .cat {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .projects button.active .name {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .projects button.active .num {
+      color: var(--accent);
+    }
+
+    .projects .show-more {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 0.4rem 1.2rem 0.8rem;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .projects .show-more:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+    }
+
+    /* icon shown while the panel is collapsed */
+    .projects .panel-icon {
+      display: none;
+      position: absolute;
+      inset: 0;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+      pointer-events: none;
+    }
+
+    /* On pointer devices the panel rests as a small glass disc and
+       expands on hover (or keyboard focus). Touch layouts keep it open. */
+    @media (hover: hover) and (min-width: 761px) {
+      .projects {
+        width: 64px;
+        max-height: 64px;
+        padding: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        transition:
+          width 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s,
+          max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s,
+          border-radius 0.5s ease 0.3s,
+          padding 0.5s ease 0.3s;
+      }
+
+      .projects:hover,
+      .projects:focus-within {
+        width: min(340px, 84vw);
+        max-height: 78vh;
+        padding: 2rem 0 1rem;
+        border-radius: 22px;
+        cursor: default;
+        transition-delay: 0s;
+      }
+
+      .projects .panel-icon {
+        display: flex;
+        opacity: 1;
+        transition: opacity 0.3s ease 0.55s;
+      }
+
+      .projects:hover .panel-icon,
+      .projects:focus-within .panel-icon {
+        opacity: 0;
+        transition-delay: 0s;
+      }
+
+      .projects h4,
+      .projects ul,
+      .projects .show-more {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+
+      .projects:hover h4,
+      .projects:hover ul,
+      .projects:hover .show-more,
+      .projects:focus-within h4,
+      .projects:focus-within ul,
+      .projects:focus-within .show-more {
+        opacity: 1;
+        pointer-events: auto;
+        transition: opacity 0.35s ease 0.25s;
+      }
+    }
+
+    /* ---- About section ---- */
+    .about {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(3rem, 7vh, 5.5rem);
+      padding: clamp(4rem, 10vh, 7rem) clamp(1.5rem, 5vw, 4rem);
+    }
+
+    /* staggered, overlapping photo row */
+    .about .photos {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .about .photos img {
+      width: clamp(140px, 18vw, 300px);
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(35%) contrast(1.05);
+      transition: filter 0.35s ease, transform 0.35s ease;
+    }
+
+    .about .photos img:hover {
+      filter: none;
+      transform: scale(1.03);
+      z-index: 3;
+      position: relative;
+    }
+
+    .about .photos img + img {
+      margin-left: calc(clamp(140px, 18vw, 300px) * -0.18);
+    }
+
+    .about .photos img:nth-child(even) {
+      margin-top: clamp(2.5rem, 8vh, 6rem);
+    }
+
+    /* about text, centered below */
+    .about .bio {
+      max-width: 62ch;
+      text-align: center;
+    }
+
+    .about .bio .eyebrow {
+      justify-content: center;
+      margin-bottom: 1.6rem;
+    }
+
+    .about .bio .eyebrow::after {
+      content: "";
+      width: 3rem;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .about .bio h3 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      line-height: 1.35;
+      margin-bottom: 1.4rem;
+    }
+
+    .about .bio h3 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .about .bio p {
+      font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    /* ---- Services section ---- */
+    .services {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(4rem, 10vh, 7rem) clamp(1.5rem, 6vw, 6rem);
+      gap: clamp(2.5rem, 6vh, 4rem);
+    }
+
+    .services .heading .eyebrow {
+      margin-bottom: 1.4rem;
+    }
+
+    .services .heading h3 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      line-height: 1.2;
+      max-width: 24ch;
+    }
+
+    .services .heading h3 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .service-list {
+      list-style: none;
+      border-top: 1px solid var(--line);
+    }
+
+    .service {
+      display: grid;
+      grid-template-columns: auto 1fr 1.2fr;
+      gap: clamp(1.2rem, 4vw, 4rem);
+      align-items: baseline;
+      padding: clamp(1.6rem, 3.5vh, 2.6rem) 0.5rem;
+      border-bottom: 1px solid var(--line);
+      transition: background 0.3s ease, padding-left 0.3s ease;
+    }
+
+    .service:hover {
+      background: rgba(244, 239, 230, 0.03);
+      padding-left: 1.2rem;
+    }
+
+    .service .num {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      transition: color 0.3s ease;
+    }
+
+    .service:hover .num {
+      color: var(--accent);
+    }
+
+    .service h4 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      line-height: 1.1;
+      transition: font-style 0.15s ease, color 0.3s ease;
+    }
+
+    .service:hover h4 {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .service .detail p {
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+      max-width: 52ch;
+    }
+
+    .service .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .service .tags span {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 0.35rem 0.7rem;
+    }
+
+    /* ---- Clientele section ---- */
+    .clients {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(4rem, 10vh, 7rem) clamp(1.5rem, 6vw, 6rem);
+      gap: clamp(3rem, 6vh, 4.5rem);
+    }
+
+    .clients .heading {
+      text-align: center;
+    }
+
+    .clients .heading .eyebrow {
+      justify-content: center;
+      margin-bottom: 1.4rem;
+    }
+
+    .clients .heading .eyebrow::after {
+      content: "";
+      width: 3rem;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .clients .heading h3 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      line-height: 1.2;
+    }
+
+    .clients .heading h3 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* logo wall */
+    .logo-wall {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .logo-wall .logo {
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.2rem 1rem;
+      color: var(--muted);
+      opacity: 0.75;
+      transition: color 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+      text-align: center;
+      font-size: 1.05rem;
+    }
+
+    .logo-wall .logo:hover {
+      color: var(--ink);
+      opacity: 1;
+      background: rgba(244, 239, 230, 0.04);
+    }
+
+    /* varied wordmark treatments until real logos exist */
+    .logo-wall .serif { font-family: "Fraunces", Georgia, serif; font-weight: 600; letter-spacing: 0.04em; }
+    .logo-wall .serif-italic { font-family: "Fraunces", Georgia, serif; font-style: italic; font-weight: 300; font-size: 1.2rem; }
+    .logo-wall .caps { letter-spacing: 0.45em; text-transform: uppercase; font-size: 0.8rem; font-weight: 500; }
+    .logo-wall .mono-ish { letter-spacing: 0.12em; text-transform: lowercase; font-weight: 300; }
+
+    /* testimonials */
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(1.5rem, 3vw, 3rem);
+    }
+
+    .testimonial {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+      padding: 2rem 1.8rem;
+      background: rgba(244, 239, 230, 0.03);
+    }
+
+    .testimonial .mark {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 3rem;
+      line-height: 0.6;
+      color: var(--accent);
+    }
+
+    .testimonial blockquote {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      line-height: 1.6;
+      border: none;
+      flex: 1;
+    }
+
+    .testimonial figcaption {
+      border-top: 1px solid var(--line);
+      padding-top: 1.1rem;
+    }
+
+    .testimonial .who {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.2rem;
+    }
+
+    .testimonial .where {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ---- Contact / discovery call section ---- */
+    .contact {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(4rem, 10vh, 7rem) clamp(1.5rem, 6vw, 6rem) 0;
+    }
+
+    .contact .inner {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: clamp(2.5rem, 6vw, 6rem);
+      align-items: center;
+    }
+
+    .contact .pitch .eyebrow {
+      margin-bottom: 1.8rem;
+    }
+
+    .contact .pitch h3 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.05;
+      margin-bottom: 1.6rem;
+      max-width: 14ch;
+    }
+
+    .contact .pitch h3 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .contact .pitch > p {
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 42ch;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact .direct {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact .direct a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 1.05rem;
+      width: fit-content;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.2rem;
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .contact .direct a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .contact .direct .label {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 1rem;
+    }
+
+    /* form */
+    .contact form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+      background: rgba(244, 239, 230, 0.03);
+      padding: clamp(1.8rem, 3vw, 2.8rem);
+    }
+
+    .contact .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .contact label {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .contact input,
+    .contact select,
+    .contact textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      padding: 0.6rem 0;
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 300;
+      transition: border-color 0.25s ease;
+    }
+
+    .contact select {
+      cursor: pointer;
+    }
+
+    .contact select option {
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .contact textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .contact input:focus,
+    .contact select:focus,
+    .contact textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .contact form .btn {
+      align-self: flex-start;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 0.4rem;
+    }
+
+    /* footer */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--line);
+      margin-top: clamp(3rem, 8vh, 5rem);
+      padding: 1.6rem 0;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+
+    .footer a:hover {
+      color: var(--ink);
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 760px) {
+      .page {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+      }
+
+      .site-title {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: stretch;
+        min-width: 0;
+        margin-left: 0;
+        padding: 1.6rem 1rem 1.4rem;
+      }
+
+      .navbar {
+        grid-column: 1;
+        grid-row: 2;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1.6rem;
+        padding: 1.1rem 1rem;
+      }
+
+      .navbar a {
+        writing-mode: horizontal-tb;
+      }
+
+      .hero {
+        grid-column: 1;
+        grid-row: 3;
+        padding: 3.5rem 1.5rem 6rem;
+      }
+
+      .hero .meta {
+        left: 1.5rem;
+        right: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+
+      .work .caption {
+        max-width: 90vw;
+        bottom: auto;
+        top: 2.5rem;
+      }
+
+      .projects {
+        top: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        max-height: 45vh;
+        padding-top: 1.2rem;
+        border-radius: 22px 22px 0 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+      }
+
+      .about .photos {
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      .about .photos img {
+        width: 40vw;
+      }
+
+      .about .photos img + img {
+        margin-left: 0;
+      }
+
+      .about .photos img:nth-child(even) {
+        margin-top: 2rem;
+      }
+
+      .service {
+        grid-template-columns: auto 1fr;
+        row-gap: 0.8rem;
+      }
+
+      .service .detail {
+        grid-column: 1 / -1;
+      }
+
+      .logo-wall {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .logo-wall .logo {
+        padding: 1.6rem 0.8rem;
+      }
+
+      .testimonials {
+        grid-template-columns: 1fr;
+      }
+
+      .contact .inner {
+        grid-template-columns: 1fr;
+      }
+
+      .footer {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page" id="home">
+    <header class="site-title">
+      <h1>Kwesi <em>Apenteng-Mensah</em></h1>
+      <p class="role">Creative Director</p>
+    </header>
+
+    <nav class="navbar" aria-label="Main navigation">
+      <a href="#home" class="active">Home</a>
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#clients">Clients</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <main class="hero">
+      <p class="eyebrow">Portfolio — 2026</p>
+      <h2>
+        Ideas that make brands <span class="accent-word">impossible</span> to ignore.
+      </h2>
+      <p class="lede">
+        Creative direction, brand identity, and campaigns for clients who want
+        work that gets remembered. From first spark to final frame — concept,
+        craft, and execution under one vision.
+      </p>
+      <div class="actions">
+        <a class="btn primary" href="#work">View Work</a>
+        <a class="btn ghost" href="#contact">Get in Touch</a>
+      </div>
+
+      <div class="meta">
+        <span><span class="dot"></span>Available for select projects</span>
+        <span>Based worldwide · Working globally</span>
+      </div>
+    </main>
+  </div>
+
+  <section class="work" id="work">
+    <!-- one background player per Vimeo project is injected here by the script -->
+    <div class="scrim" aria-hidden="true"></div>
+
+    <div class="caption">
+      <p class="index" id="caption-index">01 / 05</p>
+      <h3 id="caption-title">Do You Know The GPL</h3>
+      <p class="cat" id="caption-cat">Promo · Ghana Premier League · Director</p>
+    </div>
+
+    <aside class="projects" aria-label="Projects list">
+      <div class="panel-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="6" x2="20" y2="6" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="18" x2="14" y2="18" />
+        </svg>
+      </div>
+      <h4>Selected Work</h4>
+      <ul id="project-list"></ul>
+      <a class="show-more" href="https://vimeo.com/oneshotstudios" target="_blank" rel="noopener">
+        Show More on Vimeo <span aria-hidden="true">&nearr;</span>
+      </a>
+    </aside>
+  </section>
+
+  <section class="about" id="about">
+    <div class="photos">
+      <img src="https://picsum.photos/id/1005/480/600" alt="Portrait of Kwesi Apenteng-Mensah" />
+      <img src="https://picsum.photos/id/1011/480/600" alt="Kwesi at work" />
+      <img src="https://picsum.photos/id/1027/480/600" alt="Kwesi on set" />
+      <img src="https://picsum.photos/id/64/480/600" alt="Kwesi in the studio" />
+    </div>
+
+    <div class="bio">
+      <p class="eyebrow">About the Director</p>
+      <h3>
+        A decade of turning briefs into work that people
+        <em>actually remember</em>.
+      </h3>
+      <p>
+        Kwesi Apenteng-Mensah is a creative director working across brand,
+        film, and campaign — leading multidisciplinary teams from first
+        concept through final delivery. His work pairs sharp strategic
+        thinking with an obsessive eye for craft, and has helped brands large
+        and small find a voice that cuts through. Replace this paragraph with
+        the director's real story: background, philosophy, notable clients,
+        and awards.
+      </p>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="heading">
+      <p class="eyebrow">Services</p>
+      <h3>From first spark to final frame — <em>one vision</em>, end to end.</h3>
+    </div>
+
+    <ul class="service-list">
+      <li class="service">
+        <span class="num">01</span>
+        <h4>Brand Identity</h4>
+        <div class="detail">
+          <p>
+            Naming, visual identity, and voice — the full system a brand
+            needs to show up consistently and get recognized everywhere it
+            appears.
+          </p>
+          <div class="tags">
+            <span>Strategy</span><span>Logo &amp; System</span><span>Guidelines</span><span>Tone of Voice</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="service">
+        <span class="num">02</span>
+        <h4>Campaign Direction</h4>
+        <div class="detail">
+          <p>
+            Big-idea campaigns led from concept through rollout — one
+            creative thread across film, print, social, and out-of-home.
+          </p>
+          <div class="tags">
+            <span>Concept</span><span>Art Direction</span><span>360° Rollout</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="service">
+        <span class="num">03</span>
+        <h4>Film &amp; Commercial</h4>
+        <div class="detail">
+          <p>
+            Directing brand films, commercials, and title sequences — casting
+            the idea, the crew, and the craft to make every frame earn its
+            place.
+          </p>
+          <div class="tags">
+            <span>Direction</span><span>Treatment</span><span>Edit Supervision</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="service">
+        <span class="num">04</span>
+        <h4>Creative Consulting</h4>
+        <div class="detail">
+          <p>
+            An outside eye for in-house teams — creative audits, pitch
+            support, and mentoring that raise the bar on work already in
+            motion.
+          </p>
+          <div class="tags">
+            <span>Audits</span><span>Pitch Support</span><span>Team Mentoring</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="clients" id="clients">
+    <div class="heading">
+      <p class="eyebrow">Clientele</p>
+      <h3>Trusted by brands that want to be <em>unforgettable</em>.</h3>
+    </div>
+
+    <div class="logo-wall" aria-label="Client logos">
+      <div class="logo serif">Meridian &amp; Co.</div>
+      <div class="logo caps">Northlight</div>
+      <div class="logo mono-ish">studio&nbsp;forma</div>
+      <div class="logo serif-italic">Maison Vera</div>
+      <div class="logo caps">Atlas Group</div>
+      <div class="logo serif">Kindred</div>
+      <div class="logo mono-ish">oakfield</div>
+      <div class="logo serif-italic">The Standard</div>
+    </div>
+
+    <div class="testimonials">
+      <figure class="testimonial">
+        <div class="mark" aria-hidden="true">&ldquo;</div>
+        <blockquote>
+          Kwesi doesn't just deliver campaigns — he delivers a point of view.
+          Our rebrand outperformed every target we set for it.
+        </blockquote>
+        <figcaption>
+          <p class="who">Ama Owusu</p>
+          <p class="where">CMO · Meridian &amp; Co.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="testimonial">
+        <div class="mark" aria-hidden="true">&ldquo;</div>
+        <blockquote>
+          The rare creative director who is equally sharp on strategy and on
+          craft. Every review felt like the work getting braver.
+        </blockquote>
+        <figcaption>
+          <p class="who">Daniel Achterberg</p>
+          <p class="where">Founder · Northlight</p>
+        </figcaption>
+      </figure>
+
+      <figure class="testimonial">
+        <div class="mark" aria-hidden="true">&ldquo;</div>
+        <blockquote>
+          We came with a brief and left with a brand. Three years on, his
+          campaign film is still the benchmark we hold everything to.
+        </blockquote>
+        <figcaption>
+          <p class="who">Lucía Fernández</p>
+          <p class="where">Brand Director · Maison Vera</p>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="inner">
+      <div class="pitch">
+        <p class="eyebrow">Discovery Call</p>
+        <h3>Let's make something <em>unforgettable</em>.</h3>
+        <p>
+          Have a brand to build, a campaign to launch, or a film to make?
+          Book a free 30-minute discovery call — we'll talk about where you
+          are, where you want to be, and whether we're the right fit to get
+          you there.
+        </p>
+        <div class="direct">
+          <p class="label">Email</p>
+          <a href="mailto:hello@kwesiapentengmensah.com">hello@kwesiapentengmensah.com</a>
+          <p class="label">Elsewhere</p>
+          <a href="#" rel="noopener">Instagram</a>
+          <a href="#" rel="noopener">LinkedIn</a>
+          <a href="#" rel="noopener">Vimeo</a>
+        </div>
+      </div>
+
+      <form id="discovery-form">
+        <div class="field">
+          <label for="f-name">Your Name</label>
+          <input id="f-name" name="name" type="text" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="f-email">Your Email</label>
+          <input id="f-email" name="email" type="email" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="f-type">Project Type</label>
+          <select id="f-type" name="type">
+            <option>Brand Identity</option>
+            <option>Campaign</option>
+            <option>Film / Commercial</option>
+            <option>Creative Consulting</option>
+            <option>Something Else</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-msg">Tell Me About It</label>
+          <textarea id="f-msg" name="message" placeholder="A few lines about the project, timeline, and budget range…"></textarea>
+        </div>
+        <button class="btn primary" type="submit">Request a Call</button>
+      </form>
+    </div>
+
+    <footer class="footer">
+      <span>&copy; 2026 Kwesi Apenteng-Mensah</span>
+      <a href="#home">Back to Top ↑</a>
+    </footer>
+  </section>
+
+  <script src="https://player.vimeo.com/api/player.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/motion@12/dist/motion.js"></script>
+  <script>
+    const projects = [
+      {
+        title: "Do You Know The GPL",
+        category: "Promo · Ghana Premier League · Director",
+        vimeo: "1116665443",
+      },
+      {
+        title: "Better with Milk",
+        category: "TVC · H&H Creamer · Director",
+        vimeo: "1030111524",
+      },
+      {
+        title: "Generational Love",
+        category: "TVC · Key Soap Adepa · Director",
+        vimeo: "801229248",
+      },
+      {
+        title: "Stone Depot Ambassador Reveal",
+        category: "Brand Film · Stone Depot · Director",
+        vimeo: "775010764",
+      },
+      {
+        title: "Key Soap 1393",
+        category: "TVC · Key Soap Ghana · Director",
+        vimeo: "679660682",
+      },
+    ];
+
+    const workSection = document.getElementById("work");
+    const scrim = workSection.querySelector(".scrim");
+    const list = document.getElementById("project-list");
+    const captionIndex = document.getElementById("caption-index");
+    const captionTitle = document.getElementById("caption-title");
+    const captionCat = document.getElementById("caption-cat");
+    const pad = (n) => String(n).padStart(2, "0");
+    let activeIndex = 0;
+
+    // Build the list first so it renders even if the Vimeo SDK fails to load.
+    projects.forEach((p, i) => {
+      const li = document.createElement("li");
+      const btn = document.createElement("button");
+      btn.type = "button";
+      if (i === activeIndex) btn.classList.add("active");
+      btn.innerHTML =
+        '<span class="num">' + pad(i + 1) + "</span>" +
+        '<span class="name">' + p.title + "</span>" +
+        '<span class="cat">' + p.category + "</span>";
+      btn.addEventListener("click", (e) => {
+        select(i, btn);
+        // a mouse click leaves focus on the button, which would pin the
+        // panel open via :focus-within — release it (keyboard keeps focus)
+        if (e.detail > 0) btn.blur();
+      });
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+
+    // Pre-mount one background player per Vimeo project so switching is
+    // an instant crossfade instead of a cold player load.
+    if (typeof Vimeo !== "undefined") {
+      projects.forEach((p, i) => {
+        if (!p.vimeo) return;
+        const f = document.createElement("iframe");
+        f.className = i === activeIndex ? "bg-media" : "bg-media off";
+        // Only the active reel autoplays and loads eagerly; the rest sit
+        // idle so five streams never compete for bandwidth at once.
+        f.loading = i === activeIndex ? "eager" : "lazy";
+        f.src =
+          "https://player.vimeo.com/video/" + p.vimeo +
+          "?" + (p.hash ? "h=" + p.hash + "&" : "") +
+          "background=1&autoplay=" + (i === activeIndex ? 1 : 0) +
+          "&muted=1&loop=1&dnt=1";
+        f.allow = "autoplay; fullscreen; picture-in-picture";
+        f.title = p.title;
+        p.frame = f;
+        workSection.insertBefore(f, scrim);
+
+        // Drive each player through the official SDK: commands queue until
+        // the player is ready, so play/pause can't get lost mid-load.
+        p.player = new Vimeo.Player(f);
+        p.player.setLoop(true);
+        p.player.setMuted(true);
+        if (i !== activeIndex) p.player.pause();
+        p.player.on("ended", () => {
+          if (i === activeIndex) p.player.play().catch(() => {});
+        });
+      });
+
+      // Browsers throttle or pause muted background players once the section
+      // is off screen — resume the active reel whenever it scrolls back in.
+      const inView = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const active = projects[activeIndex];
+            if (active.player) active.player.play().catch(() => {});
+          } else {
+            projects.forEach((p) => p.player && p.player.pause());
+          }
+        });
+      }, { threshold: 0.15 });
+      inView.observe(workSection);
+    }
+
+    function select(i, btn) {
+      if (i === activeIndex) return;
+      list.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const next = projects[i];
+      activeIndex = i;
+
+      captionIndex.textContent = pad(i + 1) + " / " + pad(projects.length);
+      captionTitle.textContent = next.title;
+      captionCat.textContent = next.category;
+
+      if (!next.player) return;
+
+      // Start the next reel while the current one keeps playing, and only
+      // crossfade once frames are actually flowing (or after a short
+      // fallback) — switching never cuts to a black, still-buffering player.
+      next.player.play().catch(() => {});
+      let swapped = false;
+      const swap = () => {
+        if (swapped) return;
+        swapped = true;
+        next.player.off("timeupdate", swap);
+        if (projects[activeIndex] !== next) return; // superseded by a later click
+        projects.forEach((p) => {
+          if (p.frame) p.frame.classList.toggle("off", p !== next);
+        });
+        // pause the faded-out players once the crossfade has finished
+        setTimeout(() => {
+          projects.forEach((p) => {
+            if (p.player && p !== projects[activeIndex]) p.player.pause();
+          });
+        }, 1000);
+      };
+      next.player.on("timeupdate", swap);
+      setTimeout(swap, 1200);
+    }
+
+    // Scroll-spy: keep the nav's active link in sync with the section in view.
+    const navLinks = document.querySelectorAll(".navbar a");
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((a) =>
+          a.classList.toggle("active", a.getAttribute("href") === "#" + entry.target.id)
+        );
+      });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    navLinks.forEach((a) => {
+      const section = document.querySelector(a.getAttribute("href"));
+      if (section) spy.observe(section);
+    });
+
+    // Discovery-call form: no backend, so open the visitor's email app pre-filled
+    document.getElementById("discovery-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const subject = "Discovery call request — " + f.type.value;
+      const body =
+        "Name: " + f.name.value + "\n" +
+        "Email: " + f.email.value + "\n" +
+        "Project type: " + f.type.value + "\n\n" +
+        f.message.value;
+      window.location.href =
+        "mailto:hello@kwesiapentengmensah.com" +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+    });
+  </script>
+
+  <script>
+    // ---- Animations: GSAP for intro + scroll reveals, Motion for micro-interactions ----
+    // Guarded so a blocked CDN degrades to a static (but fully working) page.
+    if (
+      window.gsap &&
+      window.ScrollTrigger &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // hero entrance
+      const intro = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 } });
+      intro
+        .from(".site-title", { y: -70, autoAlpha: 0 })
+        .from(".navbar a", { x: 40, autoAlpha: 0, stagger: 0.08, duration: 0.5 }, "-=0.6")
+        .from(".hero .eyebrow", { y: 30, autoAlpha: 0, duration: 0.7 }, "-=0.5")
+        .from(".hero h2", { y: 60, autoAlpha: 0 }, "-=0.5")
+        .from(".hero .lede", { y: 40, autoAlpha: 0, duration: 0.8 }, "-=0.7")
+        .from(".hero .actions .btn", { y: 30, autoAlpha: 0, stagger: 0.1, duration: 0.6 }, "-=0.6")
+        .from(".hero .meta", { autoAlpha: 0, duration: 0.8 }, "-=0.4");
+
+      // generic scroll-in reveal; clearProps restores CSS hovers/layout afterwards
+      const reveal = (targets, vars = {}) => {
+        const { trigger, ...rest } = vars;
+        gsap.from(targets, {
+          scrollTrigger: { trigger: trigger || targets, start: "top 80%" },
+          y: 50,
+          autoAlpha: 0,
+          duration: 1,
+          ease: "power3.out",
+          clearProps: "all",
+          ...rest,
+        });
+      };
+
+      reveal(".work .caption", { trigger: ".work", x: -50, y: 0 });
+      reveal(".projects", { trigger: ".work", x: 60, y: 0 });
+      reveal(".about .photos img", { trigger: ".about", stagger: 0.12, y: 70 });
+      reveal(".about .bio > *", { trigger: ".about .bio", stagger: 0.15 });
+      reveal(".services .heading");
+      reveal(".service", { trigger: ".service-list", stagger: 0.12, x: -40, y: 0 });
+      reveal(".clients .heading");
+      reveal(".logo-wall .logo", { trigger: ".logo-wall", stagger: 0.06, y: 30, duration: 0.7 });
+      reveal(".testimonial", { trigger: ".testimonials", stagger: 0.15 });
+      reveal(".contact .pitch > *", { trigger: ".contact", stagger: 0.12 });
+      reveal(".contact form", { trigger: ".contact", x: 60, y: 0 });
+      reveal(".footer", { trigger: ".footer", y: 20 });
+
+      // gentle parallax drift on the about photo row
+      gsap.to(".about .photos", {
+        scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: true },
+        y: -50,
+        ease: "none",
+      });
+
+      // Motion (vanilla Framer Motion): springy press + hover on interactive elements
+      if (window.Motion) {
+        const { hover, press, animate } = Motion;
+        const spring = { type: "spring", stiffness: 400, damping: 25 };
+
+        press(".btn, .show-more, .projects button", (el) => {
+          animate(el, { scale: 0.96 }, spring);
+          return () => animate(el, { scale: 1 }, spring);
+        });
+
+        hover(".btn, .show-more", (el) => {
+          animate(el, { scale: 1.04 }, spring);
+          return () => animate(el, { scale: 1 }, spring);
+        });
+      }
+    }
+  </script>
+</body>
+</html>
