@@ -59,6 +59,7 @@
     .page {
       position: relative;
       min-height: 100vh;
+      min-height: 100svh;
       display: grid;
       grid-template-columns: 1fr 120px;
       grid-template-rows: auto 1fr;
@@ -254,6 +255,7 @@
     .work {
       position: relative;
       height: 100vh;
+      height: 100svh;
       overflow: hidden;
     }
 
@@ -459,7 +461,7 @@
 
     /* On pointer devices the panel rests as a small glass disc and
        expands on hover (or keyboard focus). Touch layouts keep it open. */
-    @media (hover: hover) and (min-width: 761px) {
+    @media (hover: hover) and (min-width: 1025px) {
       .projects {
         width: 64px;
         max-height: 64px;
@@ -767,7 +769,8 @@
     /* testimonials */
     .testimonials {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      /* fluid: 3 columns on desktop, 2 on tablet, 1 on phones */
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: clamp(1.5rem, 3vw, 3rem);
     }
 
@@ -977,7 +980,46 @@
       color: var(--ink);
     }
 
-    /* ---- Responsive ---- */
+    /* ---- Tablet / small laptop ---- */
+    @media (max-width: 1024px) {
+      /* work section: caption up top, projects list as a bottom sheet so
+         the always-open touch panel doesn't cover the video */
+      .work .caption {
+        max-width: min(560px, 86vw);
+        bottom: auto;
+        top: clamp(2rem, 6vh, 3.5rem);
+      }
+
+      .projects {
+        top: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        max-height: 42vh;
+        padding: 1.2rem 0 0.6rem;
+        border-radius: 22px 22px 0 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+      }
+
+      .service {
+        grid-template-columns: auto 1fr;
+        row-gap: 0.8rem;
+      }
+
+      .service .detail {
+        grid-column: 1 / -1;
+      }
+
+      .contact .inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---- Mobile ---- */
     @media (max-width: 760px) {
       .page {
         grid-template-columns: 1fr;
@@ -1005,12 +1047,20 @@
 
       .navbar a {
         writing-mode: horizontal-tb;
+        padding: 0.4rem 0.2rem; /* bigger tap targets */
       }
 
       .hero {
         grid-column: 1;
         grid-row: 3;
         padding: 3.5rem 1.5rem 6rem;
+      }
+
+      /* full-width buttons are easier touch targets */
+      .hero .actions .btn,
+      .contact form .btn {
+        width: 100%;
+        text-align: center;
       }
 
       .hero .meta {
@@ -1021,25 +1071,8 @@
         gap: 0.6rem;
       }
 
-      .work .caption {
-        max-width: 90vw;
-        bottom: auto;
-        top: 2.5rem;
-      }
-
       .projects {
-        top: auto;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        transform: none;
-        width: 100%;
         max-height: 45vh;
-        padding-top: 1.2rem;
-        border-radius: 22px 22px 0 0;
-        border-left: none;
-        border-right: none;
-        border-bottom: none;
       }
 
       .about .photos {
@@ -1060,29 +1093,12 @@
         margin-top: 2rem;
       }
 
-      .service {
-        grid-template-columns: auto 1fr;
-        row-gap: 0.8rem;
-      }
-
-      .service .detail {
-        grid-column: 1 / -1;
-      }
-
       .logo-wall {
         grid-template-columns: repeat(2, 1fr);
       }
 
       .logo-wall .logo {
         padding: 1.6rem 0.8rem;
-      }
-
-      .testimonials {
-        grid-template-columns: 1fr;
-      }
-
-      .contact .inner {
-        grid-template-columns: 1fr;
       }
 
       .footer {
