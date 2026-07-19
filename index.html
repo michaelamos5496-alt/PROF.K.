@@ -6,6 +6,11 @@
   <title>Kwesi Apenteng-Mensah — Creative Director</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- warm up Vimeo's player, thumbnail, and video CDNs before they're needed -->
+  <link rel="preconnect" href="https://player.vimeo.com" />
+  <link rel="preconnect" href="https://i.vimeocdn.com" />
+  <link rel="preconnect" href="https://f.vimeocdn.com" />
+  <link rel="preconnect" href="https://vod-adaptive-ak.vimeocdn.com" />
   <link
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,700&family=Space+Grotesk:wght@300;400;500&display=swap"
     rel="stylesheet"
@@ -1696,9 +1701,8 @@
         if (!p.vimeo) return;
         const f = document.createElement("iframe");
         f.className = i === activeIndex ? "bg-media" : "bg-media off";
-        // Only the active reel autoplays and loads eagerly; the rest sit
-        // idle so five streams never compete for bandwidth at once.
-        f.loading = i === activeIndex ? "eager" : "lazy";
+        // Every player boots immediately, but only the active reel
+        // autoplays — the rest are pre-buffered one at a time below.
         f.src =
           "https://player.vimeo.com/video/" + p.vimeo +
           "?" + (p.hash ? "h=" + p.hash + "&" : "") +
@@ -1733,6 +1737,25 @@
         });
       }, { threshold: 0.15 });
       inView.observe(workSection);
+
+      // Warm each idle player shortly after load: play it (hidden and
+      // muted) just until its first frames buffer, then pause. Staggered
+      // one at a time so they never compete with the active reel, and
+      // switching projects starts near-instantly afterwards.
+      setTimeout(() => {
+        projects.forEach((p, i) => {
+          if (!p.player || i === activeIndex) return;
+          setTimeout(() => {
+            if (projects[activeIndex] === p) return; // became active meanwhile
+            const warmed = () => {
+              p.player.off("timeupdate", warmed);
+              if (projects[activeIndex] !== p) p.player.pause();
+            };
+            p.player.on("timeupdate", warmed);
+            p.player.play().catch(() => {});
+          }, i * 900);
+        });
+      }, 2500);
     }
 
     function select(i, btn) {
