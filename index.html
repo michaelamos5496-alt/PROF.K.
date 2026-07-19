@@ -70,44 +70,10 @@
         url("images/hero.jpg") center 20% / cover no-repeat;
     }
 
-    /* ---- Name block, top right ---- */
-    .site-title {
-      grid-column: 2;
-      grid-row: 1;
-      position: relative;
-      z-index: 2;
-      justify-self: end;
-      min-width: min(520px, 60vw);
-      margin-left: -400px; /* extends left past the nav column, per the layout */
-      padding: 2.2rem 3rem 2rem;
-      text-align: center;
-    }
-
-    .site-title h1 {
-      font-family: "Fraunces", Georgia, serif;
-      font-size: clamp(1.3rem, 2.3vw, 1.9rem);
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      line-height: 1.15;
-      color: var(--ink);
-    }
-
-    .site-title h1 em {
-      font-style: italic;
-    }
-
-    .site-title .role {
-      margin-top: 0.4rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.45em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
     /* ---- Vertical nav, right edge ---- */
     .navbar {
       grid-column: 2;
-      grid-row: 2;
+      grid-row: 1 / span 2;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -117,20 +83,26 @@
     }
 
     .navbar a {
-      writing-mode: vertical-rl;
-      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.35rem;
+      color: var(--ink);
       text-decoration: none;
-      font-size: 0.8rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      transition: color 0.25s ease;
+      transition: color 0.25s ease, transform 0.25s ease;
+    }
+
+    .navbar a svg {
+      width: 21px;
+      height: 21px;
+      display: block;
+    }
+
+    .navbar a:hover {
+      transform: scale(1.15);
     }
 
     .navbar a:hover,
-    .navbar a.active {
-      color: var(--ink);
-    }
-
     .navbar a.active {
       color: var(--accent);
     }
@@ -165,7 +137,7 @@
       background: var(--accent);
     }
 
-    .hero h2 {
+    .hero h1 {
       font-family: "Fraunces", Georgia, serif;
       font-weight: 300;
       font-size: clamp(2.8rem, 7.5vw, 6.5rem);
@@ -175,7 +147,7 @@
       margin-bottom: 2.2rem;
     }
 
-    .hero h2 .accent-word {
+    .hero h1 .accent-word {
       font-style: italic;
       font-weight: 700;
       color: var(--accent);
@@ -380,6 +352,53 @@
       cursor: pointer;
       font-family: inherit;
       transition: background 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* cinematic light sweep across the card on hover */
+    .projects button::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 55%;
+      background: linear-gradient(
+        105deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.07) 35%,
+        rgba(255, 255, 255, 0.28) 50%,
+        rgba(255, 255, 255, 0.07) 65%,
+        transparent 100%
+      );
+      transform: translateX(-160%) skewX(-18deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .projects button:hover::after,
+      .projects button:focus-visible::after {
+        animation: light-sweep 0.85s cubic-bezier(0.3, 0, 0.3, 1);
+      }
+    }
+
+    @keyframes light-sweep {
+      0% {
+        transform: translateX(-160%) skewX(-18deg);
+        opacity: 0;
+      }
+      12% {
+        opacity: 1;
+      }
+      88% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(290%) skewX(-18deg);
+        opacity: 0;
+      }
     }
 
     .projects li:last-child button {
@@ -641,7 +660,7 @@
 
     .service {
       display: grid;
-      grid-template-columns: auto 1fr 1.2fr;
+      grid-template-columns: auto 1fr auto;
       gap: clamp(1.2rem, 4vw, 4rem);
       align-items: baseline;
       padding: clamp(1.6rem, 3.5vh, 2.6rem) 0.5rem;
@@ -678,27 +697,12 @@
       color: var(--accent);
     }
 
-    .service .detail p {
+    .service .desc {
       font-weight: 300;
-      line-height: 1.7;
+      font-size: 0.95rem;
+      line-height: 1.6;
       color: var(--muted);
-      margin-bottom: 0.9rem;
-      max-width: 52ch;
-    }
-
-    .service .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .service .tags span {
-      font-size: 0.6rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--muted);
-      border: 1px solid var(--line);
-      padding: 0.35rem 0.7rem;
+      text-align: right;
     }
 
     /* ---- Clientele section ---- */
@@ -752,14 +756,27 @@
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 0.8rem;
       padding: 2.2rem 1rem;
       color: var(--muted);
       opacity: 0.75;
       transition: color 0.3s ease, opacity 0.3s ease, background 0.3s ease;
       text-align: center;
-      font-size: 1.05rem;
+    }
+
+    .logo-wall .logo svg {
+      width: 32px;
+      height: 32px;
+      display: block;
+    }
+
+    .logo-wall .logo span {
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
     }
 
     .logo-wall .logo:hover {
@@ -767,12 +784,6 @@
       opacity: 1;
       background: rgba(244, 239, 230, 0.04);
     }
-
-    /* varied wordmark treatments until real logos exist */
-    .logo-wall .serif { font-family: "Fraunces", Georgia, serif; font-weight: 600; letter-spacing: 0.04em; }
-    .logo-wall .serif-italic { font-family: "Fraunces", Georgia, serif; font-style: italic; font-weight: 300; font-size: 1.2rem; }
-    .logo-wall .caps { letter-spacing: 0.45em; text-transform: uppercase; font-size: 0.8rem; font-weight: 500; }
-    .logo-wall .mono-ish { letter-spacing: 0.12em; text-transform: lowercase; font-weight: 300; }
 
     /* testimonials */
     .testimonials {
@@ -988,8 +999,9 @@
       color: var(--ink);
     }
 
-    /* ---- Tablet / small laptop ---- */
-    @media (max-width: 1024px) {
+    /* ---- Tablet / small laptop — also any touch-only screen (e.g. iPad
+       landscape wider than 1024px), which can't use the hover panel ---- */
+    @media (max-width: 1024px), (hover: none) and (pointer: coarse) {
       /* work section: caption up top, projects list as a bottom sheet so
          the always-open touch panel doesn't cover the video */
       .work .caption {
@@ -1072,11 +1084,12 @@
 
       .service {
         grid-template-columns: auto 1fr;
-        row-gap: 0.8rem;
+        row-gap: 0.6rem;
       }
 
-      .service .detail {
+      .service .desc {
         grid-column: 1 / -1;
+        text-align: left;
       }
 
       .contact .inner {
@@ -1088,36 +1101,26 @@
     @media (max-width: 760px) {
       .page {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto 1fr;
-      }
-
-      .site-title {
-        grid-column: 1;
-        grid-row: 1;
-        justify-self: stretch;
-        min-width: 0;
-        margin-left: 0;
-        padding: 1.6rem 1rem 1.4rem;
+        grid-template-rows: auto 1fr;
       }
 
       .navbar {
         grid-column: 1;
-        grid-row: 2;
+        grid-row: 1;
         flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 1.6rem;
-        padding: 1.1rem 1rem;
+        justify-content: space-evenly;
+        flex-wrap: nowrap;
+        gap: 0;
+        padding: 1.1rem 0.5rem;
       }
 
       .navbar a {
-        writing-mode: horizontal-tb;
-        padding: 0.4rem 0.2rem; /* bigger tap targets */
+        padding: 0.5rem; /* bigger tap targets */
       }
 
       .hero {
         grid-column: 1;
-        grid-row: 3;
+        grid-row: 2;
         padding: 3.5rem 1.5rem 6rem;
       }
 
@@ -1176,25 +1179,59 @@
 </head>
 <body>
   <div class="page" id="home">
-    <header class="site-title">
-      <h1>Kwesi <em>Apenteng-Mensah</em></h1>
-      <p class="role">Creative Director</p>
-    </header>
-
     <nav class="navbar" aria-label="Main navigation">
-      <a href="#home" class="active">Home</a>
-      <a href="#work">Work</a>
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#clients">Clients</a>
-      <a href="#contact">Contact</a>
+      <a href="#home" class="active" aria-label="Home" title="Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+      </a>
+      <a href="#work" aria-label="Work" title="Work">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="2.18" />
+          <line x1="7" y1="2" x2="7" y2="22" />
+          <line x1="17" y1="2" x2="17" y2="22" />
+          <line x1="2" y1="12" x2="22" y2="12" />
+          <line x1="2" y1="7" x2="7" y2="7" />
+          <line x1="2" y1="17" x2="7" y2="17" />
+          <line x1="17" y1="17" x2="22" y2="17" />
+          <line x1="17" y1="7" x2="22" y2="7" />
+        </svg>
+      </a>
+      <a href="#about" aria-label="About" title="About">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      </a>
+      <a href="#services" aria-label="Services" title="Services">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 2 7 12 12 22 7 12 2" />
+          <polyline points="2 17 12 22 22 17" />
+          <polyline points="2 12 12 17 22 12" />
+        </svg>
+      </a>
+      <a href="#clients" aria-label="Clients" title="Clients">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      </a>
+      <a href="#contact" aria-label="Contact" title="Contact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+          <polyline points="22,6 12,13 2,6" />
+        </svg>
+      </a>
     </nav>
 
     <main class="hero">
-      <p class="eyebrow">Portfolio — 2026</p>
-      <h2>
+      <p class="eyebrow">Kwesi Apenteng-Mensah</p>
+      <h1>
         Ideas that make brands <span class="accent-word">impossible</span> to ignore.
-      </h2>
+      </h1>
       <p class="lede">
         Creative direction, brand identity, and campaigns for clients who want
         work that gets remembered. From first spark to final frame — concept,
@@ -1278,60 +1315,25 @@
       <li class="service">
         <span class="num">01</span>
         <h4>Brand Identity</h4>
-        <div class="detail">
-          <p>
-            Naming, visual identity, and voice — the full system a brand
-            needs to show up consistently and get recognized everywhere it
-            appears.
-          </p>
-          <div class="tags">
-            <span>Strategy</span><span>Logo &amp; System</span><span>Guidelines</span><span>Tone of Voice</span>
-          </div>
-        </div>
+        <p class="desc">Naming, identity systems, and voice.</p>
       </li>
 
       <li class="service">
         <span class="num">02</span>
         <h4>Campaign Direction</h4>
-        <div class="detail">
-          <p>
-            Big-idea campaigns led from concept through rollout — one
-            creative thread across film, print, social, and out-of-home.
-          </p>
-          <div class="tags">
-            <span>Concept</span><span>Art Direction</span><span>360° Rollout</span>
-          </div>
-        </div>
+        <p class="desc">One idea, carried across every channel.</p>
       </li>
 
       <li class="service">
         <span class="num">03</span>
         <h4>Film &amp; Commercial</h4>
-        <div class="detail">
-          <p>
-            Directing brand films, commercials, and title sequences — casting
-            the idea, the crew, and the craft to make every frame earn its
-            place.
-          </p>
-          <div class="tags">
-            <span>Direction</span><span>Treatment</span><span>Edit Supervision</span>
-          </div>
-        </div>
+        <p class="desc">Direction from treatment to final cut.</p>
       </li>
 
       <li class="service">
         <span class="num">04</span>
         <h4>Creative Consulting</h4>
-        <div class="detail">
-          <p>
-            An outside eye for in-house teams — creative audits, pitch
-            support, and mentoring that raise the bar on work already in
-            motion.
-          </p>
-          <div class="tags">
-            <span>Audits</span><span>Pitch Support</span><span>Team Mentoring</span>
-          </div>
-        </div>
+        <p class="desc">An outside eye for in-house teams.</p>
       </li>
     </ul>
   </section>
@@ -1343,14 +1345,62 @@
     </div>
 
     <div class="logo-wall" aria-label="Client logos">
-      <div class="logo serif">Meridian &amp; Co.</div>
-      <div class="logo caps">Northlight</div>
-      <div class="logo mono-ish">studio&nbsp;forma</div>
-      <div class="logo serif-italic">Maison Vera</div>
-      <div class="logo caps">Atlas Group</div>
-      <div class="logo serif">Kindred</div>
-      <div class="logo mono-ish">oakfield</div>
-      <div class="logo serif-italic">The Standard</div>
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="16" cy="16" r="10" />
+          <line x1="3" y1="16" x2="29" y2="16" />
+        </svg>
+        <span>Meridian &amp; Co.</span>
+      </div>
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+          <path d="M16 3l3 10 10 3-10 3-3 10-3-10-10-3 10-3z" />
+        </svg>
+        <span>Northlight</span>
+      </div>
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="5" y="5" width="14" height="14" />
+          <rect x="13" y="13" width="14" height="14" />
+        </svg>
+        <span>studio forma</span>
+      </div>
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M8 29V15a8 8 0 0 1 16 0v14" />
+          <line x1="5" y1="29" x2="27" y2="29" />
+        </svg>
+        <span>Maison Vera</span>
+      </div>
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="16" cy="16" r="11" />
+          <ellipse cx="16" cy="16" rx="5" ry="11" />
+          <line x1="5" y1="16" x2="27" y2="16" />
+        </svg>
+        <span>Atlas Group</span>
+      </div>
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="16" r="8" />
+          <circle cx="20" cy="16" r="8" />
+        </svg>
+        <span>Kindred</span>
+      </div>
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 28C16 14 22 8 28 4c0 14-6 20-12 24z" />
+          <path d="M16 28C16 18 12 13 5 9" />
+        </svg>
+        <span>Oakfield</span>
+      </div>
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="3" x2="8" y2="29" />
+          <path d="M8 5h16l-4 5.5 4 5.5H8" />
+        </svg>
+        <span>The Standard</span>
+      </div>
     </div>
 
     <div class="testimonials">
@@ -1491,7 +1541,9 @@
     // On tablet/phone layouts the panel rests as a floating disc:
     // tapping it opens the sheet, tapping the ✕ closes it again.
     const panel = document.querySelector(".projects");
-    const touchLayout = window.matchMedia("(max-width: 1024px)");
+    const touchLayout = window.matchMedia(
+      "(max-width: 1024px), (hover: none) and (pointer: coarse)"
+    );
     panel.addEventListener("click", (e) => {
       if (!touchLayout.matches) return;
       if (!panel.classList.contains("open")) panel.classList.add("open");
@@ -1651,10 +1703,9 @@
       // hero entrance
       const intro = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 } });
       intro
-        .from(".site-title", { y: -70, autoAlpha: 0 })
-        .from(".navbar a", { x: 40, autoAlpha: 0, stagger: 0.08, duration: 0.5 }, "-=0.6")
+        .from(".navbar", { autoAlpha: 0, duration: 0.6 })
         .from(".hero .eyebrow", { y: 30, autoAlpha: 0, duration: 0.7 }, "-=0.5")
-        .from(".hero h2", { y: 60, autoAlpha: 0 }, "-=0.5")
+        .from(".hero h1", { y: 60, autoAlpha: 0 }, "-=0.5")
         .from(".hero .lede", { y: 40, autoAlpha: 0, duration: 0.8 }, "-=0.7")
         .from(".hero .actions .btn", { y: 30, autoAlpha: 0, stagger: 0.1, duration: 0.6 }, "-=0.6")
         .from(".hero .meta", { autoAlpha: 0, duration: 0.8 }, "-=0.4");
