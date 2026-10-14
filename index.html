@@ -770,39 +770,11 @@
       position: relative;
       width: min(1180px, 100%);
       display: grid;
-      grid-template-columns: 56px minmax(0, 5fr) minmax(0, 6fr);
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
       gap: clamp(1.5rem, 4vw, 4rem);
-      padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 3.5rem) clamp(2rem, 5vw, 3.5rem) clamp(1rem, 2vw, 2rem);
+      padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 3.5rem);
       background: rgba(20, 19, 17, 0.94);
       box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
-    }
-
-    /* vertical section links, left edge */
-    .about-side {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      padding: 3rem 0 2rem;
-    }
-
-    .about-side a {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 0.4rem 0;
-      transition: color 0.25s ease;
-    }
-
-    .about-side a:hover { color: var(--ink); }
-
-    .about-side a.on {
-      color: var(--ink);
-      border-left: 2px solid var(--accent);
-      padding-left: 0.5rem;
     }
 
     .about-photo {
@@ -1691,8 +1663,6 @@
         padding: 1.5rem;
       }
 
-      .about-side { display: none; }
-
       .about-photo {
         margin: 0 0 -1rem;
         width: 78%;
@@ -1857,13 +1827,6 @@
 
   <section class="about" id="about">
     <div class="about-card">
-      <nav class="about-side" aria-label="Sections">
-        <a href="#work">work</a>
-        <a href="#services">services</a>
-        <a href="#about" class="on">about</a>
-        <a href="#contact">contact</a>
-      </nav>
-
       <figure class="about-photo">
         <img src="images/hero-portrait.jpg" alt="Portrait of Kwesi Apenteng-Mensah" />
       </figure>
