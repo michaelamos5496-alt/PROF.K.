@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0e0d0b" />
+  <script>document.documentElement.className += " preload";</script>
+  <noscript><style>.preload body { opacity: 1 !important; }</style></noscript>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -43,6 +45,11 @@
     html {
       scroll-behavior: smooth;
     }
+
+    /* hold the page until fonts + hero photo are ready, then fade in (no flash / jump on refresh) */
+    html.preload { scroll-behavior: auto; }
+    html.preload body { opacity: 0; }
+    body { transition: opacity 0.5s ease; }
 
     body {
       font-family: "Space Grotesk", Helvetica, Arial, sans-serif;
@@ -2447,7 +2454,8 @@
       gsap.registerPlugin(ScrollTrigger);
 
       // hero entrance
-      const intro = gsap.timeline({ defaults: { ease: "power3.out", duration: 1 } });
+      const intro = gsap.timeline({ paused: true, defaults: { ease: "power3.out", duration: 1 } });
+      window.__intro = intro;
       intro
         .from(".navbar", { autoAlpha: 0, duration: 0.6 })
         .from(".about-card", { y: 40, autoAlpha: 0, duration: 0.9 }, "-=0.3")
@@ -2725,6 +2733,24 @@
       const update = () => fab.classList.toggle("show", scrollY > innerHeight * 0.6);
       addEventListener("scroll", update, { passive: true });
       update();
+    })();
+
+    // Smooth refresh: reveal the page once fonts and the hero photo are ready
+    (() => {
+      let done = false;
+      const go = () => {
+        if (done) return;
+        done = true;
+        document.documentElement.classList.remove("preload");
+        if (window.__intro) window.__intro.play();
+      };
+      const img = new Image();
+      img.src = "images/hero-portrait.jpg";
+      Promise.all([
+        document.fonts ? document.fonts.ready : 0,
+        img.decode ? img.decode().catch(() => {}) : 0,
+      ]).then(() => requestAnimationFrame(go));
+      setTimeout(go, 2500); // never leave the page hidden
     })();
   </script>
 </body>
