@@ -1655,19 +1655,53 @@
       .nf-tile { flex-basis: 62vw; }
       .work .caption h3 { margin-bottom: 1rem; }
 
+      /* hero = one phone screen: compact card, no scrolling needed */
+      .hero {
+        padding: 0.5rem 1.2rem 1.5rem;
+        align-items: center;
+      }
+
       .about-card {
         grid-template-columns: 1fr;
-        padding: 1.5rem;
+        gap: 1.1rem;
+        padding: 1.2rem;
       }
 
       .about-photo {
-        margin: 0 0 -1rem 1.4rem;
-        width: calc(100% - 2.8rem);
+        margin: 1rem 0 0 1rem;
+        width: calc(100% - 2rem);
       }
 
-      .about-text { padding-bottom: 5rem; }
-      .about-text .avail { display: none; }
-      .about-arrows { right: 0; }
+      .about-photo::before { inset: -0.9rem 0.9rem auto -0.9rem; }
+
+      .about-photo img {
+        aspect-ratio: auto;
+        height: clamp(130px, 30svh, 300px);
+        object-position: 42% 22%;
+      }
+
+      .about-text { padding: 0; }
+      .about-text .rule { width: 90px; margin-bottom: 0.9rem; }
+      .about-text h3 { font-size: clamp(1.6rem, 7vw, 2rem); margin-bottom: 0.4rem; }
+      .about-text .role { font-size: 0.9rem; margin-bottom: 0.8rem; }
+
+      .about-text .bio {
+        font-size: 0.78rem;
+        line-height: 1.6;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 1rem;
+      }
+
+      .about-text .signature,
+      .about-text .social,
+      .about-text .avail,
+      .about-arrows { display: none; }
+
+      .about-text .row { margin-bottom: 0; flex-wrap: nowrap; }
+      .about-text .row .btn { flex: 1; text-align: center; padding: 0.85rem 0.5rem; }
 
       .services .top {
         flex-direction: column;
