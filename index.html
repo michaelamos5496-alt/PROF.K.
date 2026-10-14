@@ -2296,6 +2296,46 @@
         track.addEventListener("pointerleave", () => bubble.classList.remove("show"));
       }
     })();
+
+    // Auto-scroll: leaving the hero glides straight to Selected Work (and back up from its top)
+    (() => {
+      const work = document.getElementById("work");
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      let locked = false;
+      const go = (top) => {
+        locked = true;
+        window.scrollTo({ top, behavior: "smooth" });
+        setTimeout(() => (locked = false), 1000);
+      };
+      const atHero = () => window.scrollY < 8;
+      const atWorkTop = () => Math.abs(work.getBoundingClientRect().top) < 8;
+      const intent = (dir, e) => {
+        if (locked) { e.preventDefault(); return; }
+        if (dir > 0 && atHero()) { e.preventDefault(); go(work.offsetTop); }
+        else if (dir < 0 && atWorkTop()) { e.preventDefault(); go(0); }
+      };
+
+      addEventListener("wheel", (e) => {
+        if (Math.abs(e.deltaY) < 4 || e.ctrlKey) return;
+        intent(Math.sign(e.deltaY), e);
+      }, { passive: false });
+
+      addEventListener("keydown", (e) => {
+        if (e.target.closest("input, textarea, select, button, a")) return;
+        if (["ArrowDown", "PageDown", " "].includes(e.key) && !e.shiftKey) intent(1, e);
+        else if (["ArrowUp", "PageUp"].includes(e.key)) intent(-1, e);
+      });
+
+      let startY = null;
+      addEventListener("touchstart", (e) => { startY = e.touches[0].clientY; }, { passive: true });
+      addEventListener("touchmove", (e) => {
+        if (startY === null) return;
+        const dy = startY - e.touches[0].clientY;
+        if (Math.abs(dy) < 24) return;
+        startY = null;
+        intent(Math.sign(dy), e);
+      }, { passive: false });
+    })();
   </script>
 </body>
 </html>
