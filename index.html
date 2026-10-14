@@ -1218,56 +1218,43 @@
       background: rgba(244, 239, 230, 0.04);
     }
 
-    /* testimonials */
-    .testimonials {
+    /* statistics */
+    .stats {
       display: grid;
-      /* fluid: 3 columns on desktop, 2 on tablet, 1 on phones */
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: clamp(1.5rem, 3vw, 3rem);
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(1rem, 2vw, 2rem);
     }
 
-    .testimonial {
-      display: flex;
-      flex-direction: column;
-      gap: 1.4rem;
-      padding: 2rem 1.8rem;
-      background: rgba(244, 239, 230, 0.03);
+    .stat {
+      padding: clamp(1.6rem, 3vw, 2.6rem) 1.4rem;
+      text-align: center;
+      border-top: 2px solid var(--accent);
+      background: linear-gradient(to bottom, rgba(244, 239, 230, 0.06), rgba(244, 239, 230, 0.015));
     }
 
-    .testimonial .mark {
-      font-family: "Fraunces", Georgia, serif;
-      font-size: 3rem;
-      line-height: 0.6;
+    .stat .num {
+      font-family: "Bebas Neue", Impact, "Space Grotesk", sans-serif;
+      font-size: clamp(3.4rem, 7vw, 6rem);
+      line-height: 1;
+      letter-spacing: 0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat .num b {
+      font-weight: 400;
       color: var(--accent);
     }
 
-    .testimonial blockquote {
-      font-family: "Fraunces", Georgia, serif;
-      font-weight: 300;
-      font-style: italic;
-      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
-      line-height: 1.6;
-      border: none;
-      flex: 1;
-    }
-
-    .testimonial figcaption {
-      border-top: 1px solid var(--line);
-      padding-top: 1.1rem;
-    }
-
-    .testimonial .who {
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.2rem;
-    }
-
-    .testimonial .where {
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
+    .stat .label {
+      margin-top: 0.7rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--muted);
+    }
+
+    @media (max-width: 760px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* ---- Contact section ---- */
@@ -2012,42 +1999,24 @@
       </div>
     </div>
 
-    <div class="testimonials">
-      <figure class="testimonial">
-        <div class="mark" aria-hidden="true">&ldquo;</div>
-        <blockquote>
-          Kwesi doesn't just deliver campaigns — he delivers a point of view.
-          Our rebrand outperformed every target we set for it.
-        </blockquote>
-        <figcaption>
-          <p class="who">Ama Owusu</p>
-          <p class="where">CMO · Meridian &amp; Co.</p>
-        </figcaption>
-      </figure>
-
-      <figure class="testimonial">
-        <div class="mark" aria-hidden="true">&ldquo;</div>
-        <blockquote>
-          The rare creative director who is equally sharp on strategy and on
-          craft. Every review felt like the work getting braver.
-        </blockquote>
-        <figcaption>
-          <p class="who">Daniel Achterberg</p>
-          <p class="where">Founder · Northlight</p>
-        </figcaption>
-      </figure>
-
-      <figure class="testimonial">
-        <div class="mark" aria-hidden="true">&ldquo;</div>
-        <blockquote>
-          We came with a brief and left with a brand. Three years on, his
-          campaign film is still the benchmark we hold everything to.
-        </blockquote>
-        <figcaption>
-          <p class="who">Lucía Fernández</p>
-          <p class="where">Brand Director · Maison Vera</p>
-        </figcaption>
-      </figure>
+    <!-- TODO: placeholder figures - replace the data-count values with the real numbers -->
+    <div class="stats" id="stats">
+      <div class="stat">
+        <p class="num"><span data-count="10">10</span><b>+</b></p>
+        <p class="label">Years of experience</p>
+      </div>
+      <div class="stat">
+        <p class="num"><span data-count="120">120</span><b>+</b></p>
+        <p class="label">Projects delivered</p>
+      </div>
+      <div class="stat">
+        <p class="num"><span data-count="40">40</span><b>+</b></p>
+        <p class="label">Brands served</p>
+      </div>
+      <div class="stat">
+        <p class="num"><span data-count="15">15</span></p>
+        <p class="label">Awards &amp; features</p>
+      </div>
     </div>
   </section>
 
@@ -2475,7 +2444,7 @@
       reveal(".service", { trigger: ".service-track", stagger: 0.12, x: 60, y: 0 });
       reveal(".clients .heading");
       reveal(".logo-wall .logo", { trigger: ".logo-wall", stagger: 0.06, y: 30, duration: 0.7 });
-      reveal(".testimonial", { trigger: ".testimonials", stagger: 0.15 });
+      reveal(".stat", { trigger: ".stats", stagger: 0.12, y: 40 });
       reveal(".contact .inner > *", { trigger: ".contact", stagger: 0.12 });
       reveal(".site-footer", { trigger: ".site-footer", y: 20 });
 
@@ -2706,6 +2675,30 @@
         if (player.classList.contains("open")) closeVideo();
         else if (root.classList.contains("open")) close();
       });
+    })();
+
+    // Statistics: numbers run up from 0 when the row scrolls into view
+    (() => {
+      const wrap = document.getElementById("stats");
+      const nums = [...wrap.querySelectorAll("[data-count]")];
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      nums.forEach((n) => { n.textContent = "0"; });
+      const run = (el) => {
+        const end = +el.dataset.count, dur = 1800, t0 = performance.now();
+        const tick = (t) => {
+          const k = Math.min((t - t0) / dur, 1);
+          el.textContent = Math.round(end * (1 - Math.pow(1 - k, 3)));
+          if (k < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      new IntersectionObserver((entries, obs) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          nums.forEach(run);
+          obs.disconnect();
+        });
+      }, { threshold: 0.4 }).observe(wrap);
     })();
   </script>
 </body>
