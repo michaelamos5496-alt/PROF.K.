@@ -1661,8 +1661,8 @@
       }
 
       .about-photo {
-        margin: 0 0 -1rem;
-        width: 78%;
+        margin: 0 0 -1rem 1.4rem;
+        width: calc(100% - 2.8rem);
       }
 
       .about-text { padding-bottom: 5rem; }
@@ -1680,7 +1680,7 @@
 
       .contact .map {
         width: 100%;
-        opacity: 0.55;
+        opacity: 0.2;
         -webkit-mask-image: none;
         mask-image: none;
       }
@@ -2213,17 +2213,23 @@
 
     // Pre-mount one background player per Vimeo project so switching is
     // an instant crossfade instead of a cold player load.
-    if (typeof Vimeo !== "undefined") {
-      projects.forEach((p, i) => {
-        if (!p.vimeo) return;
+    // On phones / data-saver, mount only the active reel and the rest on demand
+    // so five players don't compete for a mobile connection.
+    const lite =
+      matchMedia("(max-width: 1024px), (hover: none) and (pointer: coarse)").matches ||
+      (navigator.connection && navigator.connection.saveData);
+
+    function mountPlayer(p, i, asActive) {
+      if (typeof Vimeo === "undefined" || !p.vimeo || p.player) return;
+      {
         const f = document.createElement("iframe");
-        f.className = i === activeIndex ? "bg-media" : "bg-media off";
+        f.className = asActive ? "bg-media" : "bg-media off";
         // Every player boots immediately, but only the active reel
         // autoplays — the rest are pre-buffered one at a time below.
         f.src =
           "https://player.vimeo.com/video/" + p.vimeo +
           "?" + (p.hash ? "h=" + p.hash + "&" : "") +
-          "background=1&autoplay=" + (i === activeIndex ? 1 : 0) +
+          "background=1&autoplay=" + (asActive ? 1 : 0) +
           "&muted=1&loop=1&dnt=1";
         f.allow = "autoplay; fullscreen; picture-in-picture";
         f.title = p.title;
@@ -2235,10 +2241,16 @@
         p.player = new Vimeo.Player(f);
         p.player.setLoop(true);
         p.player.setMuted(true);
-        if (i !== activeIndex) p.player.pause();
+        if (!asActive) p.player.pause();
         p.player.on("ended", () => {
           if (i === activeIndex) p.player.play().catch(() => {});
         });
+      }
+    }
+
+    if (typeof Vimeo !== "undefined") {
+      projects.forEach((p, i) => {
+        if (!lite || i === activeIndex) mountPlayer(p, i, i === activeIndex);
       });
 
       // Browsers throttle or pause muted background players once the section
@@ -2259,7 +2271,7 @@
       // muted) just until its first frames buffer, then pause. Staggered
       // one at a time so they never compete with the active reel, and
       // switching projects starts near-instantly afterwards.
-      setTimeout(() => {
+      if (!lite) setTimeout(() => {
         projects.forEach((p, i) => {
           if (!p.player || i === activeIndex) return;
           setTimeout(() => {
@@ -2281,6 +2293,7 @@
       activeIndex = i;
       showProject(i);
 
+      mountPlayer(next, i, false);
       if (!next.player) return;
 
       // Start the next reel while the current one keeps playing, and only
@@ -2507,8 +2520,11 @@
       };
       const atHero = () => window.scrollY < 8;
       const atWorkTop = () => Math.abs(work.getBoundingClientRect().top) < 8;
+      const home = document.getElementById("home");
       const intent = (dir, e) => {
         if (document.body.classList.contains("modal-open")) return;
+        // on short screens the hero is taller than the viewport and must scroll normally
+        if (home.offsetHeight > innerHeight + 8) return;
         if (locked) { e.preventDefault(); return; }
         if (dir > 0 && atHero()) { e.preventDefault(); go(work.offsetTop); }
         else if (dir < 0 && atWorkTop()) { e.preventDefault(); go(0); }
