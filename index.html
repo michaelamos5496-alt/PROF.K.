@@ -12,13 +12,11 @@
   <title>Kwesi Apenteng-Mensah — Creative Director</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- warm up Vimeo's player, thumbnail, and video CDNs before they're needed -->
-  <link rel="preconnect" href="https://player.vimeo.com" />
-  <link rel="preconnect" href="https://i.vimeocdn.com" />
-  <link rel="preconnect" href="https://f.vimeocdn.com" />
-  <link rel="preconnect" href="https://vod-adaptive-ak.vimeocdn.com" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preload" as="image" href="images/hero-portrait.webp" type="image/webp" fetchpriority="high" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,700&family=Space+Grotesk:wght@300;400;500&family=Bebas+Neue&family=Mrs+Saint+Delafield&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;1,300&family=Space+Grotesk:wght@300;400;500&family=Bebas+Neue&family=Mrs+Saint+Delafield&display=swap"
     rel="stylesheet"
   />
   <style>
@@ -83,7 +81,7 @@
         radial-gradient(circle at 15% 85%, rgba(255, 77, 28, 0.28), transparent 42%),
         radial-gradient(circle at 85% 15%, rgba(40, 150, 190, 0.25), transparent 45%),
         linear-gradient(rgba(14, 13, 11, 0.5), rgba(14, 13, 11, 0.7)),
-        url("images/hero-portrait.jpg") center / cover no-repeat,
+        url("images/hero-portrait.webp") center / cover no-repeat,
         var(--bg);
     }
 
@@ -799,6 +797,7 @@
       position: relative;
       display: block;
       width: 100%;
+      height: auto;
       aspect-ratio: 4 / 5;
       object-fit: cover;
       object-position: 42% 20%;
@@ -938,7 +937,7 @@
       gap: clamp(2.5rem, 7vh, 4.5rem);
       background:
         linear-gradient(to bottom, rgba(14, 13, 11, 0.55), rgba(14, 13, 11, 0.9)),
-        url("images/hero-portrait.jpg") 30% 20% / cover no-repeat,
+        url("images/hero-portrait.webp") 30% 20% / cover no-repeat,
         var(--bg);
     }
 
@@ -1077,7 +1076,7 @@
     .service .shot {
       aspect-ratio: 4 / 3;
       border-radius: 4px;
-      background-image: url("images/hero-portrait.jpg");
+      background-image: url("images/hero-portrait.webp");
       background-repeat: no-repeat;
       background-color: var(--bg-soft);
     }
@@ -1729,6 +1728,11 @@
         margin-bottom: 1rem;
       }
 
+      .about-card {
+        -webkit-backdrop-filter: blur(14px) saturate(150%);
+        backdrop-filter: blur(14px) saturate(150%);
+      }
+
       .about-text .signature,
       .about-text .social,
       .about-text .avail,
@@ -1849,7 +1853,7 @@
     <main class="hero">
     <div class="about-card">
       <figure class="about-photo">
-        <img src="images/hero-portrait.jpg" alt="Portrait of Kwesi Apenteng-Mensah" />
+        <img src="images/hero-portrait.webp" alt="Portrait of Kwesi Apenteng-Mensah" width="1800" height="1200" fetchpriority="high" decoding="async" />
       </figure>
 
       <div class="about-text">
@@ -1932,7 +1936,7 @@
       <article class="service">
         <span class="tag">Identity</span>
         <h4>Brand<br />Identity</h4>
-        <div class="shot" style="background-image: url('images/service-1.jpg'); background-size: cover; background-position: 45% 25%"></div>
+        <div class="shot" style="background-image: url('images/service-1.webp'); background-size: cover; background-position: 45% 25%"></div>
         <div class="foot">
           <p class="desc">Naming, identity systems, and voice for brands that want to be remembered.</p>
           <a class="go" href="#contact" aria-label="Enquire about Brand Identity"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
@@ -1942,7 +1946,7 @@
       <article class="service">
         <span class="tag">Campaign</span>
         <h4>Campaign<br />Direction</h4>
-        <div class="shot" style="background-image: url('images/service-2.jpg'); background-size: cover; background-position: 48% 25%"></div>
+        <div class="shot" style="background-image: url('images/service-2.webp'); background-size: cover; background-position: 48% 25%"></div>
         <div class="foot">
           <p class="desc">One idea, carried across every channel and every touchpoint.</p>
           <a class="go" href="#contact" aria-label="Enquire about Campaign Direction"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
@@ -2171,10 +2175,9 @@
     <a class="to-top" href="#home"><span class="glass-k" aria-hidden="true"><svg viewBox="0 0 40 48" aria-hidden="true"><use href="#k-mark"/></svg></span>Back to Top</a>
   </footer>
 
-  <script src="https://player.vimeo.com/api/player.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/motion@12/dist/motion.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/motion@12/dist/motion.js"></script>
   <script>
     const projects = [
       {
@@ -2222,6 +2225,16 @@
       p.blurb = format + " for " + client + ", directed by Kwesi Apenteng-Mensah.";
     });
 
+    // Poster frames come straight from Vimeo, fetched lazily at the size each use needs
+    const getPoster = (p, w) =>
+      (p["poster" + w] = p["poster" + w] || fetch(
+        "https://vimeo.com/api/oembed.json?width=" + w + "&url=" +
+          encodeURIComponent("https://vimeo.com/" + p.vimeo)
+      )
+        .then((r) => r.json())
+        .then((d) => d.thumbnail_url)
+        .catch(() => ""));
+
     // Build the cards first so they render even if the Vimeo SDK fails to load.
     projects.forEach((p, i) => {
       const card = document.createElement("button");
@@ -2234,18 +2247,6 @@
       card.addEventListener("click", () => select(i));
       track.appendChild(card);
       p.card = card;
-
-      // poster frame for the card, straight from Vimeo
-      p.posterP = fetch(
-        "https://vimeo.com/api/oembed.json?width=1280&url=" +
-          encodeURIComponent("https://vimeo.com/" + p.vimeo)
-      )
-        .then((r) => r.json())
-        .then((d) => d.thumbnail_url)
-        .catch(() => "");
-      p.posterP.then((url) => {
-        if (url) card.style.backgroundImage = 'url("' + url + '")';
-      });
     });
 
     function showProject(i) {
@@ -2302,7 +2303,19 @@
       }
     }
 
-    if (typeof Vimeo !== "undefined") {
+    let vimeoP = null;
+    const loadVimeo = () =>
+      vimeoP ||
+      (vimeoP = new Promise((resolve) => {
+        if (window.Vimeo) return resolve();
+        const sc = document.createElement("script");
+        sc.src = "https://player.vimeo.com/api/player.js";
+        sc.onload = sc.onerror = () => resolve();
+        document.head.appendChild(sc);
+      }));
+
+    function initVimeo() {
+      if (typeof Vimeo === "undefined") return;
       projects.forEach((p, i) => {
         if (!lite || i === activeIndex) mountPlayer(p, i, i === activeIndex);
       });
@@ -2341,12 +2354,35 @@
       }, 2500);
     }
 
+    // Nothing from Vimeo loads until the page is interactive (or Work is close)
+    let workStarted = false;
+    function startWork() {
+      if (workStarted) return;
+      workStarted = true;
+      projects.forEach((p) =>
+        getPoster(p, 640).then((u) => {
+          if (u) p.card.style.backgroundImage = 'url("' + u + '")';
+        })
+      );
+      loadVimeo().then(initVimeo);
+    }
+    new IntersectionObserver((es, o) => {
+      if (es.some((e) => e.isIntersecting)) { startWork(); o.disconnect(); }
+    }, { rootMargin: lite ? "300px" : "600px" }).observe(workSection);
+    if (!lite) {
+      addEventListener("load", () => {
+        const idle = window.requestIdleCallback || ((f) => setTimeout(f, 1200));
+        idle(startWork, { timeout: 3000 });
+      });
+    }
+
     function select(i) {
       if (i === activeIndex) return;
       const next = projects[i];
       activeIndex = i;
       showProject(i);
 
+      startWork();
       mountPlayer(next, i, false);
       if (!next.player) return;
 
@@ -2444,6 +2480,8 @@
   </script>
 
   <script>
+    // Wait for the deferred libraries (gsap, ScrollTrigger, Motion) before wiring animations
+    document.addEventListener("DOMContentLoaded", () => {
     // ---- Animations: GSAP for intro + scroll reveals, Motion for micro-interactions ----
     // Guarded so a blocked CDN degrades to a static (but fully working) page.
     if (
@@ -2613,7 +2651,7 @@
         document.getElementById("nf-title").textContent = p.title;
         document.getElementById("nf-blurb").textContent = p.blurb;
         document.getElementById("nf-vimeo").href = "https://vimeo.com/" + p.vimeo;
-        p.posterP.then((u) => { if (u && featured === i) hero.style.backgroundImage = 'url("' + u + '")'; });
+        getPoster(p, 1280).then((u) => { if (u && featured === i) hero.style.backgroundImage = 'url("' + u + '")'; });
       };
 
       const playVideo = (i) => {
@@ -2636,7 +2674,7 @@
         b.innerHTML = '<span class="tplay">' + playIcon + '</span><span class="meta"><span class="name"></span><span class="sub"></span></span>';
         b.querySelector(".name").textContent = p.title;
         b.querySelector(".sub").textContent = p.where;
-        p.posterP.then((u) => { if (u) b.style.backgroundImage = 'url("' + u + '")'; });
+        getPoster(p, 640).then((u) => { if (u) b.style.backgroundImage = 'url("' + u + '")'; });
         b.addEventListener("mouseenter", () => setFeatured(i));
         b.addEventListener("focus", () => setFeatured(i));
         b.addEventListener("click", () => playVideo(i));
@@ -2745,13 +2783,14 @@
         if (window.__intro) window.__intro.play();
       };
       const img = new Image();
-      img.src = "images/hero-portrait.jpg";
+      img.src = "images/hero-portrait.webp";
       Promise.all([
         document.fonts ? document.fonts.ready : 0,
         img.decode ? img.decode().catch(() => {}) : 0,
       ]).then(() => requestAnimationFrame(go));
       setTimeout(go, 2500); // never leave the page hidden
     })();
+    });
   </script>
 </body>
 </html>
