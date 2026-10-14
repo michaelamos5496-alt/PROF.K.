@@ -1016,32 +1016,47 @@
       mask-image: linear-gradient(to right, transparent 0%, #000 45%);
     }
 
-    .contact .map svg {
+    .contact .map iframe {
+      position: absolute;
+      top: -90px; /* pushes the zoom buttons off-screen */
+      left: 0;
       width: 100%;
-      height: 100%;
-      display: block;
+      height: calc(100% + 90px);
+      border: 0;
+      /* turn the light OSM tiles into a dark, muted map */
+      filter: invert(1) hue-rotate(180deg) brightness(0.8) contrast(0.85) saturate(0.25);
     }
 
-    .contact .map .road {
-      fill: none;
-      stroke: rgba(244, 239, 230, 0.07);
-      stroke-linecap: round;
+    .contact .map .pin-wrap {
+      position: absolute;
+      top: 50%; /* iframe is 90px taller at the top, so its centre sits 45px lower */
+      margin-top: 45px;
+      left: 50%;
+      width: 0;
+      height: 0;
     }
-
-    .contact .map .road.minor { stroke-width: 2; }
-    .contact .map .road.major { stroke-width: 14; stroke: rgba(244, 239, 230, 0.09); }
-    .contact .map .road.mid { stroke-width: 6; }
 
     .contact .map .pin {
-      fill: var(--ink);
+      position: absolute;
+      left: -14px;
+      top: -40px;
+      width: 28px;
+      height: 40px;
+      fill: var(--accent);
+      stroke: var(--ink);
+      stroke-width: 1.5;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
     }
 
     .contact .map .pulse {
-      fill: none;
-      stroke: var(--accent);
-      stroke-width: 1.5;
-      transform-box: fill-box;
-      transform-origin: center;
+      position: absolute;
+      left: -22px;
+      top: -22px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid var(--accent);
+      opacity: 0.6;
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -1819,21 +1834,12 @@
 
   <section class="contact" id="contact">
     <div class="map" aria-hidden="true">
-      <svg viewBox="0 0 800 900" preserveAspectRatio="xMidYMid slice">
-        <rect width="800" height="900" fill="#12110f" />
-        <path class="road major" d="M-40 120 C 180 200, 330 330, 470 520 S 700 800, 860 900" />
-        <path class="road mid" d="M-40 560 C 200 520, 420 470, 860 330" />
-        <path class="road mid" d="M180 -40 C 230 200, 260 420, 250 940" />
-        <path class="road minor" d="M-40 300 L 860 180" />
-        <path class="road minor" d="M-40 760 L 860 640" />
-        <path class="road minor" d="M520 -40 L 600 940" />
-        <path class="road minor" d="M700 -40 L 640 940" />
-        <path class="road minor" d="M350 -40 L 420 940" />
-        <path class="road minor" d="M-40 440 L 860 470" />
-        <path class="road minor" d="M-40 880 L 860 800" />
-        <circle class="pulse" cx="560" cy="440" r="22" />
-        <path class="pin" d="M560 424a10 10 0 0 0-10 10c0 7.5 10 20 10 20s10-12.500 10-20a10 10 0 0 0-10-10zm0 13.500a3.500 3.500 0 1 1 0-7 3.500 3.500 0 0 1 0 7z" />
-      </svg>
+      <iframe title="Map of Tse Addo, Accra" loading="lazy" tabindex="-1"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-0.1517%2C5.5748%2C-0.1277%2C5.5968&amp;layer=mapnik"></iframe>
+      <div class="pin-wrap">
+        <span class="pulse"></span>
+        <svg class="pin" viewBox="0 0 24 34"><path d="M12 0a12 12 0 0 0-12 12c0 9 12 22 12 22s12-13 12-22A12 12 0 0 0 12 0zm0 16.500a4.500 4.500 0 1 1 0-9 4.500 4.500 0 0 1 0 9z"/></svg>
+      </div>
     </div>
 
     <div class="inner">
@@ -1850,7 +1856,7 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.200 7 13 7 13s7-7.800 7-13a7 7 0 0 0-7-7zm0 9.500A2.500 2.500 0 1 1 12 6.500a2.500 2.500 0 0 1 0 5z"/></svg>
             Location
           </dt>
-          <dd>Tse Addo, Accra<br />Available worldwide</dd>
+          <dd>Tse Addo, Accra<br /><a href="https://www.openstreetmap.org/?mlat=5.5858&amp;mlon=-0.1397#map=16/5.5858/-0.1397" target="_blank" rel="noopener">View on map ↗</a></dd>
         </div>
         <div>
           <dt>
