@@ -646,78 +646,221 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: clamp(4rem, 10vh, 7rem) clamp(1.5rem, 6vw, 6rem);
-      gap: clamp(2.5rem, 6vh, 4rem);
+      overflow: hidden;
+      padding: clamp(4rem, 10vh, 7rem) 0;
+      gap: clamp(2.5rem, 7vh, 4.5rem);
+      background:
+        linear-gradient(to bottom, rgba(14, 13, 11, 0.55), rgba(14, 13, 11, 0.9)),
+        url("images/hero-portrait.jpg") 30% 20% / cover no-repeat,
+        var(--bg);
     }
 
-    .services .heading .eyebrow {
+    .services .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+      padding: 0 clamp(1.5rem, 6vw, 6rem);
+    }
+
+    .services .pill {
+      display: inline-block;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(244, 239, 230, 0.08);
+      backdrop-filter: blur(6px);
       margin-bottom: 1.4rem;
     }
 
-    .services .heading h3 {
-      font-family: "Fraunces", Georgia, serif;
-      font-weight: 300;
-      font-size: clamp(1.8rem, 3.5vw, 3rem);
-      line-height: 1.2;
-      max-width: 24ch;
+    .services h3 {
+      font-weight: 500;
+      font-size: clamp(2.2rem, 4.6vw, 3.8rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
     }
 
-    .services .heading h3 em {
-      font-style: italic;
+    .services h3 em {
+      font-style: normal;
       color: var(--accent);
     }
 
-    .service-list {
-      list-style: none;
-      border-top: 1px solid var(--line);
+    .services .side {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      max-width: 26rem;
     }
+
+    .services .side p {
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(244, 239, 230, 0.8);
+    }
+
+    .services .arrows {
+      display: flex;
+      gap: 0.7rem;
+    }
+
+    .services .arrows button {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      background: rgba(244, 239, 230, 0.16);
+      color: var(--ink);
+      backdrop-filter: blur(6px);
+      transition: background 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+    }
+
+    .services .arrows button:hover:not(:disabled) {
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    .services .arrows button:disabled { opacity: 0.35; cursor: default; }
+
+    .services .arrows svg,
+    .service .go svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+    }
+
+    /* draggable card track */
+    .service-track {
+      display: flex;
+      gap: clamp(1rem, 1.6vw, 1.6rem);
+      padding: 0 clamp(1.5rem, 6vw, 6rem);
+      scroll-padding-left: clamp(1.5rem, 6vw, 6rem);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .service-track::-webkit-scrollbar { display: none; }
+    .service-track.dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
+    .service-track.dragging * { pointer-events: none; }
 
     .service {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: clamp(1.2rem, 4vw, 4rem);
-      align-items: baseline;
-      padding: clamp(1.6rem, 3.5vh, 2.6rem) 0.5rem;
-      border-bottom: 1px solid var(--line);
-      transition: background 0.3s ease, padding-left 0.3s ease;
+      flex: 0 0 clamp(250px, 24vw, 340px);
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      padding: 1.2rem;
+      border-radius: 6px;
+      background: var(--ink);
+      color: var(--bg);
+      border: 1px solid transparent;
+      transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
     }
 
-    .service:hover {
-      background: rgba(244, 239, 230, 0.03);
-      padding-left: 1.2rem;
-    }
-
-    .service .num {
-      font-size: 0.7rem;
-      letter-spacing: 0.3em;
-      color: var(--muted);
-      transition: color 0.3s ease;
-    }
-
-    .service:hover .num {
-      color: var(--accent);
+    .service .tag {
+      align-self: flex-start;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      border: 1px solid rgba(14, 13, 11, 0.2);
+      border-radius: 6px;
+      transition: border-color 0.35s ease, background 0.35s ease;
     }
 
     .service h4 {
-      font-family: "Fraunces", Georgia, serif;
-      font-weight: 300;
-      font-size: clamp(1.5rem, 3vw, 2.4rem);
-      line-height: 1.1;
-      transition: font-style 0.15s ease, color 0.3s ease;
+      font-weight: 700;
+      font-size: clamp(1.25rem, 1.8vw, 1.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      min-height: 2.1em;
     }
 
-    .service:hover h4 {
-      font-style: italic;
-      color: var(--accent);
+    .service .shot {
+      aspect-ratio: 4 / 3;
+      border-radius: 4px;
+      background-image: url("images/hero-portrait.jpg");
+      background-repeat: no-repeat;
+      background-color: var(--bg-soft);
+    }
+
+    .service .foot {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: auto;
     }
 
     .service .desc {
-      font-weight: 300;
-      font-size: 0.95rem;
-      line-height: 1.6;
-      color: var(--muted);
-      text-align: right;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      opacity: 0.8;
     }
+
+    .service .go {
+      flex: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(14, 13, 11, 0.2);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .service .go:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+    /* active card goes dark glass, as in the reference */
+    .service.is-active {
+      background: rgba(14, 13, 11, 0.55);
+      backdrop-filter: blur(14px);
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    .service.is-active .tag { border-color: var(--line); background: rgba(244, 239, 230, 0.1); }
+    .service.is-active .go { border-color: var(--line); color: var(--ink); background: rgba(244, 239, 230, 0.12); }
+
+    /* cursor bubble */
+    .drag-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 50;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.6);
+      transition: opacity 0.2s ease, scale 0.2s ease;
+    }
+
+    .drag-cursor.show { opacity: 1; }
+    .drag-cursor svg { width: 7px; height: 11px; fill: none; stroke: currentColor; stroke-width: 1.5; }
 
     /* ---- Clientele section ---- */
     .clients {
@@ -1257,16 +1400,6 @@
         transition: opacity 0.3s ease 0.2s;
       }
 
-      .service {
-        grid-template-columns: auto 1fr;
-        row-gap: 0.6rem;
-      }
-
-      .service .desc {
-        grid-column: 1 / -1;
-        text-align: left;
-      }
-
     }
 
     /* ---- Mobile ---- */
@@ -1331,6 +1464,15 @@
 
       .about .photos img:nth-child(even) {
         margin-top: 2rem;
+      }
+
+      .services .top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .service {
+        flex-basis: 78vw;
       }
 
       .contact .map {
@@ -1508,36 +1650,67 @@
   </section>
 
   <section class="services" id="services">
-    <div class="heading">
-      <p class="eyebrow">Services</p>
-      <h3>From first spark to final frame — <em>one vision</em>, end to end.</h3>
+    <div class="top">
+      <div class="heading">
+        <span class="pill">My Services</span>
+        <h3>Trusted<br /><em>Expertise</em></h3>
+      </div>
+      <div class="side">
+        <p>From first spark to final frame — concept, craft, and execution under one vision.</p>
+        <div class="arrows">
+          <button type="button" id="svc-prev" aria-label="Previous service"><svg viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></button>
+          <button type="button" id="svc-next" aria-label="Next service"><svg viewBox="0 0 16 16"><path d="m6 3 5 5-5 5"/></svg></button>
+        </div>
+      </div>
     </div>
 
-    <ul class="service-list">
-      <li class="service">
-        <span class="num">01</span>
-        <h4>Brand Identity</h4>
-        <p class="desc">Naming, identity systems, and voice.</p>
-      </li>
+    <div class="service-track" id="service-track" aria-label="Services">
+      <article class="service">
+        <span class="tag">Identity</span>
+        <h4>Brand<br />Identity</h4>
+        <div class="shot" style="background-size: 260%; background-position: 62% 18%"></div>
+        <div class="foot">
+          <p class="desc">Naming, identity systems, and voice for brands that want to be remembered.</p>
+          <a class="go" href="#contact" aria-label="Enquire about Brand Identity"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+        </div>
+      </article>
 
-      <li class="service">
-        <span class="num">02</span>
-        <h4>Campaign Direction</h4>
-        <p class="desc">One idea, carried across every channel.</p>
-      </li>
+      <article class="service">
+        <span class="tag">Campaign</span>
+        <h4>Campaign<br />Direction</h4>
+        <div class="shot" style="background-size: 300%; background-position: 95% 40%"></div>
+        <div class="foot">
+          <p class="desc">One idea, carried across every channel and every touchpoint.</p>
+          <a class="go" href="#contact" aria-label="Enquire about Campaign Direction"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+        </div>
+      </article>
 
-      <li class="service">
-        <span class="num">03</span>
-        <h4>Film &amp; Commercial</h4>
-        <p class="desc">Direction from treatment to final cut.</p>
-      </li>
+      <article class="service">
+        <span class="tag">Film</span>
+        <h4>Film &amp;<br />Commercial</h4>
+        <div class="shot" style="background-size: 340%; background-position: 28% 82%"></div>
+        <div class="foot">
+          <p class="desc">Direction from treatment to final cut, on set and in the edit.</p>
+          <a class="go" href="#contact" aria-label="Enquire about Film and Commercial"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+        </div>
+      </article>
 
-      <li class="service">
-        <span class="num">04</span>
-        <h4>Creative Consulting</h4>
-        <p class="desc">An outside eye for in-house teams.</p>
-      </li>
-    </ul>
+      <article class="service">
+        <span class="tag">Consulting</span>
+        <h4>Creative<br />Consulting</h4>
+        <div class="shot" style="background-size: 180%; background-position: 40% 60%"></div>
+        <div class="foot">
+          <p class="desc">An outside eye for in-house teams who need a sharper point of view.</p>
+          <a class="go" href="#contact" aria-label="Enquire about Creative Consulting"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+        </div>
+      </article>
+    </div>
+
+    <div class="drag-cursor" id="drag-cursor" aria-hidden="true">
+      <svg viewBox="0 0 7 11"><path d="M6 1 1.500 5.500 6 10"/></svg>
+      DRAG
+      <svg viewBox="0 0 7 11"><path d="m1 1 4.500 4.500L1 10"/></svg>
+    </div>
   </section>
 
   <section class="clients" id="clients">
@@ -1677,7 +1850,7 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.200 7 13 7 13s7-7.800 7-13a7 7 0 0 0-7-7zm0 9.500A2.500 2.500 0 1 1 12 6.500a2.500 2.500 0 0 1 0 5z"/></svg>
             Location
           </dt>
-          <dd>Accra, Ghana<br />Available worldwide</dd>
+          <dd>Tse Addo, Accra<br />Available worldwide</dd>
         </div>
         <div>
           <dt>
@@ -2032,8 +2205,8 @@
       reveal(".projects", { trigger: ".work", x: 60, y: 0 });
       reveal(".about .photos img", { trigger: ".about", stagger: 0.12, y: 70 });
       reveal(".about .bio > *", { trigger: ".about .bio", stagger: 0.15 });
-      reveal(".services .heading");
-      reveal(".service", { trigger: ".service-list", stagger: 0.12, x: -40, y: 0 });
+      reveal(".services .top");
+      reveal(".service", { trigger: ".service-track", stagger: 0.12, x: 60, y: 0 });
       reveal(".clients .heading");
       reveal(".logo-wall .logo", { trigger: ".logo-wall", stagger: 0.06, y: 30, duration: 0.7 });
       reveal(".testimonial", { trigger: ".testimonials", stagger: 0.15 });
@@ -2063,6 +2236,66 @@
         });
       }
     }
+
+    // Services carousel: drag / arrows / active card / cursor bubble
+    (() => {
+      const track = document.getElementById("service-track");
+      const cards = [...track.querySelectorAll(".service")];
+      const prev = document.getElementById("svc-prev");
+      const next = document.getElementById("svc-next");
+      const bubble = document.getElementById("drag-cursor");
+      const step = () => cards[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0);
+
+      const setActive = (card) => cards.forEach((c) => c.classList.toggle("is-active", c === card));
+      setActive(cards[1] || cards[0]);
+      cards.forEach((c) => {
+        c.addEventListener("pointerenter", () => setActive(c));
+        c.addEventListener("focusin", () => setActive(c));
+      });
+
+      const updateArrows = () => {
+        prev.disabled = track.scrollLeft <= 4;
+        next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
+      };
+      track.addEventListener("scroll", updateArrows, { passive: true });
+      addEventListener("resize", updateArrows);
+      updateArrows();
+      prev.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
+      next.addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
+
+      // mouse drag (touch already scrolls natively)
+      let down = false, startX = 0, startLeft = 0, moved = 0;
+      track.addEventListener("pointerdown", (e) => {
+        if (e.pointerType !== "mouse") return;
+        down = true; moved = 0; startX = e.clientX; startLeft = track.scrollLeft;
+      });
+      addEventListener("pointermove", (e) => {
+        if (!down) return;
+        moved = e.clientX - startX;
+        if (Math.abs(moved) > 5) track.classList.add("dragging");
+        track.scrollLeft = startLeft - moved;
+      });
+      addEventListener("pointerup", () => {
+        if (!down) return;
+        down = false;
+        if (track.classList.contains("dragging")) {
+          track.classList.remove("dragging");
+          const i = Math.round(track.scrollLeft / step());
+          track.scrollTo({ left: i * step(), behavior: "smooth" });
+        }
+      });
+
+      // cursor bubble, only for real pointers
+      if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        track.addEventListener("pointermove", (e) => {
+          bubble.style.left = e.clientX + "px";
+          bubble.style.top = e.clientY + "px";
+          bubble.style.transform = "translate(-50%, -50%) scale(1)";
+          bubble.classList.toggle("show", !e.target.closest(".go"));
+        });
+        track.addEventListener("pointerleave", () => bubble.classList.remove("show"));
+      }
+    })();
   </script>
 </body>
 </html>
