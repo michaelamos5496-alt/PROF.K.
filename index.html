@@ -1026,13 +1026,12 @@
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
-      cursor: grab;
       user-select: none;
       -webkit-user-select: none;
     }
 
     .service-track::-webkit-scrollbar { display: none; }
-    .service-track.dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
+    .service-track.dragging { scroll-snap-type: none; scroll-behavior: auto; }
     .service-track.dragging * { pointer-events: none; }
 
     .service {
@@ -1115,32 +1114,6 @@
 
     .service.is-active .tag { border-color: var(--line); background: rgba(244, 239, 230, 0.1); }
     .service.is-active .go { border-color: var(--line); color: var(--ink); background: rgba(244, 239, 230, 0.12); }
-
-    /* cursor bubble */
-    .drag-cursor {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 50;
-      width: 76px;
-      height: 76px;
-      border-radius: 50%;
-      background: var(--ink);
-      color: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.35rem;
-      font-size: 0.55rem;
-      letter-spacing: 0.15em;
-      pointer-events: none;
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0.6);
-      transition: opacity 0.2s ease, scale 0.2s ease;
-    }
-
-    .drag-cursor.show { opacity: 1; }
-    .drag-cursor svg { width: 7px; height: 11px; fill: none; stroke: currentColor; stroke-width: 1.5; }
 
     /* ---- Clientele section ---- */
     .clients {
@@ -1989,12 +1962,6 @@
         </div>
       </article>
     </div>
-
-    <div class="drag-cursor" id="drag-cursor" aria-hidden="true">
-      <svg viewBox="0 0 7 11"><path d="M6 1 1.500 5.500 6 10"/></svg>
-      DRAG
-      <svg viewBox="0 0 7 11"><path d="m1 1 4.500 4.500L1 10"/></svg>
-    </div>
   </section>
 
   <section class="clients" id="clients">
@@ -2534,7 +2501,6 @@
       const cards = [...track.querySelectorAll(".service")];
       const prev = document.getElementById("svc-prev");
       const next = document.getElementById("svc-next");
-      const bubble = document.getElementById("drag-cursor");
       const step = () => cards[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0);
 
       const setActive = (card) => cards.forEach((c) => c.classList.toggle("is-active", c === card));
@@ -2575,17 +2541,6 @@
           track.scrollTo({ left: i * step(), behavior: "smooth" });
         }
       });
-
-      // cursor bubble, only for real pointers
-      if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
-        track.addEventListener("pointermove", (e) => {
-          bubble.style.left = e.clientX + "px";
-          bubble.style.top = e.clientY + "px";
-          bubble.style.transform = "translate(-50%, -50%) scale(1)";
-          bubble.classList.toggle("show", !e.target.closest(".go"));
-        });
-        track.addEventListener("pointerleave", () => bubble.classList.remove("show"));
-      }
     })();
 
     // Auto-scroll: leaving the hero glides straight to Selected Work (and back up from its top)
