@@ -341,6 +341,9 @@
     .work .caption .mark svg { width: 15px; height: 18px; fill: currentColor; }
 
     .work .caption .discover {
+      background: none;
+      font-family: inherit;
+      cursor: pointer;
       padding: 0.95rem 1.7rem;
       border: 1px solid rgba(244, 239, 230, 0.5);
       border-radius: 999px;
@@ -490,6 +493,264 @@
       font-size: clamp(2.4rem, 3.6vw, 3.6rem);
       line-height: 1;
     }
+
+    /* ---- Netflix-style "all work" overlay ---- */
+    body.modal-open { overflow: hidden; }
+
+    .netflix {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #0a0908;
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.02);
+      transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s linear 0.4s;
+    }
+
+    .netflix.open {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      transition-delay: 0s;
+    }
+
+    .nf-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem clamp(1.5rem, 4vw, 4rem);
+      background: linear-gradient(to bottom, rgba(10, 9, 8, 0.85), transparent);
+    }
+
+    .nf-bar .brand {
+      font-family: "Bebas Neue", Impact, sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    .nf-close,
+    .nf-player-close {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(244, 239, 230, 0.5);
+      background: rgba(10, 9, 8, 0.4);
+      backdrop-filter: blur(6px);
+      color: var(--ink);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .nf-close:hover,
+    .nf-player-close:hover { background: var(--ink); color: var(--bg); }
+
+    .nf-close svg,
+    .nf-player-close svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+    .nf-hero {
+      position: relative;
+      height: clamp(380px, 68vh, 640px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 clamp(1.5rem, 4vw, 4rem) clamp(2rem, 6vh, 4rem);
+      background: #1b1a17 center 25% / cover no-repeat;
+    }
+
+    .nf-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top, #0a0908 0%, rgba(10, 9, 8, 0) 45%),
+        linear-gradient(to right, rgba(10, 9, 8, 0.8) 0%, rgba(10, 9, 8, 0) 60%);
+    }
+
+    .nf-hero > * { position: relative; max-width: 640px; }
+
+    .nf-hero .where { font-size: 0.95rem; font-weight: 300; margin-bottom: 0.5rem; }
+
+    .nf-hero h2 {
+      font-family: "Bebas Neue", Impact, sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      line-height: 0.92;
+      margin-bottom: 1rem;
+    }
+
+    .nf-hero .blurb {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: rgba(244, 239, 230, 0.8);
+      margin-bottom: 1.4rem;
+    }
+
+    .nf-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+    .nf-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.6rem;
+      border-radius: 6px;
+      border: none;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.25s ease, background 0.25s ease;
+    }
+
+    .nf-btn.play { background: var(--ink); color: var(--bg); }
+    .nf-btn.play:hover { opacity: 0.85; }
+    .nf-btn.more { background: rgba(244, 239, 230, 0.2); color: var(--ink); backdrop-filter: blur(6px); }
+    .nf-btn.more:hover { background: rgba(244, 239, 230, 0.32); }
+    .nf-btn svg { width: 14px; height: 14px; fill: currentColor; }
+
+    .nf-rows {
+      position: relative;
+      z-index: 2;
+      margin-top: -2rem;
+      padding: 0 0 4rem;
+    }
+
+    .nf-row { margin-bottom: 1.4rem; }
+
+    .nf-row h3 {
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0 clamp(1.5rem, 4vw, 4rem);
+      margin-bottom: 0.2rem;
+    }
+
+    .nf-track {
+      display: flex;
+      gap: 0.5rem;
+      padding: 1.6rem clamp(1.5rem, 4vw, 4rem);
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-snap-type: x proximity;
+    }
+
+    .nf-track::-webkit-scrollbar { display: none; }
+
+    .nf-tile {
+      position: relative;
+      flex: 0 0 clamp(220px, 21vw, 320px);
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      scroll-snap-align: start;
+      color: var(--ink);
+      font-family: inherit;
+      text-align: left;
+      background: #1b1a17 center / cover no-repeat;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nf-tile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10, 9, 8, 0.9) 0%, rgba(10, 9, 8, 0) 60%);
+    }
+
+    .nf-tile .meta {
+      position: absolute;
+      left: 0.8rem;
+      right: 0.8rem;
+      bottom: 0.7rem;
+    }
+
+    .nf-tile .name {
+      display: block;
+      font-family: "Bebas Neue", Impact, sans-serif;
+      font-size: 1.3rem;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .nf-tile .sub { display: block; font-size: 0.62rem; letter-spacing: 0.12em; color: rgba(244, 239, 230, 0.7); margin-top: 0.25rem; }
+
+    .nf-tile .tplay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 44px;
+      height: 44px;
+      margin: -22px 0 0 -22px;
+      border-radius: 50%;
+      background: rgba(244, 239, 230, 0.92);
+      color: var(--bg);
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      transform: scale(0.7);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .nf-tile .tplay svg { width: 14px; height: 14px; fill: currentColor; margin-left: 2px; }
+
+    .nf-tile:hover,
+    .nf-tile:focus-visible {
+      transform: scale(1.1);
+      z-index: 2;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6);
+      outline: none;
+    }
+
+    .nf-tile:hover .tplay,
+    .nf-tile:focus-visible .tplay { opacity: 1; transform: none; }
+
+    .nf-tile.vimeo {
+      display: grid;
+      place-items: center;
+      text-decoration: none;
+      background: #161411;
+      border: 1px dashed var(--line);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    .nf-tile.vimeo::before { display: none; }
+
+    .nf-player {
+      position: fixed;
+      inset: 0;
+      z-index: 110;
+      background: rgba(0, 0, 0, 0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nf-player.open { display: flex; }
+
+    .nf-player iframe {
+      width: min(1100px, 92vw);
+      aspect-ratio: 16 / 9;
+      border: 0;
+      border-radius: 6px;
+      background: #000;
+    }
+
+    .nf-player-close { position: absolute; top: 1.4rem; right: 1.4rem; }
 
     /* ---- About section ---- */
     .about {
@@ -1336,6 +1597,8 @@
       }
 
       .work .caption .blurb { display: none; }
+      .nf-hero { height: 52vh; }
+      .nf-tile { flex-basis: 62vw; }
       .work .caption h3 { margin-bottom: 1rem; }
 
       .about .photos {
@@ -1496,7 +1759,7 @@
         <a class="mark" href="#contact" aria-label="Work with me" title="Work with me">
           <svg viewBox="0 0 14 18"><path d="M0 0h14v18l-7-5-7 5z"/></svg>
         </a>
-        <a class="discover" id="caption-link" href="https://vimeo.com/oneshotstudios" target="_blank" rel="noopener">Discover work</a>
+        <button class="discover" id="view-more" type="button" aria-haspopup="dialog">View more</button>
       </div>
     </div>
 
@@ -1790,6 +2053,28 @@
     </div>
   </section>
 
+  <div class="netflix" id="netflix" role="dialog" aria-modal="true" aria-label="All work" aria-hidden="true">
+    <div class="nf-bar">
+      <span class="brand">All Work</span>
+      <button class="nf-close" id="nf-close" type="button" aria-label="Close"><svg viewBox="0 0 14 14"><path d="M1 1l12 12M13 1 1 13"/></svg></button>
+    </div>
+    <section class="nf-hero" id="nf-hero">
+      <p class="where" id="nf-where"></p>
+      <h2 id="nf-title"></h2>
+      <p class="blurb" id="nf-blurb"></p>
+      <div class="nf-actions">
+        <button class="nf-btn play" id="nf-play" type="button"><svg viewBox="0 0 14 14"><path d="M2 0v14l12-7z"/></svg>Play</button>
+        <a class="nf-btn more" id="nf-vimeo" href="https://vimeo.com/oneshotstudios" target="_blank" rel="noopener">Open on Vimeo</a>
+      </div>
+    </section>
+    <div class="nf-rows" id="nf-rows"></div>
+  </div>
+
+  <div class="nf-player" id="nf-player" role="dialog" aria-modal="true" aria-label="Video player">
+    <button class="nf-player-close" id="nf-player-close" type="button" aria-label="Close video"><svg viewBox="0 0 14 14"><path d="M1 1l12 12M13 1 1 13"/></svg></button>
+    <iframe id="nf-frame" title="Project video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
   <footer class="site-footer">
     <span>&copy; 2026 Kwesi Apenteng-Mensah</span>
     <span>Built by <a href="https://theimagedept.vercel.app/index.html" target="_blank" rel="noopener">TheImageDept</a></span>
@@ -1835,7 +2120,6 @@
     const captionTitle = document.getElementById("caption-title");
     const captionCat = document.getElementById("caption-cat");
     const captionBlurb = document.getElementById("caption-blurb");
-    const captionLink = document.getElementById("caption-link");
     const workCount = document.getElementById("work-count");
     const workBar = document.getElementById("work-bar");
     const pad = (n) => String(n).padStart(2, "0");
@@ -1862,13 +2146,16 @@
       p.card = card;
 
       // poster frame for the card, straight from Vimeo
-      fetch(
-        "https://vimeo.com/api/oembed.json?width=720&url=" +
+      p.posterP = fetch(
+        "https://vimeo.com/api/oembed.json?width=1280&url=" +
           encodeURIComponent("https://vimeo.com/" + p.vimeo)
       )
         .then((r) => r.json())
-        .then((d) => { card.style.backgroundImage = 'url("' + d.thumbnail_url + '")'; })
-        .catch(() => {});
+        .then((d) => d.thumbnail_url)
+        .catch(() => "");
+      p.posterP.then((url) => {
+        if (url) card.style.backgroundImage = 'url("' + url + '")';
+      });
     });
 
     function showProject(i) {
@@ -1877,7 +2164,6 @@
       captionTitle.textContent = p.title;
       captionCat.textContent = p.where;
       captionBlurb.textContent = p.blurb;
-      captionLink.href = "https://vimeo.com/" + p.vimeo;
       workCount.textContent = pad(i + 1);
       workBar.style.width = ((i + 1) / projects.length) * 100 + "%";
       track.scrollTo({ left: p.card.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft), behavior: "smooth" });
@@ -2197,6 +2483,7 @@
       const atHero = () => window.scrollY < 8;
       const atWorkTop = () => Math.abs(work.getBoundingClientRect().top) < 8;
       const intent = (dir, e) => {
+        if (document.body.classList.contains("modal-open")) return;
         if (locked) { e.preventDefault(); return; }
         if (dir > 0 && atHero()) { e.preventDefault(); go(work.offsetTop); }
         else if (dir < 0 && atWorkTop()) { e.preventDefault(); go(0); }
@@ -2222,6 +2509,114 @@
         startY = null;
         intent(Math.sign(dy), e);
       }, { passive: false });
+    })();
+
+    // Netflix-style "all work" overlay
+    (() => {
+      const root = document.getElementById("netflix");
+      const rowsEl = document.getElementById("nf-rows");
+      const hero = document.getElementById("nf-hero");
+      const player = document.getElementById("nf-player");
+      const frame = document.getElementById("nf-frame");
+      const opener = document.getElementById("view-more");
+      const playIcon = '<svg viewBox="0 0 14 14"><path d="M2 0v14l12-7z"/></svg>';
+      let featured = 0, lastFocus = null;
+
+      const setFeatured = (i) => {
+        featured = i;
+        const p = projects[i];
+        document.getElementById("nf-where").textContent = p.where;
+        document.getElementById("nf-title").textContent = p.title;
+        document.getElementById("nf-blurb").textContent = p.blurb;
+        document.getElementById("nf-vimeo").href = "https://vimeo.com/" + p.vimeo;
+        p.posterP.then((u) => { if (u && featured === i) hero.style.backgroundImage = 'url("' + u + '")'; });
+      };
+
+      const playVideo = (i) => {
+        frame.src = "https://player.vimeo.com/video/" + projects[i].vimeo + "?autoplay=1&dnt=1";
+        frame.title = projects[i].title;
+        player.classList.add("open");
+        document.getElementById("nf-player-close").focus();
+      };
+      const closeVideo = () => {
+        player.classList.remove("open");
+        frame.src = "about:blank";
+      };
+
+      const tile = (i) => {
+        const p = projects[i];
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "nf-tile";
+        b.setAttribute("aria-label", "Play " + p.title);
+        b.innerHTML = '<span class="tplay">' + playIcon + '</span><span class="meta"><span class="name"></span><span class="sub"></span></span>';
+        b.querySelector(".name").textContent = p.title;
+        b.querySelector(".sub").textContent = p.where;
+        p.posterP.then((u) => { if (u) b.style.backgroundImage = 'url("' + u + '")'; });
+        b.addEventListener("mouseenter", () => setFeatured(i));
+        b.addEventListener("focus", () => setFeatured(i));
+        b.addEventListener("click", () => playVideo(i));
+        return b;
+      };
+
+      const row = (title, idxs, extra) => {
+        const r = document.createElement("div");
+        r.className = "nf-row";
+        r.innerHTML = '<h3></h3><div class="nf-track"></div>';
+        r.querySelector("h3").textContent = title;
+        const t = r.querySelector(".nf-track");
+        idxs.forEach((i) => t.appendChild(tile(i)));
+        if (extra) t.appendChild(extra);
+        rowsEl.appendChild(r);
+      };
+
+      const more = document.createElement("a");
+      more.className = "nf-tile vimeo";
+      more.href = "https://vimeo.com/oneshotstudios";
+      more.target = "_blank";
+      more.rel = "noopener";
+      more.textContent = "More on Vimeo ↗";
+
+      row("All work", projects.map((_, i) => i), more);
+      const groups = {};
+      projects.forEach((p, i) => {
+        const f = p.category.split(" · ")[0];
+        (groups[f] = groups[f] || []).push(i);
+      });
+      Object.keys(groups).forEach((f) => row(f, groups[f]));
+
+      const open = () => {
+        lastFocus = document.activeElement;
+        setFeatured(activeIndex);
+        root.classList.add("open");
+        root.setAttribute("aria-hidden", "false");
+        document.body.classList.add("modal-open");
+        root.scrollTop = 0;
+        // free up bandwidth for the full-screen browser
+        const cur = projects[activeIndex].player;
+        if (cur) cur.pause();
+        document.getElementById("nf-close").focus();
+      };
+      const close = () => {
+        closeVideo();
+        root.classList.remove("open");
+        root.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("modal-open");
+        const cur = projects[activeIndex].player;
+        if (cur) cur.play().catch(() => {});
+        if (lastFocus) lastFocus.focus();
+      };
+
+      opener.addEventListener("click", open);
+      document.getElementById("nf-close").addEventListener("click", close);
+      document.getElementById("nf-play").addEventListener("click", () => playVideo(featured));
+      document.getElementById("nf-player-close").addEventListener("click", closeVideo);
+      player.addEventListener("click", (e) => { if (e.target === player) closeVideo(); });
+      addEventListener("keydown", (e) => {
+        if (e.key !== "Escape") return;
+        if (player.classList.contains("open")) closeVideo();
+        else if (root.classList.contains("open")) close();
+      });
     })();
   </script>
 </body>
