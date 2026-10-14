@@ -2522,7 +2522,16 @@
       reveal(".logo-wall .logo", { trigger: ".logo-wall", stagger: 0.06, y: 30, duration: 0.7 });
       reveal(".stat", { trigger: ".stats", stagger: 0.12, y: 40 });
       reveal(".contact .inner > *", { trigger: ".contact", stagger: 0.12 });
-      reveal(".site-footer", { trigger: ".site-footer", y: 20 });
+      // the footer sits at the very end of the page, so it can never reach the
+      // usual "top 80%" line on a phone - reveal it as soon as it enters the screen
+      gsap.from(".site-footer", {
+        scrollTrigger: { trigger: ".site-footer", start: "top bottom" },
+        y: 20,
+        autoAlpha: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        clearProps: "all",
+      });
 
       // Motion (vanilla Framer Motion): springy press + hover on interactive elements
       if (window.Motion) {
