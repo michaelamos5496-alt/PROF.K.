@@ -710,6 +710,37 @@
 
     .nf-row { margin-bottom: 1.4rem; }
 
+    .nf-wrap { position: relative; }
+    .nf-track.dragging { scroll-snap-type: none; user-select: none; }
+
+    .nf-arrow {
+      position: absolute;
+      top: 1.6rem;
+      bottom: 1.6rem;
+      width: clamp(40px, 5vw, 64px);
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      border: none;
+      color: var(--ink);
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.25s ease, background 0.25s ease;
+    }
+
+    .nf-arrow[hidden] { display: none; }
+    .nf-arrow.prev { left: 0; background: linear-gradient(to right, rgba(10, 9, 8, 0.92), rgba(10, 9, 8, 0)); }
+    .nf-arrow.next { right: 0; background: linear-gradient(to left, rgba(10, 9, 8, 0.92), rgba(10, 9, 8, 0)); }
+    .nf-arrow svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
+    .nf-wrap:hover .nf-arrow,
+    .nf-arrow:focus-visible { opacity: 1; }
+    .nf-arrow:hover { background-color: rgba(10, 9, 8, 0.35); }
+
+    /* touch screens have no hover, so keep the buttons visible */
+    @media (hover: none) {
+      .nf-arrow { opacity: 1; }
+    }
+
     .nf-row h3 {
       font-size: 1rem;
       font-weight: 500;
@@ -724,6 +755,7 @@
       overflow-x: auto;
       scrollbar-width: none;
       scroll-snap-type: x proximity;
+      scroll-padding-left: clamp(1.5rem, 4vw, 4rem);
     }
 
     .nf-track::-webkit-scrollbar { display: none; }
@@ -2757,12 +2789,57 @@
         const r = document.createElement("div");
         r.className = "nf-row";
         r.dataset.f = key;
-        r.innerHTML = '<h3></h3><div class="nf-track"></div>';
+        r.innerHTML = '<h3></h3><div class="nf-wrap"><div class="nf-track"></div></div>';
         r.querySelector("h3").textContent = title;
+        const wrap = r.querySelector(".nf-wrap");
         const t = r.querySelector(".nf-track");
         idxs.forEach((i) => t.appendChild(tile(i)));
+
+        // slide buttons (Netflix-style) at each end of the row
+        const chevron = (d) => '<svg viewBox="0 0 16 16"><path d="' + (d < 0 ? "M10 2 4 8l6 6" : "M6 2l6 6-6 6") + '"/></svg>';
+        const arrow = (dir) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "nf-arrow " + (dir < 0 ? "prev" : "next");
+          b.setAttribute("aria-label", dir < 0 ? "Slide left" : "Slide right");
+          b.innerHTML = chevron(dir);
+          b.addEventListener("click", () => t.scrollBy({ left: dir * t.clientWidth * 0.8, behavior: "smooth" }));
+          wrap.appendChild(b);
+          return b;
+        };
+        const prev = arrow(-1), next = arrow(1);
+        const sync = () => {
+          prev.hidden = t.scrollLeft <= 4;
+          next.hidden = t.scrollLeft >= t.scrollWidth - t.clientWidth - 4;
+        };
+        r.sync = sync;
+        t.addEventListener("scroll", sync, { passive: true });
+        addEventListener("resize", sync);
+
+        // click-and-drag with the mouse (touch and trackpad already scroll natively)
+        let down = false, moved = false, x0 = 0, left0 = 0;
+        t.addEventListener("pointerdown", (e) => {
+          if (e.pointerType !== "mouse") return;
+          down = true; moved = false; x0 = e.clientX; left0 = t.scrollLeft;
+        });
+        addEventListener("pointermove", (e) => {
+          if (!down) return;
+          const dx = e.clientX - x0;
+          if (Math.abs(dx) > 5) { moved = true; t.classList.add("dragging"); }
+          t.scrollLeft = left0 - dx;
+        });
+        addEventListener("pointerup", () => {
+          if (!down) return;
+          down = false;
+          t.classList.remove("dragging");
+        });
+        t.addEventListener("click", (e) => {
+          if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
+        }, true);
+
         rowsEl.appendChild(r);
         rows.push(r);
+        sync();
       };
       const ofType = (t) => films.map((f, i) => (f.type === t ? i : -1)).filter((i) => i >= 0);
       row("Commercials", "commercial", ofType("Commercial"));
@@ -2773,6 +2850,7 @@
         c.addEventListener("click", () => {
           chips.forEach((x) => x.classList.toggle("on", x === c));
           rows.forEach((r) => { r.hidden = c.dataset.f !== "all" && r.dataset.f !== c.dataset.f; });
+          rows.forEach((r) => r.sync());
         })
       );
 
@@ -2783,6 +2861,7 @@
         root.setAttribute("aria-hidden", "false");
         document.body.classList.add("modal-open");
         root.scrollTop = 0;
+        rows.forEach((r) => r.sync());
         // free up bandwidth for the full-screen browser
         const cur = projects[activeIndex].player;
         if (cur) cur.pause();
