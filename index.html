@@ -376,11 +376,14 @@
       left: 42vw;
       right: clamp(1.5rem, 3vw, 3rem);
       bottom: clamp(6rem, 19vh, 11rem);
-      height: clamp(260px, 50vh, 430px);
+      --n: 3; /* cards shown fully at once */
+      height: calc(clamp(260px, 50vh, 430px) + 40px);
       z-index: 2;
       display: flex;
       gap: 1.3rem;
-      padding-top: 14px;
+      /* room for the lifted active card, its outline and shadow so nothing is clipped */
+      padding: 22px 10px 18px;
+      scroll-padding-left: 10px;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
@@ -388,9 +391,13 @@
 
     .work .cards::-webkit-scrollbar { display: none; }
 
+    @media (min-width: 1500px) {
+      .work .cards { --n: 4; }
+    }
+
     .wcard {
       position: relative;
-      flex: 0 0 clamp(150px, 16vw, 250px);
+      flex: 0 0 calc((100% - (var(--n) - 1) * 1.3rem) / var(--n));
       height: 100%;
       scroll-snap-align: start;
       border: none;
@@ -1679,16 +1686,15 @@
       /* work section: title above, cards and controls full width below */
       .work .caption {
         width: min(560px, 88vw);
-        bottom: calc(clamp(5rem, 15vh, 7rem) + 30vh);
+        bottom: calc(clamp(5rem, 15vh, 7rem) + 30vh + 44px);
       }
 
       .work .cards {
         left: 0;
         right: 0;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
+        padding: 22px 1.5rem 18px;
         scroll-padding-left: 1.5rem;
-        height: 30vh;
+        height: calc(30vh + 40px);
         bottom: clamp(5rem, 15vh, 7rem);
       }
 
@@ -1729,6 +1735,7 @@
         padding: 3.5rem 1.5rem 6rem;
       }
 
+      .work .cards { --n: 2; padding-left: 1.2rem; padding-right: 1.2rem; scroll-padding-left: 1.2rem; }
       .work .intro { max-width: 90vw; top: 1.6rem; }
       .work .intro h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
       .work .intro p { font-size: 0.72rem; line-height: 1.5; }
@@ -1846,8 +1853,8 @@
     /* short phones: keep the intro, title, buttons and cards from touching */
     @media (max-width: 760px) and (max-height: 700px) {
       .work .intro p { display: none; }
-      .work .cards { height: 26vh; }
-      .work .caption { bottom: calc(clamp(5rem, 15vh, 7rem) + 26vh); }
+      .work .cards { height: calc(26vh + 40px); }
+      .work .caption { bottom: calc(clamp(5rem, 15vh, 7rem) + 26vh + 44px); }
     }
   </style>
 </head>
