@@ -9,7 +9,8 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <title>Kwesi Apenteng-Mensah — Creative Director</title>
+  <title>Kwesi “Prof K” Apenteng-Mensah — Film Director &amp; Creative Director</title>
+  <meta name="description" content="Film direction for high-stakes stories. Commercials and documentaries directed by Kwesi “Prof K” Apenteng-Mensah. Based in Accra, Ghana." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
@@ -76,7 +77,7 @@
       min-height: 100svh;
       display: grid;
       grid-template-columns: 1fr 120px;
-      grid-template-rows: auto 1fr;
+      grid-template-rows: auto 1fr auto;
       background:
         radial-gradient(circle at 15% 85%, rgba(255, 77, 28, 0.28), transparent 42%),
         radial-gradient(circle at 85% 15%, rgba(40, 150, 190, 0.25), transparent 45%),
@@ -85,10 +86,71 @@
         var(--bg);
     }
 
+    .about-text .who {
+      font-size: 0.66rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .about-text .who span { color: rgba(244, 239, 230, 0.55); }
+    .about-text .bio { margin-bottom: 0.9rem; }
+    .about-text .based { font-size: 0.78rem; color: var(--accent); margin-bottom: 1.6rem; letter-spacing: 0.04em; }
+
+    /* ---- Selected brands strip (bottom of the landing screen) ---- */
+    .brands {
+      grid-column: 1;
+      grid-row: 3;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      padding: 0.9rem 0 1.1rem clamp(1.5rem, 6vw, 6rem);
+      border-top: 1px solid var(--line);
+    }
+
+    .brands .label {
+      font-size: 0.58rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .brands .ticker {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+      mask-image: linear-gradient(to right, #000 85%, transparent);
+    }
+
+    .brands .track {
+      display: flex;
+      width: max-content;
+      gap: 2.2rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      color: rgba(244, 239, 230, 0.8);
+      white-space: nowrap;
+    }
+
+    .brands .track .dup { width: 0; overflow: hidden; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .brands .track { animation: brands-run 50s linear infinite; }
+    }
+
+    @keyframes brands-run { to { transform: translateX(-50%); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .brands .track { width: auto; flex-wrap: wrap; white-space: normal; }
+      .brands .track [aria-hidden="true"] { display: none; }
+    }
+
     /* ---- Vertical nav, right edge ---- */
     .navbar {
       grid-column: 2;
-      grid-row: 1 / span 2;
+      grid-row: 1 / -1;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -131,7 +193,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(3rem, 8vh, 5rem) clamp(1rem, 3vw, 3rem) clamp(7rem, 16vh, 11rem) clamp(1.5rem, 6vw, 6rem);
+      padding: clamp(1.2rem, 4vh, 3rem) clamp(1rem, 3vw, 3rem) clamp(2rem, 5vh, 3.5rem) clamp(1.5rem, 6vw, 6rem);
     }
 
     .eyebrow {
@@ -150,38 +212,6 @@
       width: 3rem;
       height: 1px;
       background: var(--accent);
-    }
-
-    .hero h1 {
-      font-family: "Fraunces", Georgia, serif;
-      font-weight: 300;
-      font-size: clamp(2.8rem, 7.5vw, 6.5rem);
-      line-height: 1.02;
-      letter-spacing: -0.01em;
-      max-width: 15ch;
-      margin-bottom: 2.2rem;
-    }
-
-    .hero h1 .accent-word {
-      font-style: italic;
-      font-weight: 700;
-      color: var(--accent);
-    }
-
-    .hero .lede {
-      font-size: clamp(0.95rem, 1.3vw, 1.1rem);
-      font-weight: 300;
-      line-height: 1.8;
-      color: var(--muted);
-      max-width: 46ch;
-      margin-bottom: 3rem;
-    }
-
-    .hero .actions {
-      display: flex;
-      align-items: center;
-      gap: 1.8rem;
-      flex-wrap: wrap;
     }
 
     .btn {
@@ -210,32 +240,6 @@
     .btn.ghost:hover {
       background: var(--ink);
       color: var(--bg);
-    }
-
-    /* ---- Footer strip inside hero ---- */
-    .hero .meta {
-      position: absolute;
-      bottom: 2rem;
-      left: clamp(1.5rem, 7vw, 7rem);
-      right: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .meta .dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #4ade80;
-      margin-right: 0.6rem;
-      vertical-align: middle;
     }
 
     /* ---- Work section (scrolls in below the hero) ---- */
@@ -495,6 +499,68 @@
       line-height: 1;
     }
 
+    .work .intro {
+      position: absolute;
+      left: clamp(1.5rem, 5vw, 5rem);
+      top: clamp(2rem, 8vh, 5rem);
+      z-index: 2;
+      max-width: min(40vw, 500px);
+    }
+
+    .work .intro h2 {
+      font-weight: 500;
+      font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.9rem;
+    }
+
+    .work .intro p {
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: rgba(244, 239, 230, 0.8);
+      margin-bottom: 0.6rem;
+    }
+
+    .work .caption .blurb { white-space: pre-line; }
+
+    @media (max-height: 820px), (max-width: 1024px) {
+      .work .intro .more { display: none; }
+    }
+
+
+    .work .caption .discover.solid {
+      background: var(--ink);
+      color: var(--bg);
+      border-color: var(--ink);
+    }
+
+    .work .caption .discover.solid:hover { background: transparent; color: var(--ink); }
+
+    .nf-filters {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      padding: 0 clamp(1.5rem, 4vw, 4rem) 0.6rem;
+    }
+
+    .nf-chip {
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: none;
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .nf-chip:hover { border-color: var(--ink); }
+    .nf-chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
     /* ---- Netflix-style "all work" overlay ---- */
     body.modal-open { overflow: hidden; }
 
@@ -591,6 +657,7 @@
     }
 
     .nf-hero .blurb {
+      white-space: pre-line;
       font-size: 0.85rem;
       line-height: 1.7;
       color: rgba(244, 239, 230, 0.8);
@@ -780,8 +847,8 @@
     .about-photo {
       position: relative;
       align-self: end;
-      margin-top: clamp(2rem, 6vh, 4rem);
-      margin-bottom: calc(clamp(2rem, 5vw, 3.5rem) * -1 - clamp(2.5rem, 7vh, 5rem));
+      margin-top: clamp(1.5rem, 4vh, 3rem);
+      margin-bottom: calc(clamp(2rem, 5vw, 3.5rem) * -1 - clamp(1.5rem, 4vh, 2.5rem));
     }
 
     /* pale tinted block sits behind and above the portrait, as in the reference */
@@ -798,7 +865,7 @@
       display: block;
       width: 100%;
       height: auto;
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 1 / 1;
       object-fit: cover;
       object-position: 42% 20%;
       filter: contrast(1.05) brightness(1.05);
@@ -808,7 +875,7 @@
 
     .about-text {
       position: relative;
-      padding: 1.5rem 0 4.5rem;
+      padding: 1.5rem 0 3rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -821,7 +888,7 @@
       margin-bottom: 2rem;
     }
 
-    .about-text h3 {
+    .about-text h1 {
       font-weight: 500;
       font-size: clamp(2rem, 3.5vw, 3.2rem);
       line-height: 1.05;
@@ -933,8 +1000,8 @@
       flex-direction: column;
       justify-content: center;
       overflow: hidden;
-      padding: clamp(4rem, 10vh, 7rem) 0;
-      gap: clamp(2.5rem, 7vh, 4.5rem);
+      padding: clamp(4rem, 9vh, 6rem) 0;
+      gap: clamp(2rem, 5vh, 3.5rem);
       background:
         linear-gradient(to bottom, rgba(14, 13, 11, 0.55), rgba(14, 13, 11, 0.9)),
         url("images/hero-portrait.webp") 30% 20% / cover no-repeat,
@@ -1041,7 +1108,7 @@
     .service-track.dragging * { pointer-events: none; }
 
     .service {
-      flex: 0 0 clamp(250px, 24vw, 340px);
+      flex: 0 0 clamp(260px, 29vw, 420px);
       scroll-snap-align: start;
       display: flex;
       flex-direction: column;
@@ -1074,7 +1141,7 @@
     }
 
     .service .shot {
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 16 / 10;
       border-radius: 4px;
       background-image: url("images/hero-portrait.webp");
       background-repeat: no-repeat;
@@ -1121,451 +1188,207 @@
     .service.is-active .tag { border-color: var(--line); background: rgba(244, 239, 230, 0.1); }
     .service.is-active .go { border-color: var(--line); color: var(--ink); background: rgba(244, 239, 230, 0.12); }
 
-    /* ---- Clientele section ---- */
-    .clients {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: clamp(4rem, 10vh, 7rem) clamp(1.5rem, 6vw, 6rem);
-      gap: clamp(3rem, 6vh, 4.5rem);
+    /* ---- About ---- */
+    .about {
+      padding: clamp(5rem, 14vh, 9rem) clamp(1.5rem, 6vw, 6rem);
+      background: var(--bg);
     }
 
-    .clients .heading {
-      text-align: center;
+    .about .a-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: clamp(2rem, 6vw, 6rem);
+      align-items: start;
     }
 
-    .clients .heading .eyebrow {
-      justify-content: center;
-      margin-bottom: 1.4rem;
+    .about h2,
+    .approach h2,
+    .contact h2 {
+      font-weight: 500;
+      font-size: clamp(2.2rem, 4.6vw, 4rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.2rem;
     }
 
-    .clients .heading .eyebrow::after {
-      content: "";
-      width: 3rem;
-      height: 1px;
-      background: var(--accent);
+    .about h2 em,
+    .approach h2 em,
+    .contact h2 em { font-style: normal; color: var(--accent); }
+
+    .about .a-role {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      max-width: 34ch;
+      line-height: 1.8;
     }
 
-    .clients .heading h3 {
-      font-family: "Fraunces", Georgia, serif;
+    .about .a-body p {
+      font-size: clamp(0.9rem, 1.1vw, 1rem);
       font-weight: 300;
-      font-size: clamp(1.8rem, 3.5vw, 3rem);
-      line-height: 1.2;
+      line-height: 1.85;
+      color: rgba(244, 239, 230, 0.78);
+      margin-bottom: 1.2rem;
+      max-width: 62ch;
     }
 
-    .clients .heading h3 em {
-      font-style: italic;
-      color: var(--accent);
-    }
+    .about .a-body .lead { font-size: clamp(1.05rem, 1.5vw, 1.3rem); color: var(--ink); font-weight: 400; }
+    .about .a-body .loc { color: var(--accent); font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; }
 
-    /* logo wall */
-    .logo-wall {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border-top: 1px solid var(--line);
-      border-left: 1px solid var(--line);
-    }
-
-    .logo-wall .logo {
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.8rem;
-      padding: 2.2rem 1rem;
-      color: var(--muted);
-      opacity: 0.75;
-      transition: color 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+    /* ---- Approach ---- */
+    .approach {
+      padding: clamp(4rem, 12vh, 8rem) clamp(1.5rem, 6vw, 6rem);
+      background: var(--bg-soft);
       text-align: center;
     }
 
-    .logo-wall .logo svg {
-      width: 32px;
-      height: 32px;
-      display: block;
+    .approach .ap-inner { max-width: 62rem; margin: 0 auto; }
+    .approach .eyebrow { justify-content: center; }
+    .approach p:not(.eyebrow) {
+      font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(244, 239, 230, 0.78);
+      max-width: 56ch;
+      margin: 0 auto 1.2rem;
     }
 
-    .logo-wall .logo span {
-      font-size: 0.65rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-    }
-
-    .logo-wall .logo:hover {
-      color: var(--ink);
-      opacity: 1;
-      background: rgba(244, 239, 230, 0.04);
-    }
-
-    /* statistics */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: clamp(1rem, 2vw, 2rem);
-    }
-
-    .stat {
-      padding: clamp(1.6rem, 3vw, 2.6rem) 1.4rem;
-      text-align: center;
-      border-top: 2px solid var(--accent);
-      background: linear-gradient(to bottom, rgba(244, 239, 230, 0.06), rgba(244, 239, 230, 0.015));
-    }
-
-    .stat .num {
-      font-family: "Bebas Neue", Impact, "Space Grotesk", sans-serif;
-      font-size: clamp(3.4rem, 7vw, 6rem);
-      line-height: 1;
-      letter-spacing: 0.01em;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .stat .num b {
-      font-weight: 400;
-      color: var(--accent);
-    }
-
-    .stat .label {
-      margin-top: 0.7rem;
-      font-size: 0.68rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    @media (max-width: 760px) {
-      .stats { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    /* ---- Contact section ---- */
+    /* ---- Contact ---- */
     .contact {
       position: relative;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      overflow: hidden;
-      padding: clamp(4rem, 10vh, 7rem) clamp(1.5rem, 6vw, 6rem);
-    }
-
-    .contact .map {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 62%;
-      height: 100%;
-      pointer-events: none;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 45%);
-      mask-image: linear-gradient(to right, transparent 0%, #000 45%);
-    }
-
-    .contact .map iframe {
-      position: absolute;
-      top: -90px; /* pushes the zoom buttons off-screen */
-      left: 0;
-      width: 100%;
-      height: calc(100% + 90px);
-      border: 0;
-      /* turn the light OSM tiles into a dark, muted map */
-      filter: invert(1) hue-rotate(180deg) brightness(0.8) contrast(0.85) saturate(0.25);
-    }
-
-    .contact .map .pin-wrap {
-      position: absolute;
-      top: 50%; /* iframe is 90px taller at the top, so its centre sits 45px lower */
-      margin-top: 45px;
-      left: 50%;
-      width: 0;
-      height: 0;
-    }
-
-    .contact .map .pin {
-      position: absolute;
-      left: -14px;
-      top: -40px;
-      width: 28px;
-      height: 40px;
-      fill: var(--accent);
-      stroke: var(--ink);
-      stroke-width: 1.5;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
-    }
-
-    .contact .map .pulse {
-      position: absolute;
-      left: -22px;
-      top: -22px;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1.5px solid var(--accent);
-      opacity: 0.6;
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .contact .map .pulse { animation: pin-pulse 2.8s ease-out infinite; }
-    }
-
-    @keyframes pin-pulse {
-      from { transform: scale(0.4); opacity: 0.9; }
-      to { transform: scale(2.4); opacity: 0; }
+      align-items: center;
+      padding: clamp(5rem, 12vh, 8rem) clamp(1.5rem, 6vw, 6rem);
+      background:
+        radial-gradient(circle at 85% 20%, rgba(255, 77, 28, 0.12), transparent 45%),
+        var(--bg);
     }
 
     .contact .inner {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      min-width: 0;
-      max-width: 52rem;
-      display: flex;
-      flex-direction: column;
-      gap: clamp(2.5rem, 7vh, 4.5rem);
-    }
-
-    .contact .heading {
-      display: flex;
-      gap: 1.4rem;
-      align-items: stretch;
-    }
-
-    .contact .heading::before {
-      content: "";
-      width: 6px;
-      background: var(--accent);
-      flex: none;
-    }
-
-    .contact .heading p {
-      font-size: 1.05rem;
-      font-weight: 400;
-      margin-bottom: 0.2rem;
-    }
-
-    .contact .heading h3 {
-      font-weight: 500;
-      font-size: clamp(3rem, 7vw, 5.5rem);
-      line-height: 1;
-      letter-spacing: -0.02em;
-    }
-
-    .contact .details {
+      width: min(1180px, 100%);
+      margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(3, auto);
-      justify-content: start;
-      gap: 1.5rem clamp(2rem, 5vw, 4.5rem);
-      padding-left: calc(6px + 1.4rem);
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: clamp(2rem, 6vw, 6rem);
+      align-items: start;
     }
 
-    .contact .details dt {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      font-size: 0.9rem;
-      margin-bottom: 0.9rem;
-    }
-
-    .contact .details dt svg {
-      width: 13px;
-      height: 13px;
-      fill: var(--ink);
-      flex: none;
-    }
-
-    .contact .details dd {
-      padding-left: calc(13px + 0.7rem);
-      font-size: 0.8rem;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    .contact .details dd a {
-      color: inherit;
-      text-decoration: none;
-      transition: color 0.25s ease;
-    }
-
-    .contact .details dd a:hover { color: var(--accent); }
-
-    /* step-by-step form */
-    .contact form {
-      padding-left: calc(6px + 1.4rem);
-    }
-
-    .contact .form-title {
-      display: flex;
-      align-items: center;
-      gap: 1.1rem;
-      font-size: 1.05rem;
+    .contact .lead {
+      font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(244, 239, 230, 0.78);
+      max-width: 44ch;
       margin-bottom: 2.2rem;
     }
 
-    .contact .form-title::before {
-      content: "";
-      width: 3px;
-      height: 14px;
-      background: var(--accent);
-    }
-
-    .contact .form-row {
-      display: flex;
-      align-items: flex-end;
-      gap: clamp(1.5rem, 4vw, 3.5rem);
-    }
-
-    .contact .steps {
-      position: relative;
-      flex: 1 1 auto;
-      max-width: 28rem;
-    }
-
-    .contact .step {
-      display: none;
-      flex-direction: column;
-    }
-
-    .contact .step.active {
-      display: flex;
-      animation: step-in 0.45s ease both;
-    }
-
-    @keyframes step-in {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: none; }
-    }
-
-    .contact .step label {
-      font-size: 0.65rem;
+    .contact h3 {
+      font-size: 0.7rem;
+      font-weight: 500;
       letter-spacing: 0.35em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
     }
 
-    .contact .step input,
-    .contact .step select,
-    .contact .step textarea {
+    .contact .mail {
+      display: inline-block;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 0.2rem;
+      margin-bottom: 1.2rem;
+      overflow-wrap: anywhere;
+      transition: color 0.25s ease;
+    }
+
+    .contact .mail:hover { color: var(--accent); }
+    .contact .loc { color: var(--muted); margin-bottom: 1.4rem; }
+    .contact .soc a { color: var(--ink); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; border-bottom: 1px solid var(--line); padding-bottom: 0.15rem; transition: color 0.25s ease, border-color 0.25s ease; }
+    .contact .soc a:hover { color: var(--accent); border-color: var(--accent); }
+
+    #enquiry-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.6rem 1.4rem;
+      padding: clamp(1.4rem, 3vw, 2.4rem);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 18px;
+    }
+
+    #enquiry-form .field { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+    #enquiry-form .field.wide { grid-column: 1 / -1; }
+
+    #enquiry-form label {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    #enquiry-form input,
+    #enquiry-form select,
+    #enquiry-form textarea {
       width: 100%;
       background: transparent;
       border: none;
       border-bottom: 1px solid var(--line);
-      padding: 0.5rem 0 0.9rem;
+      border-radius: 0;
+      padding: 0.6rem 0;
       color: var(--ink);
       font-family: inherit;
-      font-size: clamp(1.5rem, 2.6vw, 2.1rem);
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      border-radius: 0;
+      font-size: 1rem;
+      font-weight: 300;
       transition: border-color 0.25s ease;
     }
 
-    .contact .step input::placeholder,
-    .contact .step textarea::placeholder {
-      color: rgba(244, 239, 230, 0.22);
-    }
+    #enquiry-form select option { background: var(--bg); color: var(--ink); }
+    #enquiry-form textarea { resize: vertical; min-height: 90px; }
 
-    .contact .step select { cursor: pointer; }
-    .contact .step select option { background: var(--bg); color: var(--ink); font-size: 1rem; }
-    .contact .step textarea { resize: none; min-height: 3.2em; font-size: clamp(1.2rem, 2vw, 1.6rem); }
+    #enquiry-form input:focus,
+    #enquiry-form select:focus,
+    #enquiry-form textarea:focus { outline: none; border-color: var(--accent); }
 
-    .contact .step input:focus,
-    .contact .step select:focus,
-    .contact .step textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-
-    .contact .progress {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 0.8rem;
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(244, 239, 230, 0.28);
-    }
-
-    .contact .progress span {
-      position: relative;
-      padding-top: 0.7rem;
-      transition: color 0.25s ease;
-    }
-
-    .contact .progress span::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: currentColor;
-    }
-
-    .contact .progress span.done,
-    .contact .progress span.current { color: var(--ink); }
-    .contact .progress span.current::before { background: var(--accent); }
-
-    .contact .next {
-      display: inline-flex;
-      align-items: center;
-      gap: 1rem;
-      flex: none;
-      background: none;
-      border: none;
-      color: var(--ink);
-      font-family: inherit;
-      font-size: 0.85rem;
-      cursor: pointer;
-      padding: 0;
-    }
-
-    .contact .next .ring {
-      width: 66px;
-      height: 66px;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      transition: border-color 0.25s ease, background 0.25s ease;
-    }
-
-    .contact .next svg {
-      width: 20px;
-      height: 10px;
-      fill: none;
-      stroke: var(--ink);
-      stroke-width: 1.4;
-      transition: transform 0.25s ease;
-    }
-
-    .contact .next:hover .ring,
-    .contact .next:focus-visible .ring { border-color: var(--accent); background: rgba(255, 77, 28, 0.08); }
-    .contact .next:hover svg { transform: translateX(4px); }
-    .contact .next:focus-visible { outline: none; }
-
-    .contact .form-error {
-      min-height: 1.2em;
-      margin-top: 1rem;
-      font-size: 0.75rem;
-      color: var(--accent);
-    }
+    #enquiry-form .btn { grid-column: 1 / -1; justify-self: start; cursor: pointer; font-family: inherit; }
+    #enquiry-form .form-note { grid-column: 1 / -1; min-height: 1.2em; font-size: 0.75rem; color: var(--muted); }
 
     /* ---- Footer ---- */
     .site-footer {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
+      align-items: flex-end;
+      gap: 1.5rem;
       flex-wrap: wrap;
       border-top: 1px solid var(--line);
-      padding: 1.8rem clamp(1.5rem, 6vw, 6rem);
+      padding: 2.2rem clamp(1.5rem, 6vw, 6rem);
       font-size: 0.65rem;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--muted);
+    }
+
+    .site-footer .f-id p {
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      line-height: 1.8;
+    }
+
+    .site-footer .f-id .f-name { color: var(--ink); font-weight: 500; font-size: 0.9rem; }
+
+    .site-footer .f-side {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
     }
 
     .site-footer a {
@@ -1659,7 +1482,7 @@
     @media (max-width: 760px) {
       .page {
         grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
+        grid-template-rows: auto 1fr auto;
       }
 
       .navbar {
@@ -1682,7 +1505,10 @@
         padding: 3.5rem 1.5rem 6rem;
       }
 
-      .work .caption .blurb { display: none; }
+      .work .intro { max-width: 90vw; top: 1.6rem; }
+      .work .intro h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+      .work .intro p { font-size: 0.72rem; line-height: 1.5; }
+      .work .caption .blurb { font-size: 0.72rem; line-height: 1.55; margin-bottom: 1rem; }
       .fab { bottom: 4.2rem; width: 40px; height: 40px; }
       .nf-hero { height: 52vh; }
       .nf-tile { flex-basis: 62vw; }
@@ -1715,7 +1541,9 @@
 
       .about-text { padding: 0; }
       .about-text .rule { width: 90px; margin-bottom: 0.9rem; }
-      .about-text h3 { font-size: clamp(1.6rem, 7vw, 2rem); margin-bottom: 0.4rem; }
+      .about-text h1 { font-size: clamp(1.6rem, 7vw, 2rem); margin-bottom: 0.6rem; }
+      .about-text .bio.more { display: none; }
+      .about-text .based { margin-bottom: 1rem; }
       .about-text .role { font-size: 0.9rem; margin-bottom: 0.8rem; }
 
       .about-text .bio {
@@ -1750,49 +1578,15 @@
         flex-basis: 78vw;
       }
 
-      .contact .map {
-        width: 100%;
-        opacity: 0.2;
-        -webkit-mask-image: none;
-        mask-image: none;
-      }
+      .about .a-inner,
+      .contact .inner { grid-template-columns: 1fr; }
 
-      .contact .details {
-        grid-template-columns: 1fr;
-        padding-left: 0;
-      }
+      #enquiry-form { grid-template-columns: 1fr; }
 
-      .contact form {
-        padding-left: 0;
-      }
+      .brands { padding-left: 1.2rem; }
+      .brands .label { margin-bottom: 0.4rem; }
 
-      .contact .form-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .contact .steps {
-        width: 100%;
-        min-width: 0;
-      }
-
-      .contact .progress {
-        font-size: 0.55rem;
-        letter-spacing: 0.1em;
-      }
-
-      .logo-wall {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .logo-wall .logo {
-        padding: 1.6rem 0.8rem;
-      }
-
-      .site-footer {
-        justify-content: center;
-        text-align: center;
-      }
+      .site-footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -1827,19 +1621,17 @@
           <line x1="17" y1="7" x2="22" y2="7" />
         </svg>
       </a>
-      <a href="#services" aria-label="Services" title="Services">
+      <a href="#about" aria-label="About" title="About">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      </a>
+      <a href="#expertise" aria-label="Expertise" title="Expertise">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="12 2 2 7 12 12 22 7 12 2" />
           <polyline points="2 17 12 22 22 17" />
           <polyline points="2 12 12 17 22 12" />
-        </svg>
-      </a>
-      <a href="#clients" aria-label="Clients" title="Clients">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
         </svg>
       </a>
       <a href="#contact" aria-label="Contact" title="Contact">
@@ -1858,28 +1650,14 @@
 
       <div class="about-text">
         <div class="rule"></div>
-        <h3>Kwesi<br />Apenteng-Mensah</h3>
-        <p class="role">Creative Director / Filmmaker</p>
-        <p class="bio">
-          Kwesi Apenteng-Mensah is a creative director working across brand,
-          film, and campaign &mdash; leading multidisciplinary teams from first
-          concept through final delivery. His work pairs sharp strategic
-          thinking with an obsessive eye for craft, and has helped brands large
-          and small find a voice that cuts through.
-        </p>
-        <p class="signature" aria-hidden="true">Kwesi A-M</p>
+        <p class="who">Kwesi &ldquo;Prof K&rdquo; Apenteng-Mensah<span> &middot; Film Director &amp; Creative Director</span></p>
+        <h1>Film direction for high&#8209;stakes stories.</h1>
+        <p class="bio">I direct commercials and documentaries where attention, credibility and reputation matter.</p>
+        <p class="bio more">From major brand campaigns to stories of enterprise, education and social impact, I combine strategic thinking, cinematic craft and human insight to make films that connect.</p>
+        <p class="based">Based in Accra, Ghana.</p>
         <div class="row">
-          <a class="btn primary" href="#work">View Work</a>
-          <a class="btn ghost" href="#contact">Get in Touch</a>
-        </div>
-        <div class="social">
-          <a href="https://vimeo.com/oneshotstudios" target="_blank" rel="noopener" aria-label="Vimeo">
-            <svg viewBox="0 0 24 24"><path d="M22 7.400c-.1 2.200-1.600 5.200-4.600 9-3 4-5.600 6-7.700 6-1.300 0-2.400-1.200-3.300-3.600L4.600 12.400C3.900 10 3.200 8.800 2.400 8.800c-.2 0-.8.400-1.800 1.100L0 9.100c1.100-1 2.200-1.900 3.300-2.900 1.500-1.300 2.600-2 3.400-2.100 1.800-.2 2.900 1 3.300 3.700.4 2.900.7 4.700.8 5.400.5 2.400 1.100 3.600 1.700 3.600.5 0 1.200-.8 2.200-2.300 1-1.500 1.500-2.700 1.600-3.500.1-1.400-.4-2.100-1.600-2.100-.6 0-1.100.1-1.700.4 1.100-3.700 3.300-5.500 6.500-5.400 2.400.1 3.500 1.600 3.500 4.400z"/></svg>
-          </a>
-          <a href="mailto:hello@kwesiapentengmensah.com" aria-label="Email">
-            <svg viewBox="0 0 24 24"><path d="M2 5h20v2.400l-10 6.200L2 7.400V5zm0 4.700 10 6.200 10-6.200V19H2V9.700z"/></svg>
-          </a>
-          <span class="avail"><span class="dot"></span>Available for select projects</span>
+          <a class="btn primary" href="#work">Watch My Work</a>
+          <a class="btn ghost" href="#contact">Discuss a Project</a>
         </div>
       </div>
 
@@ -1888,261 +1666,162 @@
       </div>
     </div>
     </main>
+
+    <div class="brands" aria-label="Selected brands and organisations">
+      <p class="label">Selected brands &amp; organisations</p>
+      <div class="ticker">
+        <div class="track"><span>Uber</span><span>The World Bank</span><span>MTN Ghana</span><span>Unilever</span><span>Absa Ghana</span><span>Hubtel</span><span>Danone</span><span>Ashesi University</span><span>Africa Health Collaborative</span><span>KGL Group</span><span>DKT International</span><span>Cocoa360</span><span>DStv Ghana</span><span class="dup" aria-hidden="true">&nbsp;</span><span aria-hidden="true">Uber</span><span aria-hidden="true">The World Bank</span><span aria-hidden="true">MTN Ghana</span><span aria-hidden="true">Unilever</span><span aria-hidden="true">Absa Ghana</span><span aria-hidden="true">Hubtel</span><span aria-hidden="true">Danone</span><span aria-hidden="true">Ashesi University</span><span aria-hidden="true">Africa Health Collaborative</span><span aria-hidden="true">KGL Group</span><span aria-hidden="true">DKT International</span><span aria-hidden="true">Cocoa360</span><span aria-hidden="true">DStv Ghana</span></div>
+      </div>
+    </div>
+
   </div>
 
   <section class="work" id="work">
     <!-- one background player per Vimeo project is injected here by the script -->
     <div class="scrim" aria-hidden="true"></div>
 
+    <div class="intro">
+      <h2>Selected films.<br />A clear point of view.</h2>
+      <p>Commercial campaigns and documentaries directed by Kwesi Apenteng-Mensah.</p>
+      <p class="more">Work spanning consumer brands, financial services, technology, healthcare, education and development &mdash; each shaped around its audience, its purpose and the people at its heart.</p>
+    </div>
+
     <div class="caption">
       <span class="dash"></span>
-      <p class="where" id="caption-cat">Promo · Ghana Premier League</p>
-      <h3 id="caption-title">Do You Know The GPL</h3>
+      <p class="where" id="caption-cat"></p>
+      <h3 id="caption-title"></h3>
       <p class="blurb" id="caption-blurb"></p>
       <div class="actions">
-        <a class="mark" href="#contact" aria-label="Work with me" title="Work with me">
-          <svg viewBox="0 0 14 18"><path d="M0 0h14v18l-7-5-7 5z"/></svg>
-        </a>
-        <button class="discover" id="view-more" type="button" aria-haspopup="dialog">View more</button>
+        <button class="discover solid" id="watch-film" type="button">Watch Film</button>
+        <button class="discover" id="view-more" type="button" aria-haspopup="dialog">View All Work</button>
       </div>
     </div>
 
     <div class="cards" id="work-cards" aria-label="Selected work"></div>
 
     <div class="controls">
-      <button type="button" id="work-prev" aria-label="Previous project"><svg viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></button>
-      <button type="button" id="work-next" aria-label="Next project"><svg viewBox="0 0 16 16"><path d="m6 3 5 5-5 5"/></svg></button>
+      <button type="button" id="work-prev" aria-label="Previous film"><svg viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></button>
+      <button type="button" id="work-next" aria-label="Next film"><svg viewBox="0 0 16 16"><path d="m6 3 5 5-5 5"/></svg></button>
       <div class="bar" aria-hidden="true"><i id="work-bar"></i></div>
       <span class="count" id="work-count" aria-live="polite">01</span>
     </div>
   </section>
 
-  <section class="services" id="services">
+  <section class="about" id="about">
+    <div class="a-inner">
+      <div class="a-head">
+        <p class="eyebrow">About</p>
+        <h2>Commercial precision.<br /><em>Documentary depth.</em></h2>
+        <p class="a-role">Chief Creative Officer &amp; Managing Partner, OneShot Studios</p>
+      </div>
+      <div class="a-body">
+        <p class="lead">I&rsquo;m Kwesi Apenteng-Mensah, known as Prof K - a Ghanaian film director, creative director, and Chief Creative Officer &amp; Managing Partner at OneShot Studios.</p>
+        <p>For more than a decade, I&rsquo;ve led creative teams and directed films for brands and organisations including Uber, The World Bank, MTN Ghana, Unilever, Absa Ghana, Hubtel, Danone, Ashesi University, Africa Health Collaborative, KGL Group, DKT International, Cocoa360 and DStv Ghana.</p>
+        <p>My commercial work brings together strong visual ideas, considered performances and a clear understanding of the brand&rsquo;s objective. My documentary practice centres on thoughtful interviews, careful observation and the responsibility of representing people&rsquo;s experiences.</p>
+        <p>Across both, I look for the human truth that gives a story its power.</p>
+        <p>I collaborate with agencies, brand teams and organisations from treatment through final delivery - establishing a clear vision, guiding multidisciplinary teams and protecting the story through every production decision.</p>
+        <p>Alongside my client work, I help develop original shows and formats through tv57, creating space for African voices, personalities and experiences.</p>
+        <p class="loc">Based in Accra, Ghana.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="expertise">
     <div class="top">
       <div class="heading">
-        <span class="pill">My Services</span>
-        <h3>Trusted<br /><em>Expertise</em></h3>
+        <span class="pill">Expertise</span>
+        <h3>Clear vision.<br /><em>Considered execution.</em></h3>
       </div>
       <div class="side">
-        <p>From first spark to final frame — concept, craft, and execution under one vision.</p>
-        <div class="arrows">
-          <button type="button" id="svc-prev" aria-label="Previous service"><svg viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></button>
-          <button type="button" id="svc-next" aria-label="Next service"><svg viewBox="0 0 16 16"><path d="m6 3 5 5-5 5"/></svg></button>
+        <div class="arrows" id="svc-arrows">
+          <button type="button" id="svc-prev" aria-label="Previous"><svg viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></button>
+          <button type="button" id="svc-next" aria-label="Next"><svg viewBox="0 0 16 16"><path d="m6 3 5 5-5 5"/></svg></button>
         </div>
       </div>
     </div>
 
-    <div class="service-track" id="service-track" aria-label="Services">
+    <div class="service-track" id="service-track" aria-label="Expertise">
       <article class="service">
-        <span class="tag">Identity</span>
-        <h4>Brand<br />Identity</h4>
+        <span class="tag">Commercial</span>
+        <h4>Commercial<br />Direction</h4>
         <div class="shot" style="background-image: url('images/service-1.webp'); background-size: cover; background-position: 45% 25%"></div>
         <div class="foot">
-          <p class="desc">Naming, identity systems, and voice for brands that want to be remembered.</p>
-          <a class="go" href="#contact" aria-label="Enquire about Brand Identity"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+          <p class="desc">Commercials built around a strong idea, distinctive imagery and performances that feel believable. I work with agencies and brand teams to translate campaign strategy into films that connect with audiences and keep the brand&rsquo;s purpose in focus.</p>
+          <a class="go" href="#contact" aria-label="Discuss a commercial project"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
         </div>
       </article>
 
       <article class="service">
-        <span class="tag">Campaign</span>
-        <h4>Campaign<br />Direction</h4>
+        <span class="tag">Documentary</span>
+        <h4>Documentary &amp;<br />Brand Storytelling</h4>
         <div class="shot" style="background-image: url('images/service-2.webp'); background-size: cover; background-position: 48% 25%"></div>
         <div class="foot">
-          <p class="desc">One idea, carried across every channel and every touchpoint.</p>
-          <a class="go" href="#contact" aria-label="Enquire about Campaign Direction"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+          <p class="desc">Films that make complex subjects understandable and lived experiences meaningful. Through research, thoughtful interviews and careful observation, I help organisations communicate their work with clarity, humanity and respect for the people whose stories they tell.</p>
+          <a class="go" href="#contact" aria-label="Discuss a documentary project"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
         </div>
       </article>
 
       <article class="service">
-        <span class="tag">Film</span>
-        <h4>Film &amp;<br />Commercial</h4>
-        <div class="shot" style="background-size: 340%; background-position: 28% 82%"></div>
+        <span class="tag">Creative</span>
+        <h4>Creative<br />Direction</h4>
+        <div class="shot" style="background-image: url('images/hero-portrait.webp'); background-size: 180%; background-position: 40% 60%"></div>
         <div class="foot">
-          <p class="desc">Direction from treatment to final cut, on set and in the edit.</p>
-          <a class="go" href="#contact" aria-label="Enquire about Film and Commercial"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
-        </div>
-      </article>
-
-      <article class="service">
-        <span class="tag">Consulting</span>
-        <h4>Creative<br />Consulting</h4>
-        <div class="shot" style="background-size: 180%; background-position: 40% 60%"></div>
-        <div class="foot">
-          <p class="desc">An outside eye for in-house teams who need a sharper point of view.</p>
-          <a class="go" href="#contact" aria-label="Enquire about Creative Consulting"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+          <p class="desc">A coherent vision from brief to screen. I shape concepts, treatments and visual approaches, then guide creative and production teams through the choices that bring the idea to life.</p>
+          <a class="go" href="#contact" aria-label="Discuss creative direction"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
         </div>
       </article>
     </div>
   </section>
 
-  <section class="clients" id="clients">
-    <div class="heading">
-      <p class="eyebrow">Clientele</p>
-      <h3>Trusted by brands that want to be <em>unforgettable</em>.</h3>
-    </div>
-
-    <div class="logo-wall" aria-label="Client logos">
-      <div class="logo">
-        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-          <circle cx="16" cy="16" r="10" />
-          <line x1="3" y1="16" x2="29" y2="16" />
-        </svg>
-        <span>Meridian &amp; Co.</span>
-      </div>
-      <div class="logo">
-        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
-          <path d="M16 3l3 10 10 3-10 3-3 10-3-10-10-3 10-3z" />
-        </svg>
-        <span>Northlight</span>
-      </div>
-      <div class="logo">
-        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="5" y="5" width="14" height="14" />
-          <rect x="13" y="13" width="14" height="14" />
-        </svg>
-        <span>studio forma</span>
-      </div>
-      <div class="logo">
-        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-          <path d="M8 29V15a8 8 0 0 1 16 0v14" />
-          <line x1="5" y1="29" x2="27" y2="29" />
-        </svg>
-        <span>Maison Vera</span>
-      </div>
-      <div class="logo">
-        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="16" cy="16" r="11" />
-          <ellipse cx="16" cy="16" rx="5" ry="11" />
-          <line x1="5" y1="16" x2="27" y2="16" />
-        </svg>
-        <span>Atlas Group</span>
-      </div>
-      <div class="logo">
-        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="16" r="8" />
-          <circle cx="20" cy="16" r="8" />
-        </svg>
-        <span>Kindred</span>
-      </div>
-      <div class="logo">
-        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 28C16 14 22 8 28 4c0 14-6 20-12 24z" />
-          <path d="M16 28C16 18 12 13 5 9" />
-        </svg>
-        <span>Oakfield</span>
-      </div>
-      <div class="logo">
-        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="8" y1="3" x2="8" y2="29" />
-          <path d="M8 5h16l-4 5.5 4 5.5H8" />
-        </svg>
-        <span>The Standard</span>
-      </div>
-    </div>
-
-    <!-- TODO: placeholder figures - replace the data-count values with the real numbers -->
-    <div class="stats" id="stats">
-      <div class="stat">
-        <p class="num"><span data-count="10">10</span><b>+</b></p>
-        <p class="label">Years of experience</p>
-      </div>
-      <div class="stat">
-        <p class="num"><span data-count="120">120</span><b>+</b></p>
-        <p class="label">Projects delivered</p>
-      </div>
-      <div class="stat">
-        <p class="num"><span data-count="40">40</span><b>+</b></p>
-        <p class="label">Brands served</p>
-      </div>
-      <div class="stat">
-        <p class="num"><span data-count="15">15</span></p>
-        <p class="label">Awards &amp; features</p>
-      </div>
+  <section class="approach" id="approach">
+    <div class="ap-inner">
+      <p class="eyebrow">Approach</p>
+      <h2>Understand what matters.<br /><em>Find the story. Protect it.</em></h2>
+      <p>Every project starts with the same questions: What must this film achieve? Who needs to care? What will make them believe it?</p>
+      <p>Those answers guide the treatment, the performances, the camera and the edit. My role is to keep the work purposeful while creating the conditions for something memorable to happen.</p>
     </div>
   </section>
 
   <section class="contact" id="contact">
-    <div class="map" aria-hidden="true">
-      <iframe title="Map of Tse Addo, Accra" loading="lazy" tabindex="-1"
-        src="https://www.openstreetmap.org/export/embed.html?bbox=-0.1517%2C5.5748%2C-0.1277%2C5.5968&amp;layer=mapnik"></iframe>
-      <div class="pin-wrap">
-        <span class="pulse"></span>
-        <svg class="pin" viewBox="0 0 24 34"><path d="M12 0a12 12 0 0 0-12 12c0 9 12 22 12 22s12-13 12-22A12 12 0 0 0 12 0zm0 16.500a4.500 4.500 0 1 1 0-9 4.500 4.500 0 0 1 0 9z"/></svg>
-      </div>
-    </div>
-
     <div class="inner">
-      <div class="heading">
-        <div>
-          <p>How to contact me</p>
-          <h3>Contacts</h3>
-        </div>
+      <div class="c-left">
+        <p class="eyebrow">Contact</p>
+        <h2>Let&rsquo;s get your<br /><em>story right.</em></h2>
+        <p class="lead">For commercial campaigns, documentaries and creative direction, tell me what you&rsquo;re making, who it needs to reach and what it needs to achieve.</p>
+        <h3>Discuss Your Project</h3>
+        <a class="mail" href="mailto:kwesi@oneshotstudiosgh.com">kwesi@oneshotstudiosgh.com</a>
+        <p class="loc">Accra, Ghana</p>
+        <p class="soc"><a href="https://vimeo.com/oneshotstudios" target="_blank" rel="noopener">OneShot Studios on Vimeo &#8599;</a></p>
       </div>
 
-      <dl class="details">
-        <div>
-          <dt>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.200 7 13 7 13s7-7.800 7-13a7 7 0 0 0-7-7zm0 9.500A2.500 2.500 0 1 1 12 6.500a2.500 2.500 0 0 1 0 5z"/></svg>
-            Location
-          </dt>
-          <dd>Tse Addo, Accra<br /><a href="https://www.openstreetmap.org/?mlat=5.5858&amp;mlon=-0.1397#map=16/5.5858/-0.1397" target="_blank" rel="noopener">View on map ↗</a></dd>
+      <form id="enquiry-form">
+        <div class="field">
+          <label for="e-name">Name</label>
+          <input id="e-name" name="name" type="text" required autocomplete="name" />
         </div>
-        <div>
-          <dt>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.600 10.800a15 15 0 0 0 6.600 6.600l2.200-2.200a1 1 0 0 1 1-.25 11.400 11.400 0 0 0 3.600.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.500a1 1 0 0 1 1 1c0 1.300.2 2.500.57 3.600a1 1 0 0 1-.25 1z"/></svg>
-            Phone
-          </dt>
-          <!-- TODO: replace with the real number -->
-          <dd>On request</dd>
+        <div class="field">
+          <label for="e-email">Email</label>
+          <input id="e-email" name="email" type="email" required autocomplete="email" />
         </div>
-        <div>
-          <dt>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5h20v2.400l-10 6.200L2 7.400V5zm0 4.700 10 6.200 10-6.200V19H2V9.700z"/></svg>
-            E-mail
-          </dt>
-          <dd><a href="mailto:hello@kwesiapentengmensah.com">hello@kwesiapentengmensah.com</a></dd>
+        <div class="field">
+          <label for="e-org">Organisation / Agency</label>
+          <input id="e-org" name="org" type="text" autocomplete="organization" />
         </div>
-      </dl>
-
-      <form id="discovery-form" novalidate>
-        <p class="form-title">Get in touch</p>
-        <div class="form-row">
-          <div class="steps">
-            <div class="step active">
-              <label for="f-name">Your name</label>
-              <input id="f-name" name="name" type="text" required autocomplete="name" placeholder="Enter your name" />
-            </div>
-            <div class="step">
-              <label for="f-email">Your email</label>
-              <input id="f-email" name="email" type="email" required autocomplete="email" placeholder="Enter your e-mail" />
-            </div>
-            <div class="step">
-              <label for="f-type">Project type</label>
-              <select id="f-type" name="type">
-                <option>Brand Identity</option>
-                <option>Campaign</option>
-                <option>Film / Commercial</option>
-                <option>Creative Consulting</option>
-                <option>Something Else</option>
-              </select>
-            </div>
-            <div class="step">
-              <label for="f-msg">Tell me about it</label>
-              <textarea id="f-msg" name="message" rows="2" placeholder="Project, timeline, budget range…"></textarea>
-            </div>
-            <div class="progress" aria-hidden="true">
-              <span class="current">Name</span>
-              <span>E-mail</span>
-              <span>Project</span>
-              <span>Message</span>
-            </div>
-            <p class="form-error" role="alert"></p>
-          </div>
-          <button class="next" type="submit">
-            <span class="label">Next</span>
-            <span class="ring"><svg viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5h18M14 1l4 4-4 4"/></svg></span>
-          </button>
+        <div class="field">
+          <label for="e-type">Project type</label>
+          <select id="e-type" name="type">
+            <option>Commercial</option>
+            <option>Documentary</option>
+            <option>Creative direction</option>
+            <option>Something else</option>
+          </select>
         </div>
+        <div class="field wide">
+          <label for="e-brief">Brief, intended timing and budget range</label>
+          <textarea id="e-brief" name="brief" rows="4"></textarea>
+        </div>
+        <button class="btn primary" type="submit">Send Enquiry</button>
+        <p class="form-note" role="status"></p>
       </form>
     </div>
   </section>
@@ -2157,11 +1836,17 @@
       <h2 id="nf-title"></h2>
       <p class="blurb" id="nf-blurb"></p>
       <div class="nf-actions">
-        <button class="nf-btn play" id="nf-play" type="button"><svg viewBox="0 0 14 14"><path d="M2 0v14l12-7z"/></svg>Play</button>
+        <button class="nf-btn play" id="nf-play" type="button"><svg viewBox="0 0 14 14"><path d="M2 0v14l12-7z"/></svg>Watch Film</button>
         <a class="nf-btn more" id="nf-vimeo" href="https://vimeo.com/oneshotstudios" target="_blank" rel="noopener">Open on Vimeo</a>
       </div>
     </section>
-    <div class="nf-rows" id="nf-rows"></div>
+    <div class="nf-rows" id="nf-rows">
+      <div class="nf-filters" role="group" aria-label="Filter films">
+        <button type="button" class="nf-chip on" data-f="all">All Films</button>
+        <button type="button" class="nf-chip" data-f="commercial">Commercials</button>
+        <button type="button" class="nf-chip" data-f="documentary">Documentaries</button>
+      </div>
+    </div>
   </div>
 
   <div class="nf-player" id="nf-player" role="dialog" aria-modal="true" aria-label="Video player">
@@ -2170,42 +1855,50 @@
   </div>
 
   <footer class="site-footer">
-    <span>&copy; 2026 Kwesi Apenteng-Mensah</span>
-    <span>Built by <a href="https://theimagedept.vercel.app/index.html" target="_blank" rel="noopener">TheImageDept</a></span>
-    <a class="to-top" href="#home"><span class="glass-k" aria-hidden="true"><svg viewBox="0 0 40 48" aria-hidden="true"><use href="#k-mark"/></svg></span>Back to Top</a>
+    <div class="f-id">
+      <p class="f-name">Kwesi &ldquo;Prof K&rdquo; Apenteng-Mensah</p>
+      <p>Film Director &amp; Creative Director</p>
+      <p>Chief Creative Officer &amp; Managing Partner, OneShot Studios</p>
+      <p>&copy; 2026 Kwesi Apenteng-Mensah</p>
+    </div>
+    <div class="f-side">
+      <span>Built by <a href="https://theimagedept.vercel.app/index.html" target="_blank" rel="noopener">TheImageDept</a></span>
+      <a class="to-top" href="#home"><span class="glass-k" aria-hidden="true"><svg viewBox="0 0 40 48" aria-hidden="true"><use href="#k-mark"/></svg></span>Back to Top</a>
+    </div>
   </footer>
 
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/motion@12/dist/motion.js"></script>
   <script>
-    const projects = [
-      {
-        title: "Do You Know The GPL",
-        category: "Promo · Ghana Premier League · Director",
-        vimeo: "1116665443",
-      },
-      {
-        title: "Better with Milk",
-        category: "TVC · H&H Creamer · Director",
-        vimeo: "1030111524",
-      },
-      {
-        title: "Generational Love",
-        category: "TVC · Key Soap Adepa · Director",
-        vimeo: "801229248",
-      },
-      {
-        title: "Stone Depot Ambassador Reveal",
-        category: "Brand Film · Stone Depot · Director",
-        vimeo: "775010764",
-      },
-      {
-        title: "Key Soap 1393",
-        category: "TVC · Key Soap Ghana · Director",
-        vimeo: "679660682",
-      },
+    // All 13 films supplied by Kwesi (credits as given: no agency shown where none supplied).
+    // `featured` = position in the six homepage films.
+    const DIRECTOR = "Kwesi Apenteng-Mensah";
+    const PRODUCTION = "OneShot Studios";
+    const films = [
+      { title: "Uber Courier", type: "Commercial", agency: "Social Ghana", vimeo: "1228261145", featured: 1 },
+      { title: "MTN Ghana", type: "Commercial", agency: "Rezultz Advertising", vimeo: "1182088113", featured: 3 },
+      { title: "Unilever", type: "Commercial", agency: "Wild Fusion", vimeo: "748727502", featured: 5 },
+      { title: "Absa Ghana", type: "Commercial", agency: "Innova DDB Ghana", vimeo: "1093195679" },
+      { title: "KGL Group", type: "Commercial", vimeo: "757159589" },
+      { title: "DKT International", type: "Commercial", vimeo: "1135942055" },
+      { title: "DStv Ghana", type: "Commercial", vimeo: "1025899842" },
+      { title: "The World Bank", type: "Documentary", vimeo: "563541876", featured: 2 },
+      { title: "Africa Health Collaborative", type: "Documentary", vimeo: "1026432781", featured: 4 },
+      { title: "Hubtel", type: "Documentary", vimeo: "1095138816", featured: 6 },
+      { title: "Danone", type: "Documentary", vimeo: "1067799756" },
+      { title: "Cocoa360", type: "Documentary", vimeo: "877231233" },
+      { title: "Ashesi University", type: "Documentary", vimeo: "820568884" },
     ];
+    films.forEach((f) => {
+      f.where = f.type;
+      f.blurb = ["Director: " + DIRECTOR]
+        .concat(f.agency ? ["Agency: " + f.agency] : [])
+        .concat(["Production company: " + PRODUCTION])
+        .join("\n");
+    });
+    // the six homepage films, in the order given
+    const projects = films.filter((f) => f.featured).sort((a, b) => a.featured - b.featured);
 
     const workSection = document.getElementById("work");
     const scrim = workSection.querySelector(".scrim");
@@ -2217,13 +1910,6 @@
     const workBar = document.getElementById("work-bar");
     const pad = (n) => String(n).padStart(2, "0");
     let activeIndex = 0;
-
-    // "Promo · Ghana Premier League · Director" -> where / blurb
-    projects.forEach((p) => {
-      const [format, client] = p.category.split(" · ");
-      p.where = format + " · " + client;
-      p.blurb = format + " for " + client + ", directed by Kwesi Apenteng-Mensah.";
-    });
 
     // Poster frames come straight from Vimeo, fetched lazily at the size each use needs
     const getPoster = (p, w) =>
@@ -2425,56 +2111,25 @@
       if (section) spy.observe(section);
     });
 
-    // Discovery-call form: step by step, then open the visitor's email app pre-filled (no backend)
+    // Enquiry form: no backend, so it opens the visitor's email app pre-filled
     (() => {
-      const form = document.getElementById("discovery-form");
-      const steps = [...form.querySelectorAll(".step")];
-      const marks = [...form.querySelectorAll(".progress span")];
-      const label = form.querySelector(".next .label");
-      const error = form.querySelector(".form-error");
-      let current = 0;
-
-      const show = (i) => {
-        current = i;
-        steps.forEach((el, n) => el.classList.toggle("active", n === i));
-        marks.forEach((el, n) => {
-          el.classList.toggle("current", n === i);
-          el.classList.toggle("done", n < i);
-        });
-        label.textContent = i === steps.length - 1 ? "Send" : "Next";
-        error.textContent = "";
-        const field = steps[i].querySelector("input, select, textarea");
-        if (i > 0) field.focus();
-      };
-
+      const form = document.getElementById("enquiry-form");
+      const note = form.querySelector(".form-note");
       form.addEventListener("submit", (e) => {
         e.preventDefault();
-        const field = steps[current].querySelector("input, select, textarea");
-        if (!field.checkValidity()) {
-          error.textContent = field.type === "email" && field.value
-            ? "That e-mail doesn't look right."
-            : "Please fill this in to continue.";
-          field.focus();
-          return;
-        }
-        if (current < steps.length - 1) return show(current + 1);
-
         const f = form.elements;
-        const subject = "Discovery call request — " + f.type.value;
+        const subject = "Project enquiry — " + f.type.value;
         const body =
           "Name: " + f.name.value + "\n" +
           "Email: " + f.email.value + "\n" +
+          "Organisation / Agency: " + f.org.value + "\n" +
           "Project type: " + f.type.value + "\n\n" +
-          f.message.value;
+          f.brief.value;
         window.location.href =
-          "mailto:hello@kwesiapentengmensah.com" +
+          "mailto:kwesi@oneshotstudiosgh.com" +
           "?subject=" + encodeURIComponent(subject) +
           "&body=" + encodeURIComponent(body);
-      });
-
-      // Enter in the message box adds a line only with Shift
-      form.querySelector("textarea").addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
+        note.textContent = "Opening your email app\u2026 if nothing happens, write to kwesi@oneshotstudiosgh.com.";
       });
     })();
   </script>
@@ -2518,9 +2173,9 @@
       reveal(".work .cards", { trigger: ".work", x: 60, y: 0 });
       reveal(".services .top");
       reveal(".service", { trigger: ".service-track", stagger: 0.12, x: 60, y: 0 });
-      reveal(".clients .heading");
-      reveal(".logo-wall .logo", { trigger: ".logo-wall", stagger: 0.06, y: 30, duration: 0.7 });
-      reveal(".stat", { trigger: ".stats", stagger: 0.12, y: 40 });
+      reveal(".about .a-head");
+      reveal(".about .a-body > *", { trigger: ".about .a-body", stagger: 0.1, y: 30 });
+      reveal(".approach .ap-inner > *", { trigger: ".approach", stagger: 0.12 });
       reveal(".contact .inner > *", { trigger: ".contact", stagger: 0.12 });
       // the footer sits at the very end of the page, so it can never reach the
       // usual "top 80%" line on a phone - reveal it as soon as it enters the screen
@@ -2565,7 +2220,9 @@
         c.addEventListener("focusin", () => setActive(c));
       });
 
+      const arrowsEl = document.getElementById("svc-arrows");
       const updateArrows = () => {
+        arrowsEl.style.display = track.scrollWidth <= track.clientWidth + 4 ? "none" : "";
         prev.disabled = track.scrollLeft <= 4;
         next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
       };
@@ -2642,7 +2299,7 @@
       }, { passive: false });
     })();
 
-    // Netflix-style "all work" overlay
+    // Netflix-style "all work" overlay: every film, with Commercials / Documentaries filters
     (() => {
       const root = document.getElementById("netflix");
       const rowsEl = document.getElementById("nf-rows");
@@ -2655,7 +2312,7 @@
 
       const setFeatured = (i) => {
         featured = i;
-        const p = projects[i];
+        const p = films[i];
         document.getElementById("nf-where").textContent = p.where;
         document.getElementById("nf-title").textContent = p.title;
         document.getElementById("nf-blurb").textContent = p.blurb;
@@ -2664,25 +2321,27 @@
       };
 
       const playVideo = (i) => {
-        frame.src = "https://player.vimeo.com/video/" + projects[i].vimeo + "?autoplay=1&dnt=1";
-        frame.title = projects[i].title;
+        frame.src = "https://player.vimeo.com/video/" + films[i].vimeo + "?autoplay=1&dnt=1";
+        frame.title = films[i].title;
         player.classList.add("open");
+        document.body.classList.add("modal-open");
         document.getElementById("nf-player-close").focus();
       };
       const closeVideo = () => {
         player.classList.remove("open");
         frame.src = "about:blank";
+        if (!root.classList.contains("open")) document.body.classList.remove("modal-open");
       };
 
       const tile = (i) => {
-        const p = projects[i];
+        const p = films[i];
         const b = document.createElement("button");
         b.type = "button";
         b.className = "nf-tile";
-        b.setAttribute("aria-label", "Play " + p.title);
+        b.setAttribute("aria-label", "Watch " + p.title);
         b.innerHTML = '<span class="tplay">' + playIcon + '</span><span class="meta"><span class="name"></span><span class="sub"></span></span>';
         b.querySelector(".name").textContent = p.title;
-        b.querySelector(".sub").textContent = p.where;
+        b.querySelector(".sub").textContent = p.where + (p.agency ? " · " + p.agency : "");
         getPoster(p, 640).then((u) => { if (u) b.style.backgroundImage = 'url("' + u + '")'; });
         b.addEventListener("mouseenter", () => setFeatured(i));
         b.addEventListener("focus", () => setFeatured(i));
@@ -2690,35 +2349,33 @@
         return b;
       };
 
-      const row = (title, idxs, extra) => {
+      const rows = [];
+      const row = (title, key, idxs) => {
         const r = document.createElement("div");
         r.className = "nf-row";
+        r.dataset.f = key;
         r.innerHTML = '<h3></h3><div class="nf-track"></div>';
         r.querySelector("h3").textContent = title;
         const t = r.querySelector(".nf-track");
         idxs.forEach((i) => t.appendChild(tile(i)));
-        if (extra) t.appendChild(extra);
         rowsEl.appendChild(r);
+        rows.push(r);
       };
+      const ofType = (t) => films.map((f, i) => (f.type === t ? i : -1)).filter((i) => i >= 0);
+      row("Commercials", "commercial", ofType("Commercial"));
+      row("Documentaries", "documentary", ofType("Documentary"));
 
-      const more = document.createElement("a");
-      more.className = "nf-tile vimeo";
-      more.href = "https://vimeo.com/oneshotstudios";
-      more.target = "_blank";
-      more.rel = "noopener";
-      more.textContent = "More on Vimeo ↗";
-
-      row("All work", projects.map((_, i) => i), more);
-      const groups = {};
-      projects.forEach((p, i) => {
-        const f = p.category.split(" · ")[0];
-        (groups[f] = groups[f] || []).push(i);
-      });
-      Object.keys(groups).forEach((f) => row(f, groups[f]));
+      const chips = [...document.querySelectorAll(".nf-chip")];
+      chips.forEach((c) =>
+        c.addEventListener("click", () => {
+          chips.forEach((x) => x.classList.toggle("on", x === c));
+          rows.forEach((r) => { r.hidden = c.dataset.f !== "all" && r.dataset.f !== c.dataset.f; });
+        })
+      );
 
       const open = () => {
         lastFocus = document.activeElement;
-        setFeatured(activeIndex);
+        setFeatured(films.indexOf(projects[activeIndex]));
         root.classList.add("open");
         root.setAttribute("aria-hidden", "false");
         document.body.classList.add("modal-open");
@@ -2739,6 +2396,7 @@
       };
 
       opener.addEventListener("click", open);
+      document.getElementById("watch-film").addEventListener("click", () => playVideo(films.indexOf(projects[activeIndex])));
       document.getElementById("nf-close").addEventListener("click", close);
       document.getElementById("nf-play").addEventListener("click", () => playVideo(featured));
       document.getElementById("nf-player-close").addEventListener("click", closeVideo);
@@ -2750,29 +2408,6 @@
       });
     })();
 
-    // Statistics: numbers run up from 0 when the row scrolls into view
-    (() => {
-      const wrap = document.getElementById("stats");
-      const nums = [...wrap.querySelectorAll("[data-count]")];
-      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      nums.forEach((n) => { n.textContent = "0"; });
-      const run = (el) => {
-        const end = +el.dataset.count, dur = 1800, t0 = performance.now();
-        const tick = (t) => {
-          const k = Math.min((t - t0) / dur, 1);
-          el.textContent = Math.round(end * (1 - Math.pow(1 - k, 3)));
-          if (k < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      };
-      new IntersectionObserver((entries, obs) => {
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return;
-          nums.forEach(run);
-          obs.disconnect();
-        });
-      }, { threshold: 0.4 }).observe(wrap);
-    })();
 
     // Floating home button: appears once the hero has scrolled away
     (() => {
