@@ -2279,6 +2279,29 @@
       }, true);
     })();
 
+    // Swiping / dragging the row also switches the selected film (caption + video follow the first full card)
+    (() => {
+      let userUntil = 0, settleT;
+      const mark = () => { userUntil = Date.now() + 2500; };
+      track.addEventListener("touchstart", mark, { passive: true });
+      track.addEventListener("wheel", mark, { passive: true });
+      track.addEventListener("pointerdown", (e) => { if (e.pointerType === "mouse") mark(); });
+      track.addEventListener("scroll", () => {
+        if (Date.now() > userUntil) return; // ignore scrolls the arrows or code started
+        userUntil = Date.now() + 600;
+        clearTimeout(settleT);
+        settleT = setTimeout(() => {
+          const pad = parseFloat(getComputedStyle(track).paddingLeft);
+          let best = 0, bestD = Infinity;
+          projects.forEach((p, i) => {
+            const d = Math.abs(p.card.offsetLeft - pad - track.scrollLeft);
+            if (d < bestD) { bestD = d; best = i; }
+          });
+          select(best);
+        }, 180);
+      }, { passive: true });
+    })();
+
     function showProject(i) {
       const p = projects[i];
       projects.forEach((q, n) => q.card.classList.toggle("active", n === i));
