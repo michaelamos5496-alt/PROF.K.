@@ -390,6 +390,7 @@
     }
 
     .work .cards::-webkit-scrollbar { display: none; }
+    .work .cards.dragging { scroll-snap-type: none; user-select: none; }
 
     @media (min-width: 1500px) {
       .work .cards { --n: 4; }
@@ -2250,6 +2251,34 @@
       p.card = card;
     });
 
+    // Slide through the films by dragging with the mouse (touch and trackpad already scroll natively)
+    (() => {
+      let down = false, moved = false, x0 = 0, left0 = 0;
+      track.addEventListener("pointerdown", (e) => {
+        if (e.pointerType !== "mouse") return;
+        down = true; moved = false; x0 = e.clientX; left0 = track.scrollLeft;
+      });
+      addEventListener("pointermove", (e) => {
+        if (!down) return;
+        const dx = e.clientX - x0;
+        if (Math.abs(dx) > 5) { moved = true; track.classList.add("dragging"); }
+        track.scrollLeft = left0 - dx;
+      });
+      addEventListener("pointerup", () => {
+        if (!down) return;
+        down = false;
+        if (!moved) return;
+        track.classList.remove("dragging");
+        const first = track.querySelector(".wcard");
+        const step = first.getBoundingClientRect().width + (parseFloat(getComputedStyle(track).columnGap) || 0);
+        track.scrollTo({ left: Math.round(track.scrollLeft / step) * step, behavior: "smooth" });
+      });
+      // a drag must not count as a click on the card underneath
+      track.addEventListener("click", (e) => {
+        if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
+      }, true);
+    })();
+
     function showProject(i) {
       const p = projects[i];
       projects.forEach((q, n) => q.card.classList.toggle("active", n === i));
@@ -2258,7 +2287,15 @@
       captionBlurb.textContent = p.blurb;
       workCount.textContent = pad(i + 1);
       workBar.style.width = ((i + 1) / projects.length) * 100 + "%";
-      track.scrollTo({ left: p.card.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft), behavior: "smooth" });
+      const target = p.card.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft);
+      track.scrollTo({ left: target, behavior: "smooth" });
+      // if the smooth scroll gets interrupted, finish the move so the row never gets stuck
+      clearTimeout(showProject.t);
+      showProject.t = setTimeout(() => {
+        if (activeIndex === i && Math.abs(track.scrollLeft - target) > 4 && track.scrollWidth - track.clientWidth > 0) {
+          track.scrollLeft = Math.min(target, track.scrollWidth - track.clientWidth);
+        }
+      }, 1000);
     }
     showProject(0);
 
@@ -2630,8 +2667,11 @@
         else if (dir < 0 && atWorkTop()) { e.preventDefault(); go(0); }
       };
 
+      const sliders = ".cards, .service-track, .nf-track, .netflix, .nf-player";
       addEventListener("wheel", (e) => {
         if (Math.abs(e.deltaY) < 4 || e.ctrlKey) return;
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // sideways swipe on a trackpad
+        if (e.target.closest && e.target.closest(sliders)) return;
         intent(Math.sign(e.deltaY), e);
       }, { passive: false });
 
@@ -2641,13 +2681,19 @@
         else if (["ArrowUp", "PageUp"].includes(e.key)) intent(-1, e);
       });
 
-      let startY = null;
-      addEventListener("touchstart", (e) => { startY = e.touches[0].clientY; }, { passive: true });
+      let startY = null, startX = 0;
+      addEventListener("touchstart", (e) => {
+        const onSlider = e.target.closest && e.target.closest(sliders);
+        startY = onSlider ? null : e.touches[0].clientY;
+        startX = e.touches[0].clientX;
+      }, { passive: true });
       addEventListener("touchmove", (e) => {
         if (startY === null) return;
         const dy = startY - e.touches[0].clientY;
+        const dx = startX - e.touches[0].clientX;
         if (Math.abs(dy) < 24) return;
         startY = null;
+        if (Math.abs(dy) < Math.abs(dx) * 2) return; // mostly sideways: let the browser handle it
         intent(Math.sign(dy), e);
       }, { passive: false });
     })();
