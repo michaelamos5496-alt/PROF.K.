@@ -674,19 +674,43 @@
       flex-direction: column;
       justify-content: flex-end;
       padding: 0 clamp(1.5rem, 4vw, 4rem) clamp(2rem, 6vh, 4rem);
-      background: #1b1a17 center 25% / cover no-repeat;
+      overflow: hidden;
+      background: #1b1a17;
+    }
+
+    /* the banner picture sits on its own layer so it can drift without moving the text */
+    .nf-hero > .nf-bg {
+      position: absolute;
+      inset: 0;
+      max-width: none;
+      z-index: 0;
+      background: center 25% / cover no-repeat;
+      transform-origin: 50% 40%;
+      will-change: transform;
+    }
+
+    /* slow, continuous dolly-in (eases in and back out, so it never jumps) */
+    @media (prefers-reduced-motion: no-preference) {
+      .nf-hero > .nf-bg { animation: nf-dolly 18s ease-in-out infinite alternate; }
+    }
+
+    @keyframes nf-dolly {
+      from { transform: scale(1); }
+      to { transform: scale(1.16); }
     }
 
     .nf-hero::before {
       content: "";
       position: absolute;
+      z-index: 1;
       inset: 0;
       background:
         linear-gradient(to top, #0a0908 0%, rgba(10, 9, 8, 0) 45%),
         linear-gradient(to right, rgba(10, 9, 8, 0.8) 0%, rgba(10, 9, 8, 0) 60%);
     }
 
-    .nf-hero > * { position: relative; max-width: 640px; }
+    .nf-hero > * { position: relative; z-index: 2; max-width: 640px; }
+    .nf-hero > .nf-bg { position: absolute; z-index: 0; max-width: none; }
 
     .nf-hero .where { font-size: 0.95rem; font-weight: 300; margin-bottom: 0.5rem; }
 
@@ -2192,6 +2216,7 @@
       <button class="nf-close" id="nf-close" type="button" aria-label="Close"><svg viewBox="0 0 14 14"><path d="M1 1l12 12M13 1 1 13"/></svg></button>
     </div>
     <section class="nf-hero" id="nf-hero">
+      <div class="nf-bg" id="nf-bg" aria-hidden="true"></div>
       <p class="where" id="nf-where"></p>
       <h2 id="nf-title"></h2>
       <p class="blurb" id="nf-blurb"></p>
@@ -2784,7 +2809,7 @@
     (() => {
       const root = document.getElementById("netflix");
       const rowsEl = document.getElementById("nf-rows");
-      const hero = document.getElementById("nf-hero");
+      const hero = document.getElementById("nf-bg");
       const player = document.getElementById("nf-player");
       const frame = document.getElementById("nf-frame");
       const opener = document.getElementById("view-more");
@@ -2798,6 +2823,10 @@
         document.getElementById("nf-title").textContent = p.title;
         document.getElementById("nf-blurb").textContent = p.blurb;
         document.getElementById("nf-vimeo").href = "https://vimeo.com/" + p.vimeo;
+        // new film: restart the dolly from the start
+        hero.style.animation = "none";
+        void hero.offsetWidth;
+        hero.style.animation = "";
         getPoster(p, 1280).then((u) => { if (u && featured === i) paint(hero, p, u); });
       };
 
