@@ -611,6 +611,115 @@
     .nf-chip:hover { border-color: var(--ink); }
     .nf-chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
+    /* ---- Service dialog ---- */
+    .service { cursor: pointer; }
+    .service:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    .svc-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 105;
+      display: grid;
+      place-items: center;
+      padding: clamp(1rem, 4vw, 3rem);
+      background: rgba(8, 7, 6, 0.72);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+    }
+
+    .svc-modal.open { opacity: 1; visibility: visible; transition-delay: 0s; }
+
+    .svc-box {
+      position: relative;
+      width: min(940px, 100%);
+      max-height: 100%;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      backdrop-filter: blur(24px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 30px 80px rgba(0, 0, 0, 0.5);
+      transform: translateY(18px) scale(0.98);
+      transition: transform 0.35s ease;
+    }
+
+    .svc-modal.open .svc-box { transform: none; }
+
+    .svc-pic {
+      min-height: 280px;
+      background: #1b1a17 center / cover no-repeat;
+    }
+
+    .svc-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1rem;
+      padding: clamp(1.6rem, 4vw, 3rem);
+    }
+
+    .svc-copy .tag {
+      align-self: flex-start;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--muted);
+    }
+
+    .svc-copy h3 {
+      font-weight: 500;
+      font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .svc-copy p {
+      font-size: clamp(0.9rem, 1.1vw, 1rem);
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(244, 239, 230, 0.86);
+    }
+
+    .svc-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.6rem; }
+    .svc-actions .btn { cursor: pointer; font-family: inherit; padding: 0.95rem 1.6rem; font-size: 0.7rem; }
+    .svc-actions .btn.ghost { background: transparent; }
+    .svc-actions .btn.ghost:hover { background: var(--ink); }
+
+    .svc-close {
+      position: absolute;
+      top: 0.9rem;
+      right: 0.9rem;
+      z-index: 2;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(244, 239, 230, 0.4);
+      background: rgba(14, 13, 11, 0.45);
+      color: var(--ink);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .svc-close:hover { background: var(--ink); color: var(--bg); }
+    .svc-close svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+    @media (max-width: 760px) {
+      .svc-box { grid-template-columns: 1fr; }
+      .svc-pic { min-height: 0; aspect-ratio: 16 / 9; }
+      .svc-actions .btn { flex: 1 1 100%; text-align: center; }
+    }
+
     /* ---- Netflix-style "all work" overlay ---- */
     body.modal-open { overflow: hidden; }
 
@@ -2116,33 +2225,33 @@
     </div>
 
     <div class="service-track" id="service-track" aria-label="Expertise">
-      <article class="service">
+      <article class="service" role="button" tabindex="0" aria-haspopup="dialog" data-works="all" data-type="Creative direction">
         <span class="tag">Creative</span>
         <h4>Creative<br />Direction</h4>
         <div class="shot" style="background-image: url('images/service-3.webp'); background-size: cover; background-position: 50% 22%"></div>
         <div class="foot">
           <p class="desc">A coherent vision from brief to screen. I shape concepts, treatments and visual approaches, then guide creative and production teams through the choices that bring the idea to life.</p>
-          <a class="go" href="#contact" aria-label="Discuss creative direction"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+          <a class="go" href="#contact" aria-label="Learn more" tabindex="-1"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
         </div>
       </article>
 
-      <article class="service">
+      <article class="service" role="button" tabindex="0" aria-haspopup="dialog" data-works="documentary" data-type="Documentary">
         <span class="tag">Documentary</span>
         <h4>Documentary &amp;<br />Brand Storytelling</h4>
         <div class="shot" style="background-image: url('images/service-2.webp'); background-size: cover; background-position: 48% 25%"></div>
         <div class="foot">
           <p class="desc">Films that make complex subjects understandable and lived experiences meaningful. Through research, thoughtful interviews and careful observation, I help organisations communicate their work with clarity, humanity and respect for the people whose stories they tell.</p>
-          <a class="go" href="#contact" aria-label="Discuss a documentary project"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+          <a class="go" href="#contact" aria-label="Learn more" tabindex="-1"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
         </div>
       </article>
 
-      <article class="service">
+      <article class="service" role="button" tabindex="0" aria-haspopup="dialog" data-works="commercial" data-type="Commercial">
         <span class="tag">Commercial</span>
         <h4>Commercial<br />Direction</h4>
         <div class="shot" style="background-image: url('images/service-1.webp'); background-size: cover; background-position: 45% 25%"></div>
         <div class="foot">
           <p class="desc">Commercials built around a strong idea, distinctive imagery and performances that feel believable. I work with agencies and brand teams to translate campaign strategy into films that connect with audiences and keep the brand&rsquo;s purpose in focus.</p>
-          <a class="go" href="#contact" aria-label="Discuss a commercial project"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+          <a class="go" href="#contact" aria-label="Learn more" tabindex="-1"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
         </div>
       </article>
     </div>
@@ -2247,6 +2356,22 @@
       </form>
     </div>
   </section>
+
+  <div class="svc-modal" id="svc-modal" role="dialog" aria-modal="true" aria-labelledby="svc-m-title" aria-hidden="true">
+    <div class="svc-box">
+      <button class="svc-close" id="svc-close" type="button" aria-label="Close"><svg viewBox="0 0 14 14"><path d="M1 1l12 12M13 1 1 13"/></svg></button>
+      <div class="svc-pic" id="svc-m-pic"></div>
+      <div class="svc-copy">
+        <span class="tag" id="svc-m-tag"></span>
+        <h3 id="svc-m-title"></h3>
+        <p id="svc-m-text"></p>
+        <div class="svc-actions">
+          <button class="btn primary" type="button" id="svc-works">View Works</button>
+          <button class="btn ghost" type="button" id="svc-discuss">Discuss a Project</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="netflix" id="netflix" role="dialog" aria-modal="true" aria-label="All work" aria-hidden="true">
     <div class="nf-bar">
@@ -3094,6 +3219,84 @@
       setTimeout(go, 2500); // never leave the page hidden
     })();
     });
+
+    // Service dialog: a card opens what the service is about, with a way to see work or start a project
+    (() => {
+      const track = document.getElementById("service-track");
+      const modal = document.getElementById("svc-modal");
+      const box = modal.querySelector(".svc-box");
+      const closeBtn = document.getElementById("svc-close");
+      let current = null, lastFocus = null, downX = 0, pressed = false, dragged = false;
+
+      const open = (card) => {
+        current = card;
+        lastFocus = document.activeElement;
+        const clean = (el) => el.textContent.replace(/\s+/g, " ").trim();
+        const t = document.createElement("div");
+        t.innerHTML = card.querySelector("h4").innerHTML.replace(/<br\s*\/?>/gi, " ");
+        document.getElementById("svc-m-title").textContent = clean(t);
+        document.getElementById("svc-m-tag").textContent = clean(card.querySelector(".tag"));
+        document.getElementById("svc-m-text").textContent = clean(card.querySelector(".desc"));
+        document.getElementById("svc-m-pic").style.cssText = card.querySelector(".shot").style.cssText;
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("modal-open");
+        box.scrollTop = 0;
+        closeBtn.focus();
+      };
+      const close = (restore = true) => {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("modal-open");
+        if (restore && lastFocus) lastFocus.focus({ preventScroll: true });
+      };
+
+      track.addEventListener("pointerdown", (e) => { pressed = true; dragged = false; downX = e.clientX; });
+      addEventListener("pointermove", (e) => { if (pressed && Math.abs(e.clientX - downX) > 6) dragged = true; });
+      addEventListener("pointerup", () => { pressed = false; });
+      track.addEventListener("click", (e) => {
+        if (dragged) { dragged = false; return; } // that was a drag, not a click
+        const card = e.target.closest(".service");
+        if (!card) return;
+        e.preventDefault();
+        open(card);
+      });
+      track.addEventListener("keydown", (e) => {
+        const card = e.target.closest && e.target.closest(".service");
+        if (card && e.target === card && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); open(card); }
+      });
+
+      closeBtn.addEventListener("click", () => close());
+      modal.addEventListener("click", (e) => { if (e.target === modal) close(); });
+      addEventListener("keydown", (e) => {
+        if (!modal.classList.contains("open")) return;
+        if (e.key === "Escape") { close(); return; }
+        if (e.key === "Tab") { // keep focus inside the dialog
+          const f = [...modal.querySelectorAll("button")];
+          const first = f[0], last = f[f.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      });
+
+      // View Works: the All Work page, filtered to this service
+      document.getElementById("svc-works").addEventListener("click", () => {
+        const f = current ? current.dataset.works : "all";
+        close(false);
+        const chip = document.querySelector('.nf-chip[data-f="' + f + '"]');
+        if (chip) chip.click();
+        document.getElementById("view-more").click();
+      });
+
+      // Discuss a Project: the contact form, with the project type already chosen
+      document.getElementById("svc-discuss").addEventListener("click", () => {
+        const type = current && current.dataset.type;
+        close(false);
+        const sel = document.getElementById("e-type");
+        if (sel && type) sel.value = type;
+        document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+      });
+    })();
   </script>
 </body>
 </html>
