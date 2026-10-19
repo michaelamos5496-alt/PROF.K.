@@ -1756,9 +1756,9 @@
 
     .service .foot {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.1rem;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
       margin-top: auto;
     }
 
@@ -1770,32 +1770,17 @@
 
     .service .go {
       flex: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      height: 40px;
-      padding: 0 0.95rem 0 1.1rem;
-      border-radius: 999px;
-      border: 1px solid var(--accent);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(14, 13, 11, 0.2);
+      display: grid;
+      place-items: center;
       color: var(--accent);
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      white-space: nowrap;
       text-decoration: none;
       transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
     }
 
-    .service .go svg { width: 13px; height: 13px; }
-
-    @media (max-width: 760px) {
-      .service .go { align-self: stretch; justify-content: center; }
-    }
-
-    /* the whole card reacts, so it is clear that clicking anywhere opens it */
-    .service:hover .go,
-    .service:focus-visible .go,
     .service .go:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
 
     /* active card goes dark glass, as in the reference */
@@ -1807,8 +1792,7 @@
     }
 
     .service.is-active .tag { border-color: var(--line); background: rgba(244, 239, 230, 0.1); }
-    .service.is-active .go { border-color: var(--accent); color: var(--accent); background: transparent; }
-    .service.is-active:hover .go { background: var(--accent); color: var(--bg); }
+    .service.is-active .go { border-color: var(--line); color: var(--ink); background: rgba(244, 239, 230, 0.12); }
 
     /* ---- About ---- */
     .about {
@@ -2624,7 +2608,7 @@
         <div class="shot" style="background-image: url('images/thumbs/kgl-group.webp'); background-size: cover; background-position: 50% 40%"></div>
         <div class="foot">
           <p class="desc">A coherent vision from brief to screen. I shape concepts, treatments and visual approaches, then guide creative and production teams through the choices that bring the idea to life.</p>
-          <a class="go" href="#contact" aria-label="Learn more" tabindex="-1"><span>Learn more</span><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+          <a class="go" href="#contact" aria-label="Learn more" tabindex="-1"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
         </div>
       </article>
 
@@ -2634,7 +2618,7 @@
         <div class="shot" style="background-image: url('images/thumbs/stone-depot-story.webp'); background-size: cover; background-position: 50% 40%"></div>
         <div class="foot">
           <p class="desc">Films that make complex subjects understandable and lived experiences meaningful. Through research, thoughtful interviews and careful observation, I help organisations communicate their work with clarity, humanity and respect for the people whose stories they tell.</p>
-          <a class="go" href="#contact" aria-label="Learn more" tabindex="-1"><span>Learn more</span><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+          <a class="go" href="#contact" aria-label="Learn more" tabindex="-1"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
         </div>
       </article>
 
@@ -2644,7 +2628,7 @@
         <div class="shot" style="background-image: url('images/thumbs/unilever.webp'); background-size: cover; background-position: 50% 40%"></div>
         <div class="foot">
           <p class="desc">Commercials built around a strong idea, distinctive imagery and performances that feel believable. I work with agencies and brand teams to translate campaign strategy into films that connect with audiences and keep the brand&rsquo;s purpose in focus.</p>
-          <a class="go" href="#contact" aria-label="Learn more" tabindex="-1"><span>Learn more</span><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+          <a class="go" href="#contact" aria-label="Learn more" tabindex="-1"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
         </div>
       </article>
     </div>
