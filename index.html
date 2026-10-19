@@ -45,6 +45,26 @@
       scroll-behavior: smooth;
     }
 
+    /* Full-page sections: scrolling settles on one section at a time.
+       Applied to the page itself (not a nested scroller) so the side nav,
+       animations and scroll-spy keep working. A section taller than the
+       screen can still be scrolled through freely. */
+    html {
+      scroll-snap-type: y mandatory;
+    }
+
+    .page,
+    .work,
+    .about,
+    .services,
+    .approach,
+    .contact {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    .site-footer { scroll-snap-align: end; }
+
     /* hold the page until fonts + hero photo are ready, then fade in (no flash / jump on refresh) */
     html.preload { scroll-behavior: auto; }
     html.preload body { opacity: 0; }
