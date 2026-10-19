@@ -2174,6 +2174,12 @@
       color: var(--accent);
     }
 
+    .contact .form-done { padding-left: 0; }
+    .contact .form-done .done-title { font-size: clamp(1.3rem, 2.4vw, 1.9rem); font-weight: 500; margin-bottom: 0.8rem; }
+    .contact .form-done p:not(.done-title) { font-size: 0.9rem; line-height: 1.7; color: rgba(244, 239, 230, 0.8); max-width: 44ch; }
+    .contact form.sent .form-title,
+    .contact form.sent .form-row { display: none; }
+
     /* ---- Footer ---- */
     .site-footer {
       display: flex;
@@ -2670,6 +2676,8 @@
 
       <form id="enquiry-form" novalidate>
         <p class="form-title">Get in touch</p>
+        <!-- spam trap: real visitors never see or tick this -->
+        <input type="checkbox" name="botcheck" id="e-botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
         <div class="form-row">
           <div class="steps">
             <div class="step active">
@@ -2710,6 +2718,10 @@
             <span class="label">Next</span>
             <span class="ring"><svg viewBox="0 0 20 10" aria-hidden="true"><path d="M0 5h18M14 1l4 4-4 4"/></svg></span>
           </button>
+        </div>
+        <div class="form-done" id="form-done" role="status" hidden>
+          <p class="done-title">Thank you &mdash; your enquiry has been sent.</p>
+          <p>I&rsquo;ll read it and reply to the email address you gave.</p>
         </div>
       </form>
     </div>
@@ -3141,18 +3153,39 @@
         if (current < steps.length - 1) return show(current + 1);
 
         const f = form.elements;
+        if (f.botcheck && f.botcheck.checked) return; // bot caught by the hidden field
+        const btn = form.querySelector(".next");
         const subject = "Project enquiry — " + f.type.value;
-        const body =
-          "Name: " + f.name.value + "\n" +
-          "Email: " + f.email.value + "\n" +
-          "Organisation / Agency: " + f.org.value + "\n" +
-          "Project type: " + f.type.value + "\n\n" +
-          f.brief.value;
-        window.location.href =
-          "mailto:kwesi@oneshotstudiosgh.com" +
-          "?subject=" + encodeURIComponent(subject) +
-          "&body=" + encodeURIComponent(body);
-        error.textContent = "Opening your email app\u2026 if nothing happens, write to kwesi@oneshotstudiosgh.com.";
+        btn.disabled = true;
+        label.textContent = "Sending\u2026";
+        error.textContent = "";
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            access_key: "7709c820-ec98-4495-986c-68eb6746ed4e",
+            subject: subject,
+            from_name: "Website enquiry",
+            name: f.name.value,
+            email: f.email.value,
+            organisation: f.org.value,
+            project_type: f.type.value,
+            message: f.brief.value,
+            botcheck: "",
+          }),
+        })
+          .then((r) => r.json().then((d) => ({ ok: r.ok && d.success, d })))
+          .then(({ ok }) => {
+            if (!ok) throw new Error("rejected");
+            form.classList.add("sent");
+            document.getElementById("form-done").hidden = false;
+            form.reset();
+          })
+          .catch(() => {
+            btn.disabled = false;
+            label.textContent = "Send Enquiry";
+            error.textContent = "Sorry, that didn\u2019t send. Please try again, or write to kwesi@oneshotstudiosgh.com.";
+          });
       });
 
       // Enter in the brief box adds a line only with Shift
