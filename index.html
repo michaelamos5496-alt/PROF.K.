@@ -1733,6 +1733,19 @@
       min-height: 2.1em;
     }
 
+    .service .shot { position: relative; overflow: hidden; }
+
+    /* the next still fades in over the current one */
+    .service .shot .fade {
+      position: absolute;
+      inset: 0;
+      background: center / cover no-repeat;
+      opacity: 0;
+      transition: opacity 1.3s ease;
+    }
+
+    .service .shot .fade.show { opacity: 1; }
+
     .service .shot {
       aspect-ratio: 16 / 10;
       border-radius: 4px;
@@ -3686,6 +3699,52 @@
         const sel = document.getElementById("e-type");
         if (sel && type) sel.value = type;
         document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+      });
+    })();
+
+    // Expertise cards: each one slowly cycles through stills from its own kind of work
+    (() => {
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const pools = {
+        commercial: ["unilever", "mtn-ghana", "ashfoam-como", "money-changes-people", "bigoo-family-feud"],
+        documentary: ["stone-depot-story", "hubtel", "hubtel-2", "docu-portfolio"],
+        all: ["kgl-group", "gye-wo-fie", "jwango", "money-changes-everything", "ashfoam-better-sleep"],
+      };
+      const url = (n) => "images/thumbs/" + n + ".webp";
+      const section = document.getElementById("expertise");
+      let visible = true;
+      new IntersectionObserver((es) => { visible = es.some((e) => e.isIntersecting); }).observe(section);
+
+      document.querySelectorAll("#service-track .service").forEach((card, ci) => {
+        const pool = pools[card.dataset.works];
+        const shot = card.querySelector(".shot");
+        if (!pool || !shot) return;
+        const fade = document.createElement("div");
+        fade.className = "fade";
+        shot.appendChild(fade);
+        let i = 0;
+        const step = () => {
+          if (!visible) return;
+          const n = (i + 1) % pool.length;
+          const img = new Image();
+          img.onload = () => {
+            fade.style.backgroundImage = 'url("' + url(pool[n]) + '")';
+            fade.classList.add("show");
+            setTimeout(() => {
+              // make the new still the base picture (the dialog reads it), then reset the overlay
+              shot.style.backgroundImage = "url('" + url(pool[n]) + "')";
+              shot.style.backgroundPosition = "50% 40%";
+              fade.style.transition = "none";
+              fade.classList.remove("show");
+              void fade.offsetWidth;
+              fade.style.transition = "";
+              i = n;
+            }, 1400);
+          };
+          img.src = url(pool[n]);
+        };
+        // staggered start so the three cards never change at the same moment
+        setTimeout(() => setInterval(step, 5200), 2600 + ci * 1700);
       });
     })();
   </script>
