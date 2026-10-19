@@ -101,7 +101,7 @@
 
     /* ---- Selected brands strip (bottom of the landing screen) ---- */
     .brands {
-      grid-column: 1;
+      grid-column: 1 / -1; /* full width, under the side nav as well */
       grid-row: 3;
       position: relative;
       z-index: 1;
@@ -160,7 +160,7 @@
     /* ---- Vertical nav, right edge ---- */
     .navbar {
       grid-column: 2;
-      grid-row: 1 / -1;
+      grid-row: 1 / span 2;
       display: flex;
       flex-direction: column;
       align-items: center;
