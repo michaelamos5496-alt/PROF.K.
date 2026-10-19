@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://prof-k.vercel.app/sitemap.xml
+Sitemap: https://www.kwesiapentengmensah.com/sitemap.xml
