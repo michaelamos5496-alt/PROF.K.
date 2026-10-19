@@ -2397,7 +2397,36 @@
       .service {
         flex-basis: 80vw;
         scroll-snap-align: center;
+        gap: 0.75rem;
+        padding: 1rem;
       }
+
+      /* phones: the heading and a whole card fit on one screen; the full text is in the card's dialog */
+      .services {
+        min-height: 100svh;
+        padding: 3rem 0;
+        gap: 1.6rem;
+      }
+
+      .services .pill { margin-bottom: 0.9rem; }
+      .services h2 { font-size: 1.9rem; }
+
+      .service h3 { font-size: 1.2rem; min-height: 0; }
+
+      .service .shot {
+        aspect-ratio: auto;
+        height: min(42vw, 24svh);
+      }
+
+      .service .desc {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        overflow: hidden;
+      }
+
+      .service .go { width: 40px; height: 40px; }
 
       .service-track > .service:first-child { margin-left: 0; }
       .service-track > .service:last-child { margin-right: 0; }
