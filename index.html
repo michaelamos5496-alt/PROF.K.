@@ -696,6 +696,21 @@
       will-change: transform;
     }
 
+    /* autoplaying trailer: fades in over the thumbnail once frames are flowing */
+    .nf-hero > .nf-video {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      max-width: none;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.9s ease;
+    }
+
+    .nf-hero > .nf-video.on { opacity: 1; }
+    .nf-video iframe { position: absolute; border: 0; pointer-events: none; }
+
     /* slow, continuous dolly-in (eases in and back out, so it never jumps) */
     @media (prefers-reduced-motion: no-preference) {
       .nf-hero > .nf-bg { animation: nf-dolly 18s ease-in-out infinite alternate; }
@@ -1210,11 +1225,16 @@
     }
 
     .service-track::-webkit-scrollbar { display: none; }
+
+    /* auto margins centre the row when it fits, and collapse to nothing when it has to scroll */
+    .service-track > .service:first-child { margin-left: auto; }
+    .service-track > .service:last-child { margin-right: auto; }
     .service-track.dragging { scroll-snap-type: none; scroll-behavior: auto; }
     .service-track.dragging * { pointer-events: none; }
 
     .service {
-      flex: 0 0 clamp(260px, 29vw, 420px);
+      /* desktop: exactly three cards across the padded row, so the group is centred */
+      flex: 0 0 min(420px, calc((100vw - 2 * clamp(1.5rem, 6vw, 6rem) - 2 * clamp(1rem, 1.6vw, 1.6rem)) / 3));
       scroll-snap-align: start;
       display: flex;
       flex-direction: column;
@@ -1883,9 +1903,18 @@
         align-items: flex-start;
       }
 
-      .service {
-        flex-basis: 78vw;
+      .service-track {
+        padding: 0 10vw;
+        scroll-padding-inline: 10vw;
       }
+
+      .service {
+        flex-basis: 80vw;
+        scroll-snap-align: center;
+      }
+
+      .service-track > .service:first-child { margin-left: 0; }
+      .service-track > .service:last-child { margin-right: 0; }
 
       .about .a-inner { grid-template-columns: 1fr; }
 
@@ -2088,12 +2117,12 @@
 
     <div class="service-track" id="service-track" aria-label="Expertise">
       <article class="service">
-        <span class="tag">Commercial</span>
-        <h4>Commercial<br />Direction</h4>
-        <div class="shot" style="background-image: url('images/service-1.webp'); background-size: cover; background-position: 45% 25%"></div>
+        <span class="tag">Creative</span>
+        <h4>Creative<br />Direction</h4>
+        <div class="shot" style="background-image: url('images/service-3.webp'); background-size: cover; background-position: 50% 22%"></div>
         <div class="foot">
-          <p class="desc">Commercials built around a strong idea, distinctive imagery and performances that feel believable. I work with agencies and brand teams to translate campaign strategy into films that connect with audiences and keep the brand&rsquo;s purpose in focus.</p>
-          <a class="go" href="#contact" aria-label="Discuss a commercial project"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+          <p class="desc">A coherent vision from brief to screen. I shape concepts, treatments and visual approaches, then guide creative and production teams through the choices that bring the idea to life.</p>
+          <a class="go" href="#contact" aria-label="Discuss creative direction"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
         </div>
       </article>
 
@@ -2108,12 +2137,12 @@
       </article>
 
       <article class="service">
-        <span class="tag">Creative</span>
-        <h4>Creative<br />Direction</h4>
-        <div class="shot" style="background-image: url('images/service-3.webp'); background-size: cover; background-position: 50% 22%"></div>
+        <span class="tag">Commercial</span>
+        <h4>Commercial<br />Direction</h4>
+        <div class="shot" style="background-image: url('images/service-1.webp'); background-size: cover; background-position: 45% 25%"></div>
         <div class="foot">
-          <p class="desc">A coherent vision from brief to screen. I shape concepts, treatments and visual approaches, then guide creative and production teams through the choices that bring the idea to life.</p>
-          <a class="go" href="#contact" aria-label="Discuss creative direction"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+          <p class="desc">Commercials built around a strong idea, distinctive imagery and performances that feel believable. I work with agencies and brand teams to translate campaign strategy into films that connect with audiences and keep the brand&rsquo;s purpose in focus.</p>
+          <a class="go" href="#contact" aria-label="Discuss a commercial project"><svg viewBox="0 0 16 16"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
         </div>
       </article>
     </div>
@@ -2226,6 +2255,7 @@
     </div>
     <section class="nf-hero" id="nf-hero">
       <div class="nf-bg" id="nf-bg" aria-hidden="true"></div>
+      <div class="nf-video" id="nf-video" aria-hidden="true"></div>
       <p class="where" id="nf-where"></p>
       <h2 id="nf-title"></h2>
       <p class="blurb" id="nf-blurb"></p>
@@ -2846,19 +2876,78 @@
         void hero.offsetWidth;
         hero.style.animation = "";
         getPoster(p, 1280).then((u) => { if (u && featured === i) paint(hero, p, u); });
+        playBanner(i);
       };
+
+      // Netflix-style banner: the film autoplays (muted, looping) behind the title after a short beat.
+      const stage = document.getElementById("nf-video");
+      let vf = null, vp = null, vt = null, vseq = 0;
+      const dataSaver = navigator.connection && navigator.connection.saveData;
+      const stopBanner = () => {
+        clearTimeout(vt);
+        vseq++;
+        if (vp) { try { vp.destroy(); } catch (e) {} }
+        if (vf) vf.remove();
+        vf = vp = null;
+        stage.classList.remove("on");
+      };
+      // cover the banner whatever the film's shape, aimed at the same focal point as the thumbnail
+      const fitBanner = (f, i) => {
+        const cw = stage.clientWidth, ch = stage.clientHeight;
+        if (!cw || !ch) return;
+        const ar = parseFloat(f.dataset.ar) || 16 / 9;
+        const w = Math.max(cw, ch * ar), h = w / ar;
+        const pos = (films[i].thumbPos || "50% 25%").split(" ").map((v) => parseFloat(v) / 100);
+        f.style.width = w + "px";
+        f.style.height = h + "px";
+        f.style.left = -(w - cw) * (pos[0] || 0.5) + "px";
+        f.style.top = -(h - ch) * (isNaN(pos[1]) ? 0.25 : pos[1]) + "px";
+      };
+      const playBanner = (i) => {
+        stopBanner();
+        if (!root.classList.contains("open") || dataSaver) return;
+        const seq = vseq;
+        vt = setTimeout(() => {
+          loadVimeo().then(() => {
+            if (seq !== vseq || typeof Vimeo === "undefined") return;
+            const f = document.createElement("iframe");
+            f.src = "https://player.vimeo.com/video/" + films[i].vimeo + "?background=1&autoplay=1&muted=1&loop=1&dnt=1";
+            f.allow = "autoplay; fullscreen; picture-in-picture";
+            f.title = films[i].title;
+            f.tabIndex = -1;
+            stage.appendChild(f);
+            vf = f;
+            fitBanner(f, i);
+            const pl = new Vimeo.Player(f);
+            vp = pl;
+            const ready = () => {
+              pl.off("timeupdate", ready);
+              if (seq === vseq) stage.classList.add("on");
+            };
+            pl.on("timeupdate", ready);
+            Promise.all([pl.getVideoWidth(), pl.getVideoHeight()]).then(([vw, vh]) => {
+              if (seq !== vseq || !vh) return;
+              f.dataset.ar = vw / vh;
+              fitBanner(f, i);
+            }).catch(() => {});
+          });
+        }, 700);
+      };
+      addEventListener("resize", () => { if (vf) fitBanner(vf, featured); });
 
       const playVideo = (i) => {
         frame.src = "https://player.vimeo.com/video/" + films[i].vimeo + "?autoplay=1&dnt=1";
         frame.title = films[i].title;
+        stopBanner();
         player.classList.add("open");
         document.body.classList.add("modal-open");
         document.getElementById("nf-player-close").focus();
       };
-      const closeVideo = () => {
+      const closeVideo = (resume) => {
         player.classList.remove("open");
         frame.src = "about:blank";
         if (!root.classList.contains("open")) document.body.classList.remove("modal-open");
+        else if (resume) playBanner(featured); // back on the page: the banner plays again
       };
 
       const tile = (i) => {
@@ -2959,9 +3048,11 @@
         const cur = projects[activeIndex].player;
         if (cur) cur.pause();
         document.getElementById("nf-close").focus();
+        playBanner(featured);
       };
       const close = () => {
-        closeVideo();
+        stopBanner();
+        closeVideo(false);
         root.classList.remove("open");
         root.setAttribute("aria-hidden", "true");
         document.body.classList.remove("modal-open");
@@ -2974,11 +3065,11 @@
       document.getElementById("watch-film").addEventListener("click", () => playVideo(films.indexOf(projects[activeIndex])));
       document.getElementById("nf-close").addEventListener("click", close);
       document.getElementById("nf-play").addEventListener("click", () => playVideo(featured));
-      document.getElementById("nf-player-close").addEventListener("click", closeVideo);
-      player.addEventListener("click", (e) => { if (e.target === player) closeVideo(); });
+      document.getElementById("nf-player-close").addEventListener("click", () => closeVideo(true));
+      player.addEventListener("click", (e) => { if (e.target === player) closeVideo(true); });
       addEventListener("keydown", (e) => {
         if (e.key !== "Escape") return;
-        if (player.classList.contains("open")) closeVideo();
+        if (player.classList.contains("open")) closeVideo(true);
         else if (root.classList.contains("open")) close();
       });
     })();
