@@ -106,7 +106,7 @@
       position: relative;
       z-index: 1;
       overflow: hidden;
-      padding: 0.9rem 0 1.1rem clamp(1.5rem, 6vw, 6rem);
+      padding: 0.9rem 0 1.1rem;
       border-top: 1px solid var(--line);
     }
 
@@ -115,36 +115,46 @@
       letter-spacing: 0.35em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 0.6rem;
+      margin: 0 0 0.6rem;
+      padding-left: clamp(1.5rem, 6vw, 6rem);
     }
 
+    /* fades out at both ends, so names glide in and out instead of being cut */
     .brands .ticker {
       overflow: hidden;
-      -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
-      mask-image: linear-gradient(to right, #000 85%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 90%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 90%, transparent 100%);
     }
 
     .brands .track {
       display: flex;
       width: max-content;
-      gap: 2.2rem;
+      margin-left: clamp(1.5rem, 6vw, 6rem);
       font-size: 0.8rem;
       letter-spacing: 0.08em;
       color: rgba(244, 239, 230, 0.92);
       white-space: nowrap;
     }
 
-    .brands .track .dup { width: 0; overflow: hidden; }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .brands .track { animation: brands-run 50s linear infinite; }
+    /* every set carries its own trailing gap, so the loop point is exact */
+    .brands .set {
+      display: flex;
+      gap: 2.2rem;
+      padding-right: 2.2rem;
+      flex: none;
     }
 
-    @keyframes brands-run { to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: no-preference) {
+      .brands .track { animation: brands-run 70s linear infinite; }
+    }
+
+    /* four identical sets: moving by one set (25%) loops seamlessly, even on very wide screens */
+    @keyframes brands-run { to { transform: translateX(-25%); } }
 
     @media (prefers-reduced-motion: reduce) {
-      .brands .track { width: auto; flex-wrap: wrap; white-space: normal; }
-      .brands .track [aria-hidden="true"] { display: none; }
+      .brands .track { width: auto; margin-right: clamp(1.5rem, 6vw, 6rem); }
+      .brands .set { flex-wrap: wrap; row-gap: 0.4rem; }
+      .brands .set[aria-hidden="true"] { display: none; }
     }
 
     /* ---- Vertical nav, right edge ---- */
@@ -1861,8 +1871,8 @@
       }
 
 
-      .brands { padding-left: 1.2rem; }
-      .brands .label { margin-bottom: 0.4rem; }
+      .brands .label { margin-bottom: 0.4rem; padding-left: 1.2rem; }
+      .brands .track { margin-left: 1.2rem; }
 
       .site-footer { flex-direction: column; align-items: flex-start; }
     }
@@ -1954,7 +1964,7 @@
     <div class="brands" aria-label="Selected brands and organisations">
       <p class="label">Selected brands &amp; organisations</p>
       <div class="ticker">
-        <div class="track"><span>Uber</span><span>The World Bank</span><span>MTN Ghana</span><span>Unilever</span><span>Absa Ghana</span><span>Hubtel</span><span>Danone</span><span>Ashesi University</span><span>Africa Health Collaborative</span><span>KGL Group</span><span>DKT International</span><span>Cocoa360</span><span>DStv Ghana</span><span class="dup" aria-hidden="true">&nbsp;</span><span aria-hidden="true">Uber</span><span aria-hidden="true">The World Bank</span><span aria-hidden="true">MTN Ghana</span><span aria-hidden="true">Unilever</span><span aria-hidden="true">Absa Ghana</span><span aria-hidden="true">Hubtel</span><span aria-hidden="true">Danone</span><span aria-hidden="true">Ashesi University</span><span aria-hidden="true">Africa Health Collaborative</span><span aria-hidden="true">KGL Group</span><span aria-hidden="true">DKT International</span><span aria-hidden="true">Cocoa360</span><span aria-hidden="true">DStv Ghana</span></div>
+        <div class="track"><div class="set"><span>Uber</span><span>The World Bank</span><span>MTN Ghana</span><span>Unilever</span><span>Absa Ghana</span><span>Hubtel</span><span>Danone</span><span>Ashesi University</span><span>Africa Health Collaborative</span><span>KGL Group</span><span>DKT International</span><span>Cocoa360</span><span>DStv Ghana</span></div><div class="set" aria-hidden="true"><span>Uber</span><span>The World Bank</span><span>MTN Ghana</span><span>Unilever</span><span>Absa Ghana</span><span>Hubtel</span><span>Danone</span><span>Ashesi University</span><span>Africa Health Collaborative</span><span>KGL Group</span><span>DKT International</span><span>Cocoa360</span><span>DStv Ghana</span></div><div class="set" aria-hidden="true"><span>Uber</span><span>The World Bank</span><span>MTN Ghana</span><span>Unilever</span><span>Absa Ghana</span><span>Hubtel</span><span>Danone</span><span>Ashesi University</span><span>Africa Health Collaborative</span><span>KGL Group</span><span>DKT International</span><span>Cocoa360</span><span>DStv Ghana</span></div><div class="set" aria-hidden="true"><span>Uber</span><span>The World Bank</span><span>MTN Ghana</span><span>Unilever</span><span>Absa Ghana</span><span>Hubtel</span><span>Danone</span><span>Ashesi University</span><span>Africa Health Collaborative</span><span>KGL Group</span><span>DKT International</span><span>Cocoa360</span><span>DStv Ghana</span></div></div>
       </div>
     </div>
 
