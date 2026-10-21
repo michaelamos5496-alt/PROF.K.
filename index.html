@@ -1944,6 +1944,9 @@
     .about .a-body p { transition: color 0.4s ease, opacity 0.4s ease; }
     .about .a-body.reading p { opacity: 0.45; }
     .about .a-body.reading p.speaking { opacity: 1; color: var(--ink); }
+    .about .a-body.reading p { cursor: pointer; }
+    .about .a-body.reading p:hover { opacity: 0.75; }
+    .about .a-body.reading p.speaking:hover { opacity: 1; }
 
     @media (max-width: 760px) {
       /* on phones the controls float at the bottom while it plays, so they stay in reach */
@@ -2741,6 +2744,7 @@
           <span class="listen-meta" id="listen-meta" aria-live="polite"></span>
           <div class="listen-bar" aria-hidden="true"><span id="listen-progress"></span></div>
         </div>
+        <audio id="bio-audio" src="/audio/bio.m4a" preload="none"></audio>
       </div>
       <div class="a-body" id="about-body">
         <p class="lead">Kwesi Apenteng-Mensah is a Ghanaian film director, creative director, and Chief Creative Officer &amp; Managing Partner at OneShot Studios.</p>
@@ -3924,11 +3928,11 @@
     })();
   </script>
   <script>
-    // Listen to the bio: the browser reads the About text aloud, one sentence at a time
+    // Listen to the bio: a recorded narration (West African English voice) that highlights each paragraph as it plays
     (() => {
-      const synth = window.speechSynthesis;
       const box = document.getElementById("bio-listen");
-      if (!synth || !window.SpeechSynthesisUtterance || !box) return; // no speech in this browser: keep the button hidden
+      const audio = document.getElementById("bio-audio");
+      if (!box || !audio || !audio.canPlayType) return;
 
       const body = document.getElementById("about-body");
       const toggle = document.getElementById("listen-toggle");
@@ -3937,57 +3941,30 @@
       const meta = document.getElementById("listen-meta");
       const bar = document.getElementById("listen-progress");
       const paras = [...body.querySelectorAll("p")];
-
-      // words that read better spelled out for a voice
-      const say = (t) => t
-        .replace(/GH¢\s?(\d[\d,]*)/g, "$1 Ghana cedis")
-        .replace(/#ThatMovieFromGhana/g, "hashtag, That Movie From Ghana")
-        .replace(/\btv57\b/g, "T V fifty-seven")
-        .replace(/\b14:32\b/g, "fourteen thirty-two")
-        .replace(/&/g, " and ")
-        .replace(/\s+/g, " ")
-        .trim();
-
-      // sentence chunks keep each utterance short; Chrome cuts off long ones
-      const parts = [];
-      paras.forEach((p, pi) => {
-        const text = say(p.textContent);
-        const sentences = text.match(/[^.!?]+(?:[.!?]+(?=\s|$)|$)/g) || [text];
-        sentences.forEach((s) => { if (s.trim()) parts.push({ pi, text: s.trim() }); });
-      });
-      const words = parts.reduce((n, x) => n + x.text.split(" ").length, 0);
-      const mins = Math.max(1, Math.round(words / 165));
-      const idle = "About " + mins + " min";
+      const starts = [0.0, 9.43, 28.96, 34.07, 57.83, 80.01, 95.58, 128.34, 157.78, 178.42, 215.02, 242.91, 269.9, 286.34, 307.05]; // seconds where each paragraph begins in the recording
+      const total = 309.69;
+      const idle = Math.round(total / 60) + " min listen";
       meta.textContent = idle;
       box.hidden = false;
 
-      // a clear English voice, preferring British and higher quality ones where the device has them
-      let voice = null;
-      const pickVoice = () => {
-        const vs = synth.getVoices().filter((v) => /^en[-_]/i.test(v.lang));
-        const score = (v) =>
-          (/en[-_](GB|GH|NG|ZA)/i.test(v.lang) ? 4 : 0) +
-          (/natural|neural|premium|enhanced|google uk english male|daniel|arthur/i.test(v.name) ? 3 : 0) +
-          (v.localService ? 1 : 0);
-        voice = vs.sort((a, b) => score(b) - score(a))[0] || null;
-      };
-      pickVoice();
-      if ("onvoiceschanged" in synth) synth.addEventListener("voiceschanged", pickVoice);
-
-      let i = 0, state = "idle", token = 0; // token ignores events from cancelled utterances
+      let state = "idle", lastPi = -1;
+      const fmt = (s) => Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
 
       const mark = () => {
-        const pi = parts[i] ? parts[i].pi : -1;
+        if (state === "idle") return; // stop rewinds to 0, which must not re-highlight the first paragraph
+        const t = audio.currentTime;
+        let pi = 0;
+        while (pi + 1 < starts.length && t >= starts[pi + 1]) pi++;
+        bar.style.width = (100 * t / (audio.duration || total)) + "%";
+        if (state === "playing") meta.textContent = fmt(t) + " / " + fmt(audio.duration || total);
+        if (pi === lastPi) return;
+        lastPi = pi;
         paras.forEach((p, n) => p.classList.toggle("speaking", n === pi));
-        bar.style.width = (100 * i / parts.length) + "%";
         // follow along only while the reader is already looking at the About section
-        const cur = paras[pi];
-        if (cur && state === "playing") {
-          const r = cur.getBoundingClientRect(), sec = body.getBoundingClientRect();
-          const inSection = sec.top < innerHeight && sec.bottom > 0;
-          if (inSection && (r.top < 80 || r.bottom > innerHeight - 140)) {
-            cur.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
+        const cur = paras[pi], sec = body.getBoundingClientRect();
+        if (cur && state === "playing" && sec.top < innerHeight && sec.bottom > 0) {
+          const r = cur.getBoundingClientRect();
+          if (r.top < 80 || r.bottom > innerHeight - 140) cur.scrollIntoView({ behavior: "smooth", block: "center" });
         }
       };
 
@@ -3999,35 +3976,29 @@
         stopBtn.hidden = s === "idle";
         label.textContent = s === "playing" ? "Pause" : s === "paused" ? "Resume" : "Listen to the bio";
         toggle.setAttribute("aria-label", s === "playing" ? "Pause the bio" : s === "paused" ? "Resume the bio" : "Listen to the bio");
-        meta.textContent = s === "idle" ? idle : s === "paused" ? "Paused" : "Reading";
-        if (s === "idle") { paras.forEach((p) => p.classList.remove("speaking")); bar.style.width = "0"; }
+        if (s === "paused") meta.textContent = "Paused";
+        if (s === "idle") { meta.textContent = idle; lastPi = -1; paras.forEach((p) => p.classList.remove("speaking")); bar.style.width = "0"; }
       };
 
-      const speakFrom = () => {
-        const my = ++token;
-        if (i >= parts.length) { i = 0; setState("idle"); return; }
-        mark();
-        const u = new SpeechSynthesisUtterance(parts[i].text);
-        if (voice) { u.voice = voice; u.lang = voice.lang; } else { u.lang = "en-GB"; }
-        u.rate = 0.98;
-        u.onend = () => { if (my !== token || state !== "playing") return; i++; speakFrom(); };
-        u.onerror = (e) => {
-          if (my !== token || e.error === "interrupted" || e.error === "canceled") return;
-          i++; speakFrom(); // skip a chunk the voice could not read rather than stopping
-        };
-        synth.speak(u);
+      const play = () => {
+        setState("playing"); mark();
+        const pr = audio.play();
+        if (pr && pr.catch) pr.catch(() => setState(audio.currentTime > 0 ? "paused" : "idle"));
       };
-
-      // pause is cancel-and-remember: the browser's own pause is unreliable across devices
-      const play = () => { synth.cancel(); setState("playing"); speakFrom(); };
-      const pause = () => { token++; synth.cancel(); setState("paused"); mark(); };
-      const stop = () => { token++; synth.cancel(); i = 0; setState("idle"); };
+      const pause = () => { audio.pause(); setState("paused"); };
+      const stop = () => { audio.pause(); audio.currentTime = 0; setState("idle"); };
 
       toggle.addEventListener("click", () => (state === "playing" ? pause() : play()));
       stopBtn.addEventListener("click", stop);
-      addEventListener("pagehide", stop);
-      document.addEventListener("keydown", (e) => { if (e.key === "Escape" && state !== "idle" && !document.body.classList.contains("modal-open")) pause(); });
-      synth.cancel(); // clear anything left over from a previous page
+      audio.addEventListener("timeupdate", mark);
+      audio.addEventListener("waiting", () => { if (state === "playing") meta.textContent = "Loading"; });
+      audio.addEventListener("ended", () => { audio.currentTime = 0; setState("idle"); });
+      // the phone's own media controls can pause or resume it too
+      audio.addEventListener("pause", () => { if (state === "playing" && !audio.ended) setState("paused"); });
+      audio.addEventListener("play", () => { if (state !== "playing") setState("playing"); });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape" && state === "playing" && !document.body.classList.contains("modal-open")) pause(); });
+      // clicking a paragraph while listening jumps the narration there
+      paras.forEach((p, n) => p.addEventListener("click", () => { if (state !== "idle") { audio.currentTime = starts[n] + 0.01; lastPi = -1; mark(); } }));
     })();
   </script>
 </body>
