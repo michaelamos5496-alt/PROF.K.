@@ -1851,6 +1851,121 @@
     .about .a-body .lead { font-size: clamp(1.05rem, 1.5vw, 1.3rem); color: var(--ink); font-weight: 400; }
     .about .a-body .loc { color: var(--accent); font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; }
 
+    /* ---- Listen to the bio (browser text to speech) ---- */
+    .listen {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.7rem 0.9rem;
+      margin-top: 2rem;
+      max-width: 22rem;
+    }
+
+    .listen[hidden] { display: none; }
+
+    .listen-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.45rem 1.2rem 0.45rem 0.45rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(244, 239, 230, 0.06);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .listen-btn:hover { border-color: var(--accent); background: rgba(255, 77, 28, 0.08); }
+    .listen-btn:focus-visible,
+    .listen-stop:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    .listen-btn .ic {
+      flex: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .listen-btn svg,
+    .listen-stop svg { width: 14px; height: 14px; fill: currentColor; }
+    .listen-btn .i-pause { display: none; }
+    .listen.playing .listen-btn .i-play { display: none; }
+    .listen.playing .listen-btn .i-pause { display: block; }
+
+    .listen-stop {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: border-color 0.25s ease;
+    }
+
+    .listen-stop:hover { border-color: var(--ink); }
+    .listen-stop[hidden] { display: none; }
+
+    .listen-meta {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .listen-bar {
+      flex-basis: 100%;
+      height: 2px;
+      background: var(--line);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .listen-bar span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+
+    /* while it reads, the other paragraphs step back and the current one comes forward */
+    .about .a-body p { transition: color 0.4s ease, opacity 0.4s ease; }
+    .about .a-body.reading p { opacity: 0.45; }
+    .about .a-body.reading p.speaking { opacity: 1; color: var(--ink); }
+
+    @media (max-width: 760px) {
+      /* on phones the controls float at the bottom while it plays, so they stay in reach */
+      .listen.playing,
+      .listen.paused {
+        position: fixed;
+        left: 50%;
+        bottom: max(1rem, env(safe-area-inset-bottom));
+        transform: translateX(-50%);
+        z-index: 90;
+        width: min(92vw, 22rem);
+        margin: 0;
+        padding: 0.6rem 0.8rem 0.7rem;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(14, 13, 11, 0.86);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
+      body.modal-open .listen { visibility: hidden; }
+    }
+
     /* ---- Approach ---- */
     .approach {
       padding: clamp(4rem, 12vh, 8rem) clamp(1.5rem, 6vw, 6rem);
@@ -2612,8 +2727,22 @@
         <p class="eyebrow">About</p>
         <h2>Commercial precision.<br /><em>Documentary depth.</em></h2>
         <p class="a-role">Chief Creative Officer &amp; Managing Partner, OneShot Studios</p>
+        <div class="listen" id="bio-listen" hidden>
+          <button type="button" class="listen-btn" id="listen-toggle" aria-controls="about-body">
+            <span class="ic" aria-hidden="true">
+              <svg class="i-play" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z"/></svg>
+              <svg class="i-pause" viewBox="0 0 16 16"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/></svg>
+            </span>
+            <span class="lbl" id="listen-label">Listen to the bio</span>
+          </button>
+          <button type="button" class="listen-stop" id="listen-stop" aria-label="Stop and start over" hidden>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5h9v9h-9z"/></svg>
+          </button>
+          <span class="listen-meta" id="listen-meta" aria-live="polite"></span>
+          <div class="listen-bar" aria-hidden="true"><span id="listen-progress"></span></div>
+        </div>
       </div>
-      <div class="a-body">
+      <div class="a-body" id="about-body">
         <p class="lead">Kwesi Apenteng-Mensah is a Ghanaian film director, creative director, and Chief Creative Officer &amp; Managing Partner at OneShot Studios.</p>
         <p>His work spans commercials, documentaries and original entertainment, combining cinematic craft with a strong instinct for the human story. He has directed films for brands and organisations including <strong class="brand">Uber</strong>, <strong class="brand">The World Bank</strong>, <strong class="brand">MTN</strong>, <strong class="brand">Absa</strong>, <strong class="brand">Unilever</strong>, <strong class="brand">DStv</strong>, <strong class="brand">Hubtel</strong> and <strong class="brand">Danone</strong>.</p>
         <p>His filmmaking journey began with a problem he could not afford to solve.</p>
@@ -3792,6 +3921,113 @@
         // staggered start so the three cards never change at the same moment
         setTimeout(() => setInterval(step, 5200), 2600 + ci * 1700);
       });
+    })();
+  </script>
+  <script>
+    // Listen to the bio: the browser reads the About text aloud, one sentence at a time
+    (() => {
+      const synth = window.speechSynthesis;
+      const box = document.getElementById("bio-listen");
+      if (!synth || !window.SpeechSynthesisUtterance || !box) return; // no speech in this browser: keep the button hidden
+
+      const body = document.getElementById("about-body");
+      const toggle = document.getElementById("listen-toggle");
+      const stopBtn = document.getElementById("listen-stop");
+      const label = document.getElementById("listen-label");
+      const meta = document.getElementById("listen-meta");
+      const bar = document.getElementById("listen-progress");
+      const paras = [...body.querySelectorAll("p")];
+
+      // words that read better spelled out for a voice
+      const say = (t) => t
+        .replace(/GH¢\s?(\d[\d,]*)/g, "$1 Ghana cedis")
+        .replace(/#ThatMovieFromGhana/g, "hashtag, That Movie From Ghana")
+        .replace(/\btv57\b/g, "T V fifty-seven")
+        .replace(/\b14:32\b/g, "fourteen thirty-two")
+        .replace(/&/g, " and ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      // sentence chunks keep each utterance short; Chrome cuts off long ones
+      const parts = [];
+      paras.forEach((p, pi) => {
+        const text = say(p.textContent);
+        const sentences = text.match(/[^.!?]+(?:[.!?]+(?=\s|$)|$)/g) || [text];
+        sentences.forEach((s) => { if (s.trim()) parts.push({ pi, text: s.trim() }); });
+      });
+      const words = parts.reduce((n, x) => n + x.text.split(" ").length, 0);
+      const mins = Math.max(1, Math.round(words / 165));
+      const idle = "About " + mins + " min";
+      meta.textContent = idle;
+      box.hidden = false;
+
+      // a clear English voice, preferring British and higher quality ones where the device has them
+      let voice = null;
+      const pickVoice = () => {
+        const vs = synth.getVoices().filter((v) => /^en[-_]/i.test(v.lang));
+        const score = (v) =>
+          (/en[-_](GB|GH|NG|ZA)/i.test(v.lang) ? 4 : 0) +
+          (/natural|neural|premium|enhanced|google uk english male|daniel|arthur/i.test(v.name) ? 3 : 0) +
+          (v.localService ? 1 : 0);
+        voice = vs.sort((a, b) => score(b) - score(a))[0] || null;
+      };
+      pickVoice();
+      if ("onvoiceschanged" in synth) synth.addEventListener("voiceschanged", pickVoice);
+
+      let i = 0, state = "idle", token = 0; // token ignores events from cancelled utterances
+
+      const mark = () => {
+        const pi = parts[i] ? parts[i].pi : -1;
+        paras.forEach((p, n) => p.classList.toggle("speaking", n === pi));
+        bar.style.width = (100 * i / parts.length) + "%";
+        // follow along only while the reader is already looking at the About section
+        const cur = paras[pi];
+        if (cur && state === "playing") {
+          const r = cur.getBoundingClientRect(), sec = body.getBoundingClientRect();
+          const inSection = sec.top < innerHeight && sec.bottom > 0;
+          if (inSection && (r.top < 80 || r.bottom > innerHeight - 140)) {
+            cur.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }
+      };
+
+      const setState = (s) => {
+        state = s;
+        box.classList.toggle("playing", s === "playing");
+        box.classList.toggle("paused", s === "paused");
+        body.classList.toggle("reading", s !== "idle");
+        stopBtn.hidden = s === "idle";
+        label.textContent = s === "playing" ? "Pause" : s === "paused" ? "Resume" : "Listen to the bio";
+        toggle.setAttribute("aria-label", s === "playing" ? "Pause the bio" : s === "paused" ? "Resume the bio" : "Listen to the bio");
+        meta.textContent = s === "idle" ? idle : s === "paused" ? "Paused" : "Reading";
+        if (s === "idle") { paras.forEach((p) => p.classList.remove("speaking")); bar.style.width = "0"; }
+      };
+
+      const speakFrom = () => {
+        const my = ++token;
+        if (i >= parts.length) { i = 0; setState("idle"); return; }
+        mark();
+        const u = new SpeechSynthesisUtterance(parts[i].text);
+        if (voice) { u.voice = voice; u.lang = voice.lang; } else { u.lang = "en-GB"; }
+        u.rate = 0.98;
+        u.onend = () => { if (my !== token || state !== "playing") return; i++; speakFrom(); };
+        u.onerror = (e) => {
+          if (my !== token || e.error === "interrupted" || e.error === "canceled") return;
+          i++; speakFrom(); // skip a chunk the voice could not read rather than stopping
+        };
+        synth.speak(u);
+      };
+
+      // pause is cancel-and-remember: the browser's own pause is unreliable across devices
+      const play = () => { synth.cancel(); setState("playing"); speakFrom(); };
+      const pause = () => { token++; synth.cancel(); setState("paused"); mark(); };
+      const stop = () => { token++; synth.cancel(); i = 0; setState("idle"); };
+
+      toggle.addEventListener("click", () => (state === "playing" ? pause() : play()));
+      stopBtn.addEventListener("click", stop);
+      addEventListener("pagehide", stop);
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape" && state !== "idle" && !document.body.classList.contains("modal-open")) pause(); });
+      synth.cancel(); // clear anything left over from a previous page
     })();
   </script>
 </body>
