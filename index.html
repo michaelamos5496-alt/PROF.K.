@@ -1851,23 +1851,24 @@
     .about .a-body .lead { font-size: clamp(1.05rem, 1.5vw, 1.3rem); color: var(--ink); font-weight: 400; }
     .about .a-body .loc { color: var(--accent); font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; }
 
-    /* ---- Listen to the bio (recorded narration) ---- */
-    .listen {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.7rem 0.9rem;
-      margin-top: 2rem;
-      max-width: 22rem;
+    /* ---- Bio: the opening shows, the rest opens with Read more ---- */
+    .about .a-more {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.6s ease;
     }
 
-    .listen[hidden] { display: none; }
+    .about .a-more > div { min-height: 0; overflow: hidden; }
+    .about .a-body.open .a-more { grid-template-rows: 1fr; }
 
-    .listen-btn {
+    .about .a-more > div > :first-child { padding-top: 0.2rem; }
+
+    .about .read-more {
       display: inline-flex;
       align-items: center;
-      gap: 0.75rem;
-      padding: 0.45rem 1.2rem 0.45rem 0.45rem;
+      gap: 0.7rem;
+      margin-top: 0.4rem;
+      padding: 0.85rem 1.4rem;
       border: 1px solid var(--line);
       border-radius: 999px;
       background: rgba(244, 239, 230, 0.06);
@@ -1880,168 +1881,15 @@
       transition: border-color 0.25s ease, background 0.25s ease;
     }
 
-    .listen-btn:hover { border-color: var(--accent); background: rgba(255, 77, 28, 0.08); }
-    .listen-btn:focus-visible,
-    .listen-stop:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .about .read-more:hover { border-color: var(--accent); background: rgba(255, 77, 28, 0.08); }
+    .about .read-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .about .read-more svg { width: 12px; height: 12px; fill: none; stroke: var(--accent); stroke-width: 1.8; transition: transform 0.4s ease; }
+    .about .a-body.open .read-more svg { transform: rotate(180deg); }
+    .about .a-body.open .read-more { margin-top: 1.2rem; }
 
-    .listen-btn .ic {
-      flex: none;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: var(--accent);
-      color: var(--bg);
+    @media (prefers-reduced-motion: reduce) {
+      .about .a-more, .about .read-more svg { transition: none; }
     }
-
-    .listen-btn svg,
-    .listen-stop svg { width: 14px; height: 14px; fill: currentColor; }
-    .listen-btn .i-pause { display: none; }
-    .listen.playing .listen-btn .i-play { display: none; }
-    .listen.playing .listen-btn .i-pause { display: block; }
-
-    .listen-stop {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 1px solid var(--line);
-      background: transparent;
-      color: var(--ink);
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      transition: border-color 0.25s ease;
-    }
-
-    .listen-stop:hover { border-color: var(--ink); }
-    .listen-stop[hidden] { display: none; }
-
-    .listen-meta {
-      font-size: 0.62rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .listen-bar {
-      flex-basis: 100%;
-      height: 2px;
-      background: var(--line);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .listen-bar span {
-      display: block;
-      height: 100%;
-      width: 0;
-      background: var(--accent);
-      transition: width 0.4s ease;
-    }
-
-    /* while it reads, the other paragraphs step back and the current one comes forward */
-    .about .a-body p { transition: color 0.4s ease, opacity 0.4s ease; }
-    .about .a-body.reading p { opacity: 0.45; }
-    .about .a-body.reading p.speaking { opacity: 1; color: var(--ink); }
-    .about .a-body.reading p { cursor: pointer; }
-    .about .a-body.reading p:hover { opacity: 0.75; }
-    .about .a-body.reading p.speaking:hover { opacity: 1; }
-
-    /* once the Listen controls scroll out of view, a small player floats in the corner */
-    .listen-float {
-      position: fixed;
-      right: clamp(1rem, 2.5vw, 2rem);
-      bottom: max(clamp(1rem, 2.5vw, 2rem), env(safe-area-inset-bottom));
-      z-index: 90;
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      padding: 0.4rem 0.45rem 0.4rem 0.4rem;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(14, 13, 11, 0.86);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-      overflow: hidden;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(16px);
-      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
-    }
-
-    .listen-float.show {
-      opacity: 1;
-      visibility: visible;
-      transform: none;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-
-    body.modal-open .listen-float { visibility: hidden; }
-
-    .listen-float button {
-      font: inherit;
-      color: var(--ink);
-      background: none;
-      border: 0;
-      cursor: pointer;
-    }
-
-    .listen-float button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-    .lf-toggle {
-      flex: none;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: var(--accent) !important;
-      color: var(--bg) !important;
-    }
-
-    .lf-toggle svg,
-    .lf-stop svg { width: 14px; height: 14px; fill: currentColor; }
-    .lf-toggle .i-pause { display: none; }
-    .listen-float.playing .lf-toggle .i-play { display: none; }
-    .listen-float.playing .lf-toggle .i-pause { display: block; }
-
-    .lf-info {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.15rem;
-      padding: 0 0.3rem;
-      text-align: left;
-    }
-
-    .lf-title { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; }
-    .lf-time { font-size: 0.66rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-    .lf-info:hover .lf-title { color: var(--accent); }
-
-    .lf-stop {
-      flex: none;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--line) !important;
-    }
-
-    .lf-stop:hover { border-color: var(--ink) !important; }
-
-    .lf-bar {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 2px;
-      background: transparent;
-    }
-
-    .lf-bar span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.4s ease; }
 
     /* ---- Approach ---- */
     .approach {
@@ -2804,38 +2652,31 @@
         <p class="eyebrow">About</p>
         <h2>Commercial precision.<br /><em>Documentary depth.</em></h2>
         <p class="a-role">Chief Creative Officer &amp; Managing Partner, OneShot Studios</p>
-        <div class="listen" id="bio-listen" hidden>
-          <button type="button" class="listen-btn" id="listen-toggle" aria-controls="about-body">
-            <span class="ic" aria-hidden="true">
-              <svg class="i-play" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z"/></svg>
-              <svg class="i-pause" viewBox="0 0 16 16"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/></svg>
-            </span>
-            <span class="lbl" id="listen-label">Listen to the bio</span>
-          </button>
-          <button type="button" class="listen-stop" id="listen-stop" aria-label="Stop and start over" hidden>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5h9v9h-9z"/></svg>
-          </button>
-          <span class="listen-meta" id="listen-meta" aria-live="polite"></span>
-          <div class="listen-bar" aria-hidden="true"><span id="listen-progress"></span></div>
-        </div>
-        <audio id="bio-audio" src="/audio/bio.m4a" preload="none"></audio>
       </div>
       <div class="a-body" id="about-body">
         <p class="lead">Kwesi Apenteng-Mensah is a Ghanaian film director, creative director, and Chief Creative Officer &amp; Managing Partner at OneShot Studios.</p>
         <p>His work spans commercials, documentaries and original entertainment, combining cinematic craft with a strong instinct for the human story. He has directed films for brands and organisations including <strong class="brand">Uber</strong>, <strong class="brand">The World Bank</strong>, <strong class="brand">MTN</strong>, <strong class="brand">Absa</strong>, <strong class="brand">Unilever</strong>, <strong class="brand">DStv</strong>, <strong class="brand">Hubtel</strong> and <strong class="brand">Danone</strong>.</p>
         <p>His filmmaking journey began with a problem he could not afford to solve.</p>
-        <p>In 2008, while attending Mfantsipim School, Kwesi received the Speech and Prize Giving Day Award for Initiative and Drive after founding the Mfantsipim Recognition Club. The club collaborated with other school organisations to photograph their events, and he planned to publish those images in a magazine. But the GH&cent;600 award covered barely a seventh of the printing costs.</p>
-        <p>He found another way to tell the story. On the night before returning to school from vacation, he taught himself to edit, assembling photographs and a handful of video clips into a slideshow. Distributed on branded CDs and screened at the club&rsquo;s opening event, it drew thunderous cheers as students saw themselves and memorable moments from school life on screen.</p>
-        <p>That response changed his direction. Editing became an obsession, and he began producing videos and promotional trailers that circulated through Mfantsipim and other high schools. By graduation, he knew he wanted a career in film.</p>
-        <p>That ambition led him to the National Film and Television Institute (NAFTI), where he found mentors, collaborators and the space to develop his voice. His student documentary, <em>Script, Shot, Edit</em>, brought together candid accounts from past and current students about their experiences at the institute. Its outspoken approach challenged conventions, drew controversy and nearly prevented its release. It also helped establish his belief that filmmaking could question institutions and open up difficult conversations.</p>
-        <p>While studying at NAFTI, Kwesi joined OneShot Studios as an intern. Founded by his friend and NAFTI classmate Ernest Oko Klemesu, the studio introduced him to a more cinematic approach to wedding filmmaking. In November 2011, he took responsibility for filming short wedding highlights, initially offered as a complimentary addition to clients&rsquo; full-length DVDs. Within a year, those films had become one of the studio&rsquo;s most requested offerings.</p>
-        <p>Between 2012 and 2015, OneShot grew rapidly, filming close to 60 weddings a year and sometimes securing bookings a year in advance, while both filmmakers were still full-time students. The work sharpened Kwesi&rsquo;s ability to recognise emotion, anticipate moments and build compelling stories from real events.</p>
-        <p>In 2015, a year after completing NAFTI, he directed his first feature film, <em>14:32</em>. Produced by his longtime friend Edgar Tagor, the dance film featured emerging performers including Dancegod Lloyd and Quables, who would later become influential figures in Ghana&rsquo;s Afro-dance movement. Its month-long digital campaign, <strong>#ThatMovieFromGhana</strong>, helped propel the film to a number-two global trend on Twitter on its premiere date, 4 September 2015. It went on to win an award at the Silicon Valley African Film Festival in 2016.</p>
-        <p>Kwesi became Managing Partner at OneShot Studios in 2017, helping guide its transition into commercial and corporate filmmaking. Early business clients included First National Bank Ghana, Enterprise Insurance, DreamOval and the Ghana Climate Innovation Centre. By 2020, the company had completed its move away from weddings, building a portfolio of brand films and documentaries for businesses and international organisations.</p>
-        <p>That year, he also took the creative lead on OneShot&rsquo;s commercial directing work, collaborating with cinematographer Apagnawen Annankra and Apag Studios. Their breakthrough commercial, 590 Mobile&rsquo;s <em>Evolution Story</em>, led to further campaigns for Ego Tickets, Hubtel and Unilever. Subsequent directing credits include Absa, MTN, DStv, Rush Energy Drink, the Ghana Premier League and Uber.</p>
-        <p>Today, Kwesi brings commercial precision and documentary depth to stories where attention, credibility and reputation matter. He works closely with agencies, brands and organisations to establish a clear vision and guide it from treatment through final delivery.</p>
-        <p>He also serves as Creative Director at tv57, a Ghanaian content network, leading teams to develop original shows for internet audiences. Across his work, his ambition remains rooted in that first school screening: to make films that allow people to recognise themselves, feel something and see familiar worlds with fresh eyes.</p>
-        <p class="loc">Based in Accra, Ghana.</p>
+        <div class="a-more" id="bio-more">
+          <div>
+            <p>In 2008, while attending Mfantsipim School, Kwesi received the Speech and Prize Giving Day Award for Initiative and Drive after founding the Mfantsipim Recognition Club. The club collaborated with other school organisations to photograph their events, and he planned to publish those images in a magazine. But the GH&cent;600 award covered barely a seventh of the printing costs.</p>
+            <p>He found another way to tell the story. On the night before returning to school from vacation, he taught himself to edit, assembling photographs and a handful of video clips into a slideshow. Distributed on branded CDs and screened at the club&rsquo;s opening event, it drew thunderous cheers as students saw themselves and memorable moments from school life on screen.</p>
+            <p>That response changed his direction. Editing became an obsession, and he began producing videos and promotional trailers that circulated through Mfantsipim and other high schools. By graduation, he knew he wanted a career in film.</p>
+            <p>That ambition led him to the National Film and Television Institute (NAFTI), where he found mentors, collaborators and the space to develop his voice. His student documentary, <em>Script, Shot, Edit</em>, brought together candid accounts from past and current students about their experiences at the institute. Its outspoken approach challenged conventions, drew controversy and nearly prevented its release. It also helped establish his belief that filmmaking could question institutions and open up difficult conversations.</p>
+            <p>While studying at NAFTI, Kwesi joined OneShot Studios as an intern. Founded by his friend and NAFTI classmate Ernest Oko Klemesu, the studio introduced him to a more cinematic approach to wedding filmmaking. In November 2011, he took responsibility for filming short wedding highlights, initially offered as a complimentary addition to clients&rsquo; full-length DVDs. Within a year, those films had become one of the studio&rsquo;s most requested offerings.</p>
+            <p>Between 2012 and 2015, OneShot grew rapidly, filming close to 60 weddings a year and sometimes securing bookings a year in advance, while both filmmakers were still full-time students. The work sharpened Kwesi&rsquo;s ability to recognise emotion, anticipate moments and build compelling stories from real events.</p>
+            <p>In 2015, a year after completing NAFTI, he directed his first feature film, <em>14:32</em>. Produced by his longtime friend Edgar Tagor, the dance film featured emerging performers including Dancegod Lloyd and Quables, who would later become influential figures in Ghana&rsquo;s Afro-dance movement. Its month-long digital campaign, <strong>#ThatMovieFromGhana</strong>, helped propel the film to a number-two global trend on Twitter on its premiere date, 4 September 2015. It went on to win an award at the Silicon Valley African Film Festival in 2016.</p>
+            <p>Kwesi became Managing Partner at OneShot Studios in 2017, helping guide its transition into commercial and corporate filmmaking. Early business clients included First National Bank Ghana, Enterprise Insurance, DreamOval and the Ghana Climate Innovation Centre. By 2020, the company had completed its move away from weddings, building a portfolio of brand films and documentaries for businesses and international organisations.</p>
+            <p>That year, he also took the creative lead on OneShot&rsquo;s commercial directing work, collaborating with cinematographer Apagnawen Annankra and Apag Studios. Their breakthrough commercial, 590 Mobile&rsquo;s <em>Evolution Story</em>, led to further campaigns for Ego Tickets, Hubtel and Unilever. Subsequent directing credits include Absa, MTN, DStv, Rush Energy Drink, the Ghana Premier League and Uber.</p>
+            <p>Today, Kwesi brings commercial precision and documentary depth to stories where attention, credibility and reputation matter. He works closely with agencies, brands and organisations to establish a clear vision and guide it from treatment through final delivery.</p>
+            <p>He also serves as Creative Director at tv57, a Ghanaian content network, leading teams to develop original shows for internet audiences. Across his work, his ambition remains rooted in that first school screening: to make films that allow people to recognise themselves, feel something and see familiar worlds with fresh eyes.</p>
+            <p class="loc">Based in Accra, Ghana.</p>
+          </div>
+        </div>
+        <button type="button" class="read-more" id="bio-toggle" aria-expanded="false" aria-controls="bio-more">
+          <span>Read more</span>
+          <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.5 6 8.5l4-4"/></svg>
+        </button>
       </div>
     </div>
   </section>
@@ -4001,109 +3842,30 @@
       });
     })();
   </script>
-  <div class="listen-float" id="listen-float" role="region" aria-label="Bio narration">
-    <button type="button" class="lf-toggle" id="lf-toggle" aria-label="Pause the bio">
-      <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
-      <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/></svg>
-    </button>
-    <button type="button" class="lf-info" id="lf-info" aria-label="Back to the bio">
-      <span class="lf-title">Bio</span>
-      <span class="lf-time" id="lf-time">0:00</span>
-    </button>
-    <button type="button" class="lf-stop" id="lf-stop" aria-label="Stop the bio">
-      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5h9v9h-9z"/></svg>
-    </button>
-    <span class="lf-bar" aria-hidden="true"><span id="lf-progress"></span></span>
-  </div>
-
   <script>
-    // Listen to the bio: a recorded narration (West African English voice) that highlights each paragraph as it plays
+    // Bio: Read more opens the rest of the story; Read less closes it and brings the button back into view
     (() => {
-      const box = document.getElementById("bio-listen");
-      const audio = document.getElementById("bio-audio");
-      if (!box || !audio || !audio.canPlayType) return;
-
       const body = document.getElementById("about-body");
-      const toggle = document.getElementById("listen-toggle");
-      const stopBtn = document.getElementById("listen-stop");
-      const label = document.getElementById("listen-label");
-      const meta = document.getElementById("listen-meta");
-      const bar = document.getElementById("listen-progress");
-      const paras = [...body.querySelectorAll("p")];
-      const starts = [0.0, 9.43, 28.96, 34.07, 57.83, 80.01, 95.58, 128.34, 157.78, 178.42, 215.02, 242.91, 269.9, 286.34, 307.05]; // seconds where each paragraph begins in the recording
-      const total = 309.69;
-      const idle = Math.round(total / 60) + " min listen";
-      meta.textContent = idle;
-      box.hidden = false;
-
-      const float = document.getElementById("listen-float");
-      const fToggle = document.getElementById("lf-toggle");
-      const fTime = document.getElementById("lf-time");
-      const fBar = document.getElementById("lf-progress");
-      let state = "idle", lastPi = -1, inlineInView = true;
-
-      // the floating player shows only while listening and the inline controls are off screen
-      const syncFloat = () => float.classList.toggle("show", state !== "idle" && !inlineInView);
-      if ("IntersectionObserver" in window) {
-        new IntersectionObserver((es) => { inlineInView = es[es.length - 1].isIntersecting; syncFloat(); }).observe(box);
-      }
-      const fmt = (s) => Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
-
-      const mark = () => {
-        if (state === "idle") return; // stop rewinds to 0, which must not re-highlight the first paragraph
-        const t = audio.currentTime;
-        let pi = 0;
-        while (pi + 1 < starts.length && t >= starts[pi + 1]) pi++;
-        const pct = (100 * t / (audio.duration || total)) + "%";
-        bar.style.width = pct; fBar.style.width = pct;
-        fTime.textContent = fmt(t) + " / " + fmt(audio.duration || total);
-        if (state === "playing") meta.textContent = fTime.textContent;
-        if (pi === lastPi) return;
-        lastPi = pi;
-        paras.forEach((p, n) => p.classList.toggle("speaking", n === pi));
+      const more = document.getElementById("bio-more");
+      const btn = document.getElementById("bio-toggle");
+      if (!body || !more || !btn) return;
+      const label = btn.querySelector("span");
+      const set = (open) => {
+        body.classList.toggle("open", open);
+        btn.setAttribute("aria-expanded", String(open));
+        label.textContent = open ? "Read less" : "Read more";
+        more.inert = !open; // hidden paragraphs stay out of the tab order and screen reader flow
       };
-
-      const setState = (s) => {
-        state = s;
-        box.classList.toggle("playing", s === "playing");
-        box.classList.toggle("paused", s === "paused");
-        body.classList.toggle("reading", s !== "idle");
-        stopBtn.hidden = s === "idle";
-        label.textContent = s === "playing" ? "Pause" : s === "paused" ? "Resume" : "Listen to the bio";
-        toggle.setAttribute("aria-label", s === "playing" ? "Pause the bio" : s === "paused" ? "Resume the bio" : "Listen to the bio");
-        if (s === "paused") meta.textContent = "Paused";
-        if (s === "idle") { meta.textContent = idle; lastPi = -1; paras.forEach((p) => p.classList.remove("speaking")); bar.style.width = "0"; fBar.style.width = "0"; }
-        float.classList.toggle("playing", s === "playing");
-        fToggle.setAttribute("aria-label", s === "playing" ? "Pause the bio" : "Resume the bio");
-        syncFloat();
-      };
-
-      const play = () => {
-        setState("playing"); mark();
-        const pr = audio.play();
-        if (pr && pr.catch) pr.catch(() => setState(audio.currentTime > 0 ? "paused" : "idle"));
-      };
-      const pause = () => { audio.pause(); setState("paused"); };
-      const stop = () => { audio.pause(); audio.currentTime = 0; setState("idle"); };
-
-      toggle.addEventListener("click", () => (state === "playing" ? pause() : play()));
-      stopBtn.addEventListener("click", stop);
-      fToggle.addEventListener("click", () => (state === "playing" ? pause() : play()));
-      document.getElementById("lf-stop").addEventListener("click", stop);
-      // tapping the title goes back to the paragraph being read
-      document.getElementById("lf-info").addEventListener("click", () => {
-        const cur = paras[Math.max(0, lastPi)] || body;
-        cur.scrollIntoView({ behavior: "smooth", block: "center" });
+      set(false);
+      btn.addEventListener("click", () => {
+        const open = !body.classList.contains("open");
+        set(open);
+        if (!open) {
+          // after closing, keep the reader where the bio opening is, not far below it
+          const r = body.getBoundingClientRect();
+          if (r.top < 0) body.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       });
-      audio.addEventListener("timeupdate", mark);
-      audio.addEventListener("waiting", () => { if (state === "playing") meta.textContent = "Loading"; });
-      audio.addEventListener("ended", () => { audio.currentTime = 0; setState("idle"); });
-      // the phone's own media controls can pause or resume it too
-      audio.addEventListener("pause", () => { if (state === "playing" && !audio.ended) setState("paused"); });
-      audio.addEventListener("play", () => { if (state !== "playing") setState("playing"); });
-      document.addEventListener("keydown", (e) => { if (e.key === "Escape" && state === "playing" && !document.body.classList.contains("modal-open")) pause(); });
-      // clicking a paragraph while listening jumps the narration there
-      paras.forEach((p, n) => p.addEventListener("click", () => { if (state !== "idle") { audio.currentTime = starts[n] + 0.01; lastPi = -1; mark(); } }));
     })();
   </script>
 </body>
