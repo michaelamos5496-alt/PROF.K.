@@ -1851,7 +1851,7 @@
     .about .a-body .lead { font-size: clamp(1.05rem, 1.5vw, 1.3rem); color: var(--ink); font-weight: 400; }
     .about .a-body .loc { color: var(--accent); font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; }
 
-    /* ---- Listen to the bio (browser text to speech) ---- */
+    /* ---- Listen to the bio (recorded narration) ---- */
     .listen {
       display: flex;
       flex-wrap: wrap;
@@ -1948,26 +1948,100 @@
     .about .a-body.reading p:hover { opacity: 0.75; }
     .about .a-body.reading p.speaking:hover { opacity: 1; }
 
-    @media (max-width: 760px) {
-      /* on phones the controls float at the bottom while it plays, so they stay in reach */
-      .listen.playing,
-      .listen.paused {
-        position: fixed;
-        left: 50%;
-        bottom: max(1rem, env(safe-area-inset-bottom));
-        transform: translateX(-50%);
-        z-index: 90;
-        width: min(92vw, 22rem);
-        margin: 0;
-        padding: 0.6rem 0.8rem 0.7rem;
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        background: rgba(14, 13, 11, 0.86);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-      }
-      body.modal-open .listen { visibility: hidden; }
+    /* once the Listen controls scroll out of view, a small player floats in the corner */
+    .listen-float {
+      position: fixed;
+      right: clamp(1rem, 2.5vw, 2rem);
+      bottom: max(clamp(1rem, 2.5vw, 2rem), env(safe-area-inset-bottom));
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.4rem 0.45rem 0.4rem 0.4rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(14, 13, 11, 0.86);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px);
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
     }
+
+    .listen-float.show {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    body.modal-open .listen-float { visibility: hidden; }
+
+    .listen-float button {
+      font: inherit;
+      color: var(--ink);
+      background: none;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .listen-float button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .lf-toggle {
+      flex: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--accent) !important;
+      color: var(--bg) !important;
+    }
+
+    .lf-toggle svg,
+    .lf-stop svg { width: 14px; height: 14px; fill: currentColor; }
+    .lf-toggle .i-pause { display: none; }
+    .listen-float.playing .lf-toggle .i-play { display: none; }
+    .listen-float.playing .lf-toggle .i-pause { display: block; }
+
+    .lf-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.15rem;
+      padding: 0 0.3rem;
+      text-align: left;
+    }
+
+    .lf-title { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; }
+    .lf-time { font-size: 0.66rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .lf-info:hover .lf-title { color: var(--accent); }
+
+    .lf-stop {
+      flex: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line) !important;
+    }
+
+    .lf-stop:hover { border-color: var(--ink) !important; }
+
+    .lf-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background: transparent;
+    }
+
+    .lf-bar span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.4s ease; }
 
     /* ---- Approach ---- */
     .approach {
@@ -3927,6 +4001,21 @@
       });
     })();
   </script>
+  <div class="listen-float" id="listen-float" role="region" aria-label="Bio narration">
+    <button type="button" class="lf-toggle" id="lf-toggle" aria-label="Pause the bio">
+      <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
+      <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/></svg>
+    </button>
+    <button type="button" class="lf-info" id="lf-info" aria-label="Back to the bio">
+      <span class="lf-title">Bio</span>
+      <span class="lf-time" id="lf-time">0:00</span>
+    </button>
+    <button type="button" class="lf-stop" id="lf-stop" aria-label="Stop the bio">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5h9v9h-9z"/></svg>
+    </button>
+    <span class="lf-bar" aria-hidden="true"><span id="lf-progress"></span></span>
+  </div>
+
   <script>
     // Listen to the bio: a recorded narration (West African English voice) that highlights each paragraph as it plays
     (() => {
@@ -3947,7 +4036,17 @@
       meta.textContent = idle;
       box.hidden = false;
 
-      let state = "idle", lastPi = -1;
+      const float = document.getElementById("listen-float");
+      const fToggle = document.getElementById("lf-toggle");
+      const fTime = document.getElementById("lf-time");
+      const fBar = document.getElementById("lf-progress");
+      let state = "idle", lastPi = -1, inlineInView = true;
+
+      // the floating player shows only while listening and the inline controls are off screen
+      const syncFloat = () => float.classList.toggle("show", state !== "idle" && !inlineInView);
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver((es) => { inlineInView = es[es.length - 1].isIntersecting; syncFloat(); }).observe(box);
+      }
       const fmt = (s) => Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
 
       const mark = () => {
@@ -3955,17 +4054,13 @@
         const t = audio.currentTime;
         let pi = 0;
         while (pi + 1 < starts.length && t >= starts[pi + 1]) pi++;
-        bar.style.width = (100 * t / (audio.duration || total)) + "%";
-        if (state === "playing") meta.textContent = fmt(t) + " / " + fmt(audio.duration || total);
+        const pct = (100 * t / (audio.duration || total)) + "%";
+        bar.style.width = pct; fBar.style.width = pct;
+        fTime.textContent = fmt(t) + " / " + fmt(audio.duration || total);
+        if (state === "playing") meta.textContent = fTime.textContent;
         if (pi === lastPi) return;
         lastPi = pi;
         paras.forEach((p, n) => p.classList.toggle("speaking", n === pi));
-        // follow along only while the reader is already looking at the About section
-        const cur = paras[pi], sec = body.getBoundingClientRect();
-        if (cur && state === "playing" && sec.top < innerHeight && sec.bottom > 0) {
-          const r = cur.getBoundingClientRect();
-          if (r.top < 80 || r.bottom > innerHeight - 140) cur.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
       };
 
       const setState = (s) => {
@@ -3977,7 +4072,10 @@
         label.textContent = s === "playing" ? "Pause" : s === "paused" ? "Resume" : "Listen to the bio";
         toggle.setAttribute("aria-label", s === "playing" ? "Pause the bio" : s === "paused" ? "Resume the bio" : "Listen to the bio");
         if (s === "paused") meta.textContent = "Paused";
-        if (s === "idle") { meta.textContent = idle; lastPi = -1; paras.forEach((p) => p.classList.remove("speaking")); bar.style.width = "0"; }
+        if (s === "idle") { meta.textContent = idle; lastPi = -1; paras.forEach((p) => p.classList.remove("speaking")); bar.style.width = "0"; fBar.style.width = "0"; }
+        float.classList.toggle("playing", s === "playing");
+        fToggle.setAttribute("aria-label", s === "playing" ? "Pause the bio" : "Resume the bio");
+        syncFloat();
       };
 
       const play = () => {
@@ -3990,6 +4088,13 @@
 
       toggle.addEventListener("click", () => (state === "playing" ? pause() : play()));
       stopBtn.addEventListener("click", stop);
+      fToggle.addEventListener("click", () => (state === "playing" ? pause() : play()));
+      document.getElementById("lf-stop").addEventListener("click", stop);
+      // tapping the title goes back to the paragraph being read
+      document.getElementById("lf-info").addEventListener("click", () => {
+        const cur = paras[Math.max(0, lastPi)] || body;
+        cur.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
       audio.addEventListener("timeupdate", mark);
       audio.addEventListener("waiting", () => { if (state === "playing") meta.textContent = "Loading"; });
       audio.addEventListener("ended", () => { audio.currentTime = 0; setState("idle"); });
