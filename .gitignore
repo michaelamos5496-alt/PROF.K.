@@ -1,0 +1,11 @@
+.DS_Store
+
+# Raw source photos and video stills (the site uses the optimised WebP copies in images/)
+assets/
+images/_DSC*.jpg
+images/_DSF*.jpeg
+images/IMG_*.PNG
+images/services card 1.jpg
+
+# Local preview harness
+wrap.html
